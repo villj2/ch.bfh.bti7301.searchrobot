@@ -12,8 +12,15 @@ namespace SearchRobot.Library
     /// </summary>
     public class Map
     {
-        private readonly int[][] _map;
+		/// <summary>
+		/// Gets or Sets the Map Data.
+		/// </summary>
+		internal int[,] MapData { get; private set; }
 
+		public static Map New(int x, int y)
+		{
+			return new Map() {MapData = new int[x, y] };
+		}
 
         /// <summary>
         /// Loads a Map from a stream.
