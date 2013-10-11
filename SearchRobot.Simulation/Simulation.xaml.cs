@@ -10,19 +10,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SearchRobot
+namespace SearchRobot.Simulation
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Simulation.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Simulation : Window
     {
-        public MainWindow()
+        public Simulation()
         {
             InitializeComponent();
+        }
+
+        private void OnBtnStartClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnBtnResetClick(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
