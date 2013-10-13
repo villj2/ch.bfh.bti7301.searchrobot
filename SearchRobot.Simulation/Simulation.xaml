@@ -22,8 +22,9 @@
             </Grid.RowDefinitions>
 
             <Canvas Grid.Row="0" Grid.Column="0" Name="MapExploredArea" Background="Cyan" />
-            <Button Name="btnStart" Content="Start" Grid.Row="2" Grid.Column="0" Click="OnBtnStartClick" />
-            <Button Name="btnReset" Content="Reset" Grid.Row="3" Grid.Column="0" Click="OnBtnResetClick"/>
+            <Label Name="lblOutput" Content="" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button Name="btnStart" Content="" Grid.Row="2" Grid.Column="0" Click="OnBtnStartClick" />
+            <Button Name="btnReset" Content="" Grid.Row="3" Grid.Column="0" Click="OnBtnResetClick"/>
         </Grid>
     </Grid>
 </Window>

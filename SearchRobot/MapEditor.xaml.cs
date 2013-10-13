@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SearchRobot.Library.Maps;
+using SearchRobot.Library.Robot;
 using Point = System.Windows.Point;
 
 namespace SearchRobot
