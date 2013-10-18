@@ -12,6 +12,7 @@ namespace SearchRobot.Library.Maps
         Discovered,
         Blocked,
         Visited,
+        Waypoint,
         Target
     }
 }

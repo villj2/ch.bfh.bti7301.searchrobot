@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SearchRobot.Library.Robot
+namespace SearchRobot.Library.RobotParts
 {
     public class Sight
     {

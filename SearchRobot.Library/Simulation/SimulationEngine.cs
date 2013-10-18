@@ -9,6 +9,9 @@ using Timer = System.Threading.Timer;
 using System.Windows;
 using System.Windows.Controls;
 using SearchRobot.Library.Global;
+using SearchRobot.Library.RobotParts;
+using SearchRobot.Library.Maps;
+using Point = SearchRobot.Library.Maps.Point;
 
 
 namespace SearchRobot.Library.Simulation
@@ -20,9 +23,12 @@ namespace SearchRobot.Library.Simulation
         private AutoResetEvent _autoEvent;
         private Timer _timer;
         private int _ticks;
+        private Canvas _mapArea;
 
-        public SimulationEngine()
+        public SimulationEngine(Canvas mapArea)
         {
+            _mapArea = mapArea;
+
             initialize();
             loadMap();
             buildMap();
@@ -42,7 +48,18 @@ namespace SearchRobot.Library.Simulation
 
         private void buildMap()
         {
-            // TODO implementation
+            // TODO load Map
+            Map map = new Map();
+
+            // just 4 testing without map-loading
+            Robot robot = new Robot(map, new Label());
+            robot.ApplyTo(_mapArea);
+
+            Point p = new Point();
+            p.X = 200;
+            p.Y = 300;
+
+            robot.MoveTo(p);
         }
 
         #region Canvas MouseHandling
@@ -125,17 +142,17 @@ namespace SearchRobot.Library.Simulation
             throw new NotImplementedException();
         }
         
-        public int PointGetRobotOrientation()
+        public int GetRobotOrientation()
         {
             throw new NotImplementedException();
         }
             
-        public void intMove()
+        public void Move()
         {
             throw new NotImplementedException();
         }
 
-        public void voidTurn(int deg)
+        public void Turn(int deg)
         {
 
         }

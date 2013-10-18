@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SearchRobot.Library.RobotParts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace SearchRobot.Library.Maps
 {
 	[XmlInclude(typeof(Disc))]
 	[XmlInclude(typeof(Goal))]
-	[XmlInclude(typeof(Robot.Robot))]
+	[XmlInclude(typeof(Robot))]
 	[XmlInclude(typeof(Wall))]
 	public abstract class MapElement
 	{

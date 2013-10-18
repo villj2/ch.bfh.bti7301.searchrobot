@@ -10,5 +10,6 @@ namespace SearchRobot.Library.Maps
     {
         public int X { get; set; }
         public int Y { get; set; }
+        public MapElementStatus Status { get; set; }
     }
 }
