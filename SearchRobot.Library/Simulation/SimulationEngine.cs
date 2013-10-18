@@ -23,9 +23,26 @@ namespace SearchRobot.Library.Simulation
 
         public SimulationEngine()
         {
+            initialize();
+            loadMap();
+            buildMap();
+        }
+
+        private void initialize()
+        {
             _autoEvent = new AutoResetEvent(false);
             _ticks = 0;
             _state = CycleState.Initiated;
+        }
+
+        private void loadMap()
+        {
+            // TODO implementation
+        }
+
+        private void buildMap()
+        {
+            // TODO implementation
         }
 
         #region Canvas MouseHandling
@@ -99,6 +116,28 @@ namespace SearchRobot.Library.Simulation
                 // TODO reset Map Explored
                 // TODO reset Robot Position
             }
+        }
+        #endregion
+
+        #region Robot Handling
+        public Point GetRobotPosition()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public int PointGetRobotOrientation()
+        {
+            throw new NotImplementedException();
+        }
+            
+        public void intMove()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void voidTurn(int deg)
+        {
+
         }
         #endregion
     }

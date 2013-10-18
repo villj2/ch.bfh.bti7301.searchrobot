@@ -48,6 +48,8 @@
     <Compile Include="Maps\Goal.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapElement.cs" />
+    <Compile Include="Maps\MapElementStatus.cs" />
+    <Compile Include="Maps\MapExplored.cs" />
     <Compile Include="Maps\Point.cs" />
     <Compile Include="Robot\Brain.cs" />
     <Compile Include="Robot\Robot.cs" />
