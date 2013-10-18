@@ -13,7 +13,7 @@ namespace SearchRobot.Library.Maps
 {
 	[XmlInclude(typeof(Disc))]
 	[XmlInclude(typeof(Goal))]
-	[XmlInclude(typeof(Robot))]
+	[XmlInclude(typeof(Robot.Robot))]
 	[XmlInclude(typeof(Wall))]
 	public abstract class MapElement
 	{
