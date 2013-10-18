@@ -44,19 +44,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeometryHelper.cs" />
+    <Compile Include="Global\TextContent.cs" />
     <Compile Include="Maps\Disc.cs" />
     <Compile Include="Maps\Goal.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapElement.cs" />
     <Compile Include="Maps\Point.cs" />
-    <Compile Include="Maps\Robot.cs" />
+    <Compile Include="Robot\Brain.cs" />
+    <Compile Include="Robot\Robot.cs" />
     <Compile Include="Maps\UniqueMandatoryMapElement.cs" />
     <Compile Include="Maps\Wall.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolver.cs" />
     <Compile Include="Storage\IMapStorageManager.cs" />
     <Compile Include="Storage\XmlMapStorageManager.cs" />
+    <Compile Include="Robot\Sensor.cs" />
+    <Compile Include="Robot\Sight.cs" />
+    <Compile Include="Simulation\ExploredMap.cs" />
+    <Compile Include="Simulation\SimulationEngine.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

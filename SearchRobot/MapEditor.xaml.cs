@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using SearchRobot.Library;
 using SearchRobot.Library.Maps;
+using SearchRobot.Library.Robot;
 using Point = System.Windows.Point;
 
 namespace SearchRobot

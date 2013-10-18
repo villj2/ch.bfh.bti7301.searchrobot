@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SearchRobot.Library.Maps;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace SearchRobot.Library.Maps
+namespace SearchRobot.Library.Robot
 {
     public class Robot : UniqueMandatoryMapElement
     {
