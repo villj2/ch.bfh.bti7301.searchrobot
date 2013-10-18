@@ -11,11 +11,16 @@ namespace SearchRobot.Library.Maps
 {
 	public class Disc : MapElement
 	{
-		public int Radius { get; private set; }
+		public int Radius { get; set; }
+
 		private Ellipse _uiElement;
 		private Geometry _geometry;
 
 		public Disc(Map map) : base(map)
+		{
+		}
+
+		public Disc()
 		{
 		}
 

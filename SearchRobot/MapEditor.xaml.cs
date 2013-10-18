@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using SearchRobot.Library;
 using SearchRobot.Library.Maps;
 using Point = System.Windows.Point;
 
@@ -149,5 +152,43 @@ namespace SearchRobot
 
         #endregion
 
-    }
+		private void OnSaveClick(object sender, RoutedEventArgs e)
+		{
+			var fileDialog = new SaveFileDialog();
+			fileDialog.AddExtension = true;
+			fileDialog.DefaultExt = ".xml";
+			fileDialog.Filter = "Map Files|*.xml";
+			fileDialog.FileOk += FileDialogOnFileOk;
+
+			fileDialog.ShowDialog();
+		}
+
+		private void FileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
+		{
+			var dialog = sender as SaveFileDialog;
+			var filename = dialog.FileName;
+
+			Resolver.StorageManager.Save(filename, Map);
+		}
+
+		private void OnLoadClick(object sender, RoutedEventArgs e)
+		{
+			var fileDialog = new OpenFileDialog();
+			fileDialog.Filter = "Map Files|*.xml";
+			fileDialog.Multiselect = false;
+			fileDialog.FileOk += LoadMapFromFile;
+
+			fileDialog.ShowDialog();
+		}
+
+		void LoadMapFromFile(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			var dialog = sender as OpenFileDialog;
+			var filename = dialog.FileName;
+
+			Map = Resolver.StorageManager.Load(filename);
+			MapArea.Children.Clear();
+			Map.ApplyToCanvas(MapArea);
+		}
+	}
 }

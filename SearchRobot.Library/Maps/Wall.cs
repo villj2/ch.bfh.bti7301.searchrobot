@@ -17,6 +17,26 @@ namespace SearchRobot.Library.Maps
 
 	    private const int height = 4;
 
+		public Point EndPoint { get; set; }
+
+
+		protected override Geometry GeometryShape
+		{
+			get
+			{
+				return AsRectangleGeometry(StartPosition, EndPoint);
+			}
+		}
+
+		public Wall()
+		{
+		}
+
+		public Wall(Map map) : base(map)
+		{
+			EndPoint = new Point();
+		}
+
 		public Geometry AsRectangleGeometry(Point start, Point end)
 		{
 			var angle = GeometryHelper.GetAngle(start, end);
@@ -25,20 +45,6 @@ namespace SearchRobot.Library.Maps
 			return new RectangleGeometry(new Rect(start.X, start.Y, width, height), 0, 0, new RotateTransform(angle));
 		}
 
-        public Wall(Map map) : base(map)
-        {
-            EndPoint = new Point();
-        }
-
-        public Point EndPoint { get; set; }
-
-	    protected override Geometry GeometryShape
-	    {
-		    get
-		    {
-			    return AsRectangleGeometry(StartPosition, EndPoint);
-		    }
-	    }
 
 	    public override void MouseDown(Canvas canvas, Point point)
         {

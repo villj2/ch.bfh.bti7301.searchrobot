@@ -21,6 +21,8 @@ namespace SearchRobot.Library.Maps
             _label = label;
         }
 
+		internal Robot() { }
+
 	    protected override Geometry GeometryShape
 	    {
 			get { return _uiElement.RenderedGeometry; }
@@ -30,14 +32,6 @@ namespace SearchRobot.Library.Maps
         {
             StartPosition = point;
 			ApplyTo(canvas);
-        }
-
-        private double GetAngle(Point start, Point end)
-        {
-            var y = end.Y - start.Y;
-            var x = end.X - start.X;
-
-            return Math.Atan2(y, x) / Math.PI * 180;
         }
 
         public override void MouseUp(Canvas canvas, Point point)
@@ -54,7 +48,7 @@ namespace SearchRobot.Library.Maps
 
         public override void MouseMove(Canvas canvas, Point point)
         {
-            Direction = GetAngle(StartPosition, point);
+            Direction = GeometryHelper.GetAngle(StartPosition, point);
             _uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
         }
 
@@ -75,13 +69,13 @@ namespace SearchRobot.Library.Maps
 
 			_uiElement.Fill = Brushes.DarkGreen;
 
-			_uiElement.RenderTransform = new RotateTransform(Direction, 15, 15);
+			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
 
 			Canvas.SetLeft(_uiElement, StartPosition.X - 15);
 			Canvas.SetTop(_uiElement, StartPosition.Y - 15);
 
 			canvas.Children.Add(_uiElement);
-	    }
+		}
 
 	    public override void Remove(Canvas canvas)
 	    {
