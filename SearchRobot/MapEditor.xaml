@@ -22,8 +22,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             
-            <Button Name="Save" Content="Save" Grid.Column="0"/>
-            <Button Name="Load" Content="Load" Grid.Column="1" />
+            <Button Name="Save" Content="Save" Grid.Column="0" Click="OnSaveClick"/>
+            <Button Name="Load" Content="Load" Grid.Column="1" Click="OnLoadClick"/>
         </Grid>
         
         <Grid Grid.Column="1" Grid.Row="0">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -11,35 +12,84 @@ namespace SearchRobot.Library.Maps
 {
     public class Wall : MapElement
     {
-        private Line _uiElement;
+        private Rectangle _uiElement;
+	    private Geometry _geometry;
 
-        public Wall(Map map) : base(map)
-        {
-            EndPoint = new Point();
-        }
+	    private const int height = 4;
 
-        public Point EndPoint { get; set; }
+		public Point EndPoint { get; set; }
 
-        public override void MouseDown(Canvas canvas, Point point)
+
+		protected override Geometry GeometryShape
+		{
+			get
+			{
+				return AsRectangleGeometry(StartPosition, EndPoint);
+			}
+		}
+
+		public Wall()
+		{
+		}
+
+		public Wall(Map map) : base(map)
+		{
+			EndPoint = new Point();
+		}
+
+		public Geometry AsRectangleGeometry(Point start, Point end)
+		{
+			var angle = GeometryHelper.GetAngle(start, end);
+			var width = GeometryHelper.GetWidth(start, end);
+
+			return new RectangleGeometry(new Rect(start.X, start.Y, width, height), 0, 0, new RotateTransform(angle));
+		}
+
+
+	    public override void MouseDown(Canvas canvas, Point point)
         {
             StartPosition = EndPoint = point;
-
-            _uiElement = new Line() { Fill = Brushes.Black, StrokeThickness = 2, Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0))};
-            _uiElement.X1 = _uiElement.X2 = point.X;
-            _uiElement.Y1 = _uiElement.Y2 = point.Y;
-
-            canvas.Children.Add(_uiElement);
+			ApplyTo(canvas);
         }
 
         public override void MouseUp(Canvas canvas, Point point)
         {
-            this.Map.Add(this);
+            Map.Add(this);
         }
 
         public override void MouseMove(Canvas canvas, Point point)
         {
-            _uiElement.X2 = point.X;
-            _uiElement.Y2 = point.Y;
+	        EndPoint = point;
+
+	        _uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
+			_uiElement.RenderTransform = new RotateTransform(GeometryHelper.GetAngle(StartPosition, EndPoint));
+
+	        bool isOverlapping = IsOverlapping();
+
+
+	        _uiElement.Fill = isOverlapping ? Brushes.Red : Brushes.Black;
         }
+
+		public override void ApplyTo(Canvas canvas)
+		{
+			_uiElement = new Rectangle { Height = height, Fill = Brushes.Black };
+
+			_uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
+			_uiElement.RenderTransform = new RotateTransform(
+												GeometryHelper.GetAngle(StartPosition, EndPoint),
+												StartPosition.X,
+												StartPosition.Y);
+
+			Canvas.SetLeft(_uiElement, StartPosition.X);
+			Canvas.SetTop(_uiElement, StartPosition.Y);
+
+			canvas.Children.Add(_uiElement);
+		}
+
+	    public override void Remove(Canvas canvas)
+	    {
+			canvas.Children.Remove(_uiElement);
+			Map.Remove(this);
+	    }
     }
 }
