@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{81D88AFD-1750-4329-8CF9-8A5B70388140}</ProjectGuid>
+    <ProjectGuid>{EB7989B3-6A22-457D-AC17-CA3B05543035}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SearchRobot</RootNamespace>
-    <AssemblyName>SearchRobot</AssemblyName>
+    <RootNamespace>SearchRobot.Simulation</RootNamespace>
+    <AssemblyName>SearchRobot.Simulation</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,21 +53,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MapEditor.xaml.cs">
-      <DependentUpon>MapEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TestLab\HitTest.xaml.cs">
-      <DependentUpon>HitTest.xaml</DependentUpon>
+    <Compile Include="Simulation.xaml.cs">
+      <DependentUpon>Simulation.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MapEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TestLab\HitTest.xaml">
+    <Page Include="Simulation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -100,8 +93,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SearchRobot.Library\SearchRobot.Library.csproj">
-      <Project>{2A048C09-A163-4B47-B9B7-B43658560109}</Project>
+      <Project>{2a048c09-a163-4b47-b9b7-b43658560109}</Project>
       <Name>SearchRobot.Library</Name>
     </ProjectReference>
   </ItemGroup>

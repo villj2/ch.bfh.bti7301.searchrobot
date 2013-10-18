@@ -9,38 +9,61 @@ using System.Windows.Shapes;
 
 namespace SearchRobot.Library.Maps
 {
-    public class Goal : UniqueMandatoryMapElement
-    {
-        private Ellipse _uiElement;
+	public class Goal : UniqueMandatoryMapElement
+	{
+		private Ellipse _uiElement;
 
-        public Goal(Map map) : base(map)
-        {
-        }
+		public Goal(Map map) : base(map)
+		{
+		
+		}
 
-        public override void MouseDown(Canvas canvas, Point point)
-        {
-            _uiElement = new Ellipse();
+		public Goal() { }
 
-            StartPosition = point;
+		protected override Geometry GeometryShape
+		{
+			get { return _uiElement.RenderedGeometry; }
+		}
 
-            _uiElement = new Ellipse();
-            _uiElement.Width = 10;
-            _uiElement.Height = 10;
-            _uiElement.Fill = Brushes.DarkRed;
+		public override void MouseDown(Canvas canvas, Point point)
+		{
+			StartPosition = point;
+			ApplyTo(canvas);
+		}
 
-            Canvas.SetLeft(_uiElement, point.X);
-            Canvas.SetTop(_uiElement, point.Y);
+		public override void MouseUp(Canvas canvas, Point point)
+		{
+			if (IsUnique())
+			{
+				Map.Add(this);
+			}
+			else
+			{
+				canvas.Children.Remove(_uiElement);
+			}
+		}
 
-            canvas.Children.Add(_uiElement);
-        }
+		public override void MouseMove(Canvas canvas, Point point)
+		{
+		}
 
-        public override void MouseUp(Canvas canvas, Point point)
-        {
-            Map.Add(this);
-        }
+		public override void ApplyTo(Canvas canvas)
+		{
+			_uiElement = new Ellipse();
+			_uiElement.Width = 10;
+			_uiElement.Height = 10;
+			_uiElement.Fill = Brushes.DarkRed;
 
-        public override void MouseMove(Canvas canvas, Point point)
-        {
-        }
-    }
+			Canvas.SetLeft(_uiElement, StartPosition.X);
+			Canvas.SetTop(_uiElement, StartPosition.Y);
+
+			canvas.Children.Add(_uiElement);
+		}
+
+		public override void Remove(Canvas canvas)
+		{
+			Map.Remove(this);
+			canvas.Children.Remove(_uiElement);
+		}
+	}
 }

@@ -9,52 +9,73 @@ using System.Windows.Shapes;
 
 namespace SearchRobot.Library.Maps
 {
-    public class Disc : MapElement
-    {
+	public class Disc : MapElement
+	{
+		public int Radius { get; set; }
 
-        public int Radius { get; private set; }
-        private Ellipse _uiElement;
+		private Ellipse _uiElement;
+		private Geometry _geometry;
 
-        public Disc(Map map) : base(map)
-        {
-        }
+		public Disc(Map map) : base(map)
+		{
+		}
 
-        public override void MouseDown(Canvas canvas, Point point)
-        {
-            StartPosition = point;
+		public Disc()
+		{
+		}
 
-            _uiElement = new Ellipse();
-            _uiElement.Width = 0;
-            _uiElement.Height = 0;
-            _uiElement.Fill = Brushes.Black;
+		protected override Geometry GeometryShape
+		{
+			get { return _geometry ?? new EllipseGeometry(new System.Windows.Point(StartPosition.X, StartPosition.Y), Radius, Radius); }
+		}
 
-            Canvas.SetLeft(_uiElement, point.X);
-            Canvas.SetTop(_uiElement, point.Y);
+		public override void MouseDown(Canvas canvas, Point point)
+		{
+			StartPosition = point;
+			 
+			ApplyTo(canvas);
+		}
 
-            canvas.Children.Add(_uiElement);
-        }
+		private int GetRadius(Point start, Point end)
+		{
+			int x = Math.Abs(start.X - end.X);
+			int y = Math.Abs(start.Y - end.Y);
 
-        private int GetRadius(Point start, Point end)
-        {
-            int x = Math.Abs(start.X - end.X);
-            int y = Math.Abs(start.Y - end.Y);
+			return Convert.ToInt32(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
+		}
 
-            return Convert.ToInt32(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
-        }
+		public override void MouseUp(Canvas canvas, Point point)
+		{
+			Map.Add(this);
+		}
 
-        public override void MouseUp(Canvas canvas, Point point)
-        {
-            this.Map.Add(this);
-        }
+		public override void MouseMove(Canvas canvas, Point point)
+		{
+			Radius = GetRadius(StartPosition, point);
 
-        public override void MouseMove(Canvas canvas, Point point)
-        {
-            Radius = GetRadius(StartPosition, point);
+			_uiElement.Width = _uiElement.Height = 2 * Radius;
 
-            _uiElement.Width = _uiElement.Height = 2 * Radius;
-            
-            Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
-            Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
-        }
-    }
+			Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
+			Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
+
+			_uiElement.Fill = IsOverlapping() ? Brushes.Red : Brushes.Black;
+		}
+
+		public override void ApplyTo(Canvas canvas)
+		{
+			_uiElement = new Ellipse { Width = Radius*2, Height = Radius*2, Fill = Brushes.Black };
+
+			Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
+			Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
+
+			// _geometry = new EllipseGeometry(new System.Windows.Point(StartPosition.X, StartPosition.Y), Radius, Radius);
+			canvas.Children.Add(_uiElement);
+		}
+
+		public override void Remove(Canvas canvas)
+		{
+			canvas.Children.Remove(_uiElement);
+			Map.Remove(this);
+		}
+	}
 }
