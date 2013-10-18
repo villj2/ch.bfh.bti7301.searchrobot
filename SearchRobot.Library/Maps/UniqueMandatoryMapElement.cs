@@ -12,5 +12,10 @@ namespace SearchRobot.Library.Maps
         protected UniqueMandatoryMapElement(Map map) : base(map)
         {
         }
+
+		protected bool IsUnique()
+		{
+			return Map.Elements.Count(e => e.GetType() == this.GetType()) == 0;
+		}
     }
 }

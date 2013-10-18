@@ -17,30 +17,50 @@ namespace SearchRobot.Library.Maps
         {
         }
 
-        public override void MouseDown(Canvas canvas, Point point)
+	    protected override Geometry GeometryShape
+	    {
+			get { return _uiElement.RenderedGeometry; }
+	    }
+
+	    public override void MouseDown(Canvas canvas, Point point)
         {
-            _uiElement = new Ellipse();
-
             StartPosition = point;
-
-            _uiElement = new Ellipse();
-            _uiElement.Width = 10;
-            _uiElement.Height = 10;
-            _uiElement.Fill = Brushes.DarkRed;
-
-            Canvas.SetLeft(_uiElement, point.X);
-            Canvas.SetTop(_uiElement, point.Y);
-
-            canvas.Children.Add(_uiElement);
+			ApplyTo(canvas);
         }
 
         public override void MouseUp(Canvas canvas, Point point)
         {
-            Map.Add(this);
+			if (IsUnique())
+			{
+				Map.Add(this);
+			}
+			else
+			{
+				canvas.Children.Remove(_uiElement);
+			}
         }
 
         public override void MouseMove(Canvas canvas, Point point)
         {
         }
+
+	    public override void ApplyTo(Canvas canvas)
+		{
+			_uiElement = new Ellipse();
+			_uiElement.Width = 10;
+			_uiElement.Height = 10;
+			_uiElement.Fill = Brushes.DarkRed;
+
+			Canvas.SetLeft(_uiElement, StartPosition.X);
+			Canvas.SetTop(_uiElement, StartPosition.Y);
+
+			canvas.Children.Add(_uiElement);
+	    }
+
+	    public override void Remove(Canvas canvas)
+	    {
+			Map.Remove(this);
+			canvas.Children.Remove(_uiElement);
+	    }
     }
 }
