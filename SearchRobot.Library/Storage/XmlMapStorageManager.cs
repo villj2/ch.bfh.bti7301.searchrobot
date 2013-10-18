@@ -42,7 +42,7 @@ namespace SearchRobot.Library.Storage
 
 		public void Save(string filename, Map map)
 		{
-			using (var fileStream = File.OpenWrite(filename))
+			using (var fileStream = File.Create(filename))
 			{
 				Serializer.Value.Serialize(fileStream, map);
 			}
