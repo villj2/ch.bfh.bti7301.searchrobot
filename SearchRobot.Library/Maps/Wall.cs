@@ -42,54 +42,55 @@ namespace SearchRobot.Library.Maps
 			var angle = GeometryHelper.GetAngle(start, end);
 			var width = GeometryHelper.GetWidth(start, end);
 
-			return new RectangleGeometry(new Rect(start.X, start.Y, width, height), 0, 0, new RotateTransform(angle));
+			return new RectangleGeometry(new Rect(start.X, start.Y, width, height), 0, 0, new RotateTransform(angle, start.X, start.Y));
 		}
 
-
-	    public override void MouseDown(Canvas canvas, Point point)
-        {
-            StartPosition = EndPoint = point;
+		public override void MouseDown(Canvas canvas, Point point)
+		{
+			StartPosition = EndPoint = point;
 			ApplyTo(canvas);
-        }
+		}
 
-        public override void MouseUp(Canvas canvas, Point point)
-        {
-            Map.Add(this);
-        }
+		public override void MouseUp(Canvas canvas, Point point)
+		{
+			Map.Add(this);
+		}
 
-        public override void MouseMove(Canvas canvas, Point point)
-        {
-	        EndPoint = point;
+		public override void MouseMove(Canvas canvas, Point point)
+		{
+			EndPoint = point;
 
-	        _uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
+			_uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
 			_uiElement.RenderTransform = new RotateTransform(GeometryHelper.GetAngle(StartPosition, EndPoint));
 
-	        bool isOverlapping = IsOverlapping();
+			bool isOverlapping = IsOverlapping();
 
 
-	        _uiElement.Fill = isOverlapping ? Brushes.Red : Brushes.Black;
-        }
+			_uiElement.Fill = isOverlapping ? Brushes.Red : Brushes.Black;
+		}
 
 		public override void ApplyTo(Canvas canvas)
 		{
-			_uiElement = new Rectangle { Height = height, Fill = Brushes.Black };
-
-			_uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
-			_uiElement.RenderTransform = new RotateTransform(
-												GeometryHelper.GetAngle(StartPosition, EndPoint),
-												StartPosition.X,
-												StartPosition.Y);
+			_uiElement = new Rectangle
+				{
+					Height = height,
+					Fill = Brushes.Black,
+					Width = GeometryHelper.GetWidth(StartPosition, EndPoint)
+				};
 
 			Canvas.SetLeft(_uiElement, StartPosition.X);
 			Canvas.SetTop(_uiElement, StartPosition.Y);
 
+			_uiElement.RenderTransform = new RotateTransform(
+												GeometryHelper.GetAngle(StartPosition, EndPoint));
+
 			canvas.Children.Add(_uiElement);
 		}
 
-	    public override void Remove(Canvas canvas)
-	    {
+		public override void Remove(Canvas canvas)
+		{
 			canvas.Children.Remove(_uiElement);
 			Map.Remove(this);
-	    }
-    }
+		}
+	}
 }
