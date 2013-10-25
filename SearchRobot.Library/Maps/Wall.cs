@@ -15,45 +15,43 @@ namespace SearchRobot.Library.Maps
         private Rectangle _uiElement;
 	    private Geometry _geometry;
 
-	    private const int height = 4;
+	    private const int Height = 4;
 
 		public Point EndPoint { get; set; }
-
 
 		protected override Geometry GeometryShape
 		{
 			get
 			{
-				return AsRectangleGeometry(StartPosition, EndPoint);
+				return _geometry ?? (_geometry = AsRectangleGeometry(StartPosition, EndPoint));
 			}
 		}
 
-		public Wall()
-		{
-		}
+        public override UIElement UiElement
+        {
+            get { return _uiElement; }
+        }
+
+        private static Geometry AsRectangleGeometry(Point start, Point end)
+        {
+            var angle = GeometryHelper.GetAngle(start, end);
+            var width = GeometryHelper.GetWidth(start, end);
+
+            return new RectangleGeometry(new Rect(start.X, start.Y, width, Height), 0, 0, new RotateTransform(angle, start.X, start.Y));
+        }
+
+        public Wall()
+		{ }
 
 		public Wall(Map map) : base(map)
 		{
 			EndPoint = new Point();
 		}
 
-		public Geometry AsRectangleGeometry(Point start, Point end)
-		{
-			var angle = GeometryHelper.GetAngle(start, end);
-			var width = GeometryHelper.GetWidth(start, end);
-
-			return new RectangleGeometry(new Rect(start.X, start.Y, width, height), 0, 0, new RotateTransform(angle, start.X, start.Y));
-		}
-
 		public override void MouseDown(Canvas canvas, Point point)
 		{
 			StartPosition = EndPoint = point;
 			ApplyTo(canvas);
-		}
-
-		public override void MouseUp(Canvas canvas, Point point)
-		{
-			Map.Add(this);
 		}
 
 		public override void MouseMove(Canvas canvas, Point point)
@@ -63,17 +61,15 @@ namespace SearchRobot.Library.Maps
 			_uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
 			_uiElement.RenderTransform = new RotateTransform(GeometryHelper.GetAngle(StartPosition, EndPoint));
 
-			bool isOverlapping = IsOverlapping();
-
-
-			_uiElement.Fill = isOverlapping ? Brushes.Red : Brushes.Black;
+		    _geometry = null;
+			_uiElement.Fill = IsValid() ? Brushes.Black : Brushes.Red;
 		}
 
 		public override void ApplyTo(Canvas canvas)
 		{
 			_uiElement = new Rectangle
 				{
-					Height = height,
+					Height = Height,
 					Fill = Brushes.Black,
 					Width = GeometryHelper.GetWidth(StartPosition, EndPoint)
 				};
@@ -81,8 +77,7 @@ namespace SearchRobot.Library.Maps
 			Canvas.SetLeft(_uiElement, StartPosition.X);
 			Canvas.SetTop(_uiElement, StartPosition.Y);
 
-			_uiElement.RenderTransform = new RotateTransform(
-												GeometryHelper.GetAngle(StartPosition, EndPoint));
+			_uiElement.RenderTransform = new RotateTransform(GeometryHelper.GetAngle(StartPosition, EndPoint));
 
 			canvas.Children.Add(_uiElement);
 		}

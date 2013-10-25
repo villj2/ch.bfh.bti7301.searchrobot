@@ -15,11 +15,13 @@ namespace SearchRobot.Library.Maps
 	[XmlInclude(typeof(Goal))]
 	[XmlInclude(typeof(Robot.Robot))]
 	[XmlInclude(typeof(Wall))]
-	public abstract class MapElement
+	public abstract class MapElement : ICanvasListener
 	{
 		protected Map Map { get; private set; }
 
 		protected abstract Geometry GeometryShape { get; }
+
+	    public abstract UIElement UiElement { get;  }
 
 		public Point StartPosition { get; set; }
 
@@ -69,12 +71,32 @@ namespace SearchRobot.Library.Maps
 
 		public abstract void MouseDown(Canvas canvas, Point point);
 
-		public abstract void MouseUp(Canvas canvas, Point point);
+		public virtual void MouseUp(Canvas canvas, Point point)
+		{
+            if (IsValid())
+            {
+                Map.Add(this);
+            }
+            else
+            {
+                canvas.Children.Remove(UiElement);
+            }
+		}
 
 		public abstract void MouseMove(Canvas canvas, Point point);
 
-		public abstract void ApplyTo(Canvas canvas);
+        public virtual void MouseLeave(Canvas canvas)
+	    {
+            Remove(canvas);
+	    }
+
+	    public abstract void ApplyTo(Canvas canvas);
 
 		public abstract void Remove(Canvas canvas);
+
+        protected virtual bool IsValid()
+        {
+            return !IsOverlapping();
+        }
 	}
 }

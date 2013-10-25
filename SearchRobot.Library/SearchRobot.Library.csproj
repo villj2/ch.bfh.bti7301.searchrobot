@@ -50,6 +50,7 @@
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapElement.cs" />
     <Compile Include="Maps\Point.cs" />
+    <Compile Include="Maps\RemoveTool.cs" />
     <Compile Include="Robot\Brain.cs" />
     <Compile Include="Robot\Robot.cs" />
     <Compile Include="Maps\UniqueMandatoryMapElement.cs" />

@@ -25,5 +25,10 @@ namespace SearchRobot.Library
 		{
 			return new System.Windows.Point(point.X, point.Y);
 		}
+
+        public static Point Convert(System.Windows.Point point)
+        {
+            return new Point { X = System.Convert.ToInt32(point.X), Y = System.Convert.ToInt32(point.Y) };
+        }
 	}
 }

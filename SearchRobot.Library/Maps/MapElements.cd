@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SearchRobot.Library.Maps.MapElement">
+    <Position X="3" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAEBAAAEAAAgiABAIAAAAAEAAAAAEAMACAAAA=</HashCode>
+      <FileName>Maps\MapElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MapTool">
+    <Position X="8.25" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAAAEAAAAEAAgACAAAA=</HashCode>
+      <FileName>Maps\MapTool.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MoveTool">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAACAAAAAA=</HashCode>
+      <FileName>Maps\MoveTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.RemoveTool">
+    <Position X="11.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>Maps\RemoveTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.UniqueMandatoryMapElement">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Maps\UniqueMandatoryMapElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Disc">
+    <Position X="0.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAgAAAAAAAAAAEAABAIAAAAAEAAAAAAAMAiAAAA=</HashCode>
+      <FileName>Maps\Disc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Wall">
+    <Position X="2.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgABAAAQAAAAEAABAIAAAAAEAAAAAAEMACAAAA=</HashCode>
+      <FileName>Maps\Wall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Goal">
+    <Position X="4.75" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAABAIAAAAAEAAAAAAAMACAAAA=</HashCode>
+      <FileName>Maps\Goal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Robot.Robot">
+    <Position X="7" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAACAABAIAAAAAEAAAAAAAMACAAAA=</HashCode>
+      <FileName>Robot\Robot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="SearchRobot.Library.Maps.ICanvasListener">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>Maps\ICanvasListener.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
