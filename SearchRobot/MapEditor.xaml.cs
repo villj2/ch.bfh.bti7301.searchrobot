@@ -25,11 +25,6 @@ namespace SearchRobot
     /// </summary>
     public partial class MapEditor : Window
     {
-        private static Library.Maps.Point ToPoint(Point point)
-        {
-            return new Library.Maps.Point() {X = Convert.ToInt32(point.X), Y = Convert.ToInt32(point.Y)};
-        }
-
         private Map Map { get; set; }
 
         public MapEditor()
@@ -40,45 +35,49 @@ namespace SearchRobot
             Map = new Map();
         }
 
-        private MapElement _currentElement;
+        private ICanvasListener _currentListener;
 
         #region Canvas MouseHandling
         private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _currentElement = GetNewActiveTool();
-            if (_currentElement != null)
+            _currentListener = GetNewActiveTool();
+            if (_currentListener != null)
             {
-                _currentElement.MouseDown(MapArea, ToPoint(e.GetPosition(MapArea)));
+                _currentListener.MouseDown(MapArea, GeometryHelper.Convert(e.GetPosition(MapArea)));
             }
         }
 
 
         private void OnCanvasMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (_currentElement != null)
+            if (_currentListener != null)
             {
-                _currentElement.MouseUp(MapArea, ToPoint(e.GetPosition(MapArea)));
-                _currentElement = null;
+                _currentListener.MouseUp(MapArea, GeometryHelper.Convert(e.GetPosition(MapArea)));
+                _currentListener = null;
             }
         }
 
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs mouseEventArgs)
         {
-            /*lblOutput.Content = string.Format(
-                "X:{0},Y:{1}",
-                mouseEventArgs.GetPosition(MapArea).X,
-                mouseEventArgs.GetPosition(MapArea).Y);*/
-
-            if (_currentElement != null)
+            if (_currentListener != null)
             {
-                _currentElement.MouseMove(MapArea, ToPoint(mouseEventArgs.GetPosition(MapArea)));
+                _currentListener.MouseMove(MapArea, GeometryHelper.Convert(mouseEventArgs.GetPosition(MapArea)));
+            }
+        }
+
+
+        private void OnCanvasMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_currentListener != null)
+            {
+                _currentListener.MouseLeave(MapArea);
             }
         }
         #endregion
 
         #region Tool Selection
-        private enum Tools { Wall, Disc, Goal, Robot, Remove}
+        private enum Tools { Wall, Disc, Goal, Robot, Remove, Move}
         private Tools ActiveTool { get; set; }
 
         private void ToggleSelection(Tools option, bool flag)
@@ -109,7 +108,7 @@ namespace SearchRobot
             }
         }
 
-        private MapElement GetNewActiveTool()
+        private ICanvasListener GetNewActiveTool()
         {
             switch (ActiveTool)
             {
@@ -118,9 +117,13 @@ namespace SearchRobot
                 case Tools.Disc:
                     return new Disc(Map);
                 case Tools.Robot:
-                    return new Robot(Map, lblOutput);
+                    return new Robot(Map);
                 case Tools.Goal:
                     return new Goal(Map);
+                case Tools.Remove:
+                    return new RemoveTool(Map);
+                case Tools.Move:
+                    return new RemoveTool(Map);
                 default:
                     return null;
             }
@@ -151,15 +154,21 @@ namespace SearchRobot
             ToggleSelection(Tools.Remove, true);
         }
 
+        private void OnMoveSelectionClick(object sender, RoutedEventArgs e)
+        {
+            ToggleSelection(Tools.Move, true);
+        }
         #endregion
 
 		private void OnSaveClick(object sender, RoutedEventArgs e)
 		{
-			var fileDialog = new SaveFileDialog();
-			fileDialog.AddExtension = true;
-			fileDialog.DefaultExt = ".xml";
-			fileDialog.Filter = "Map Files|*.xml";
-			fileDialog.FileOk += FileDialogOnFileOk;
+			var fileDialog = new SaveFileDialog
+			                     {
+			                         AddExtension = true,
+                                     DefaultExt = ".xml",
+                                     Filter = "Map Files|*.xml"
+			                     };
+		    fileDialog.FileOk += FileDialogOnFileOk;
 
 			fileDialog.ShowDialog();
 		}
@@ -167,29 +176,42 @@ namespace SearchRobot
 		private void FileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
 		{
 			var dialog = sender as SaveFileDialog;
-			var filename = dialog.FileName;
-
-			Resolver.StorageManager.Save(filename, Map);
+            if (dialog != null)
+            {
+                var filename = dialog.FileName;
+                Resolver.StorageManager.Save(filename, Map);
+            }
 		}
 
 		private void OnLoadClick(object sender, RoutedEventArgs e)
 		{
-			var fileDialog = new OpenFileDialog();
-			fileDialog.Filter = "Map Files|*.xml";
-			fileDialog.Multiselect = false;
-			fileDialog.FileOk += LoadMapFromFile;
+			var fileDialog = new OpenFileDialog
+			                     {
+			                         Filter = "Map Files|*.xml",
+                                     Multiselect = false
+			                     };
+		    fileDialog.FileOk += LoadMapFromFile;
 
 			fileDialog.ShowDialog();
 		}
 
-		void LoadMapFromFile(object sender, System.ComponentModel.CancelEventArgs e)
+		void LoadMapFromFile(object sender, CancelEventArgs e)
 		{
 			var dialog = sender as OpenFileDialog;
-			var filename = dialog.FileName;
+            if (dialog != null)
+            {
+                var filename = dialog.FileName;
 
-			Map = Resolver.StorageManager.Load(filename);
-			MapArea.Children.Clear();
-			Map.ApplyToCanvas(MapArea);
+                Map = Resolver.StorageManager.Load(filename);
+                MapArea.Children.Clear();
+                Map.ApplyToCanvas(MapArea);
+            }
 		}
-	}
+
+        private void OnResetClick(object sender, RoutedEventArgs e)
+        {
+            Map = new Map();
+            MapArea.Children.Clear();
+        }
+    }
 }

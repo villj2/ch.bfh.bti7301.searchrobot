@@ -1,4 +1,5 @@
-﻿using SearchRobot.Library.Maps;
+﻿using System.Windows;
+using SearchRobot.Library.Maps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,10 @@ namespace SearchRobot.Library.RobotParts
     {
         Polyline _uiElement = new Polyline();
         MapExplored _mapExplored = new MapExplored();
-        private Label _label;
-
         public double Direction { get; set; }
 
-        public Robot(Map map, Label label) : base(map)
-        {
-            _label = label;
+        public Robot(Map map) : base(map)
+        { }
 
             // FIXME just4testing set waypoint
             _mapExplored = new MapExplored();
@@ -43,7 +41,6 @@ namespace SearchRobot.Library.RobotParts
             // Roboter sagt: Ich will 30° drehen und 15Px nach rechts bewegen.
             // Anschliessend führt die Simulation diese Bewegung des Roboters aus. (moveTo)
             // Aber grundsätzlich berechnet der Roboter wie genau er sich bewegt
-        }
 
 		internal Robot() { }
 
@@ -52,22 +49,15 @@ namespace SearchRobot.Library.RobotParts
 			get { return _uiElement.RenderedGeometry; }
 	    }
 
-	    public override void MouseDown(Canvas canvas, Point point)
+        public override UIElement UiElement
+        {
+            get { return _uiElement; }
+        }
+
+        public override void MouseDown(Canvas canvas, Point point)
         {
             StartPosition = point;
 			ApplyTo(canvas);
-        }
-
-        public override void MouseUp(Canvas canvas, Point point)
-		{
-			if (IsUnique())
-			{
-				Map.Add(this);
-			}
-			else
-			{
-				canvas.Children.Remove(_uiElement);
-			}
         }
 
         public override void MouseMove(Canvas canvas, Point point)
