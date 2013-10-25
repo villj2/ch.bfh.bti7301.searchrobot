@@ -28,9 +28,15 @@ namespace SearchRobot.Library.RobotParts
             Point waypoint = new Point();
             waypoint.X = 333;
             waypoint.Y = 333;
+            waypoint.Status = MapElementStatus.Blocked;
 
             _mapExplored.AddPoint(waypoint);
 
+
+            Point pointToUpdate = new Point();
+            pointToUpdate.X = 333;
+            pointToUpdate.Y = 333;
+            _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
 
 
             // Vorgehen

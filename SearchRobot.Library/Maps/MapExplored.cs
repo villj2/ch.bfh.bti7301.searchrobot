@@ -16,11 +16,22 @@ namespace SearchRobot.Library.Maps
             _map.Add(point);
         }
 
-        public void SetStatus(String point, MapElementStatus status)
+        public void SetStatus(Point point, MapElementStatus status)
         {
-            // check if point exists (with lambda expression)
-            // if exists (point.x = ... & point.y = ...) then update the status of that point
-            // otherwise throw error "point doesn't exist"
+            // check if point exists at position x/y
+            // true: update the status of that point
+            // false: write out "Point doesn't exist"
+
+            Point pointMapExplored = _map.Find(p => p.X == point.X && p.Y == point.Y);
+
+            if (pointMapExplored != null)
+            {
+                pointMapExplored.Status = status;
+            }
+            else
+            {
+                Console.WriteLine("Point doesn't exist");
+            }
         }
             
         public MapElementStatus GetStatus(Point point)
