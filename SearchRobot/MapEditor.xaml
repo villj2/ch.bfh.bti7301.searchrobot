@@ -28,7 +28,7 @@
             
             <Button Name="Save" Content="Save" Grid.Column="0" Click="OnSaveClick"/>
             <Button Name="Load" Content="Load" Grid.Column="1" Click="OnLoadClick"/>
-            <Button Name="Reset" Content="Reset" Grid.Column="1" Click="OnResetClick"/>
+            <Button Name="Reset" Content="Reset" Grid.Column="2" Click="OnResetClick"/>
         </Grid>
         
         <Grid Grid.Column="1" Grid.Row="0">

@@ -23,18 +23,5 @@ namespace SearchRobot.Library.Maps
                 clickedElement.Remove(canvas);
             }
         }
-
-        public override void MouseUp(Canvas canvas, Point point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void MouseMove(Canvas canvas, Point point)
-        { }
-
-        public override void MouseLeave(Canvas canvas)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

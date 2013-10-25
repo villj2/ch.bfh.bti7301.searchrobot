@@ -71,7 +71,7 @@ namespace SearchRobot
         {
             if (_currentListener != null)
             {
-                _currentListener.Remove(MapArea);
+                _currentListener.MouseLeave(MapArea);
             }
         }
         #endregion
