@@ -9,6 +9,9 @@ using Timer = System.Threading.Timer;
 using System.Windows;
 using System.Windows.Controls;
 using SearchRobot.Library.Global;
+using SearchRobot.Library.RobotParts;
+using SearchRobot.Library.Maps;
+using Point = SearchRobot.Library.Maps.Point;
 
 
 namespace SearchRobot.Library.Simulation
@@ -20,12 +23,43 @@ namespace SearchRobot.Library.Simulation
         private AutoResetEvent _autoEvent;
         private Timer _timer;
         private int _ticks;
+        private Canvas _mapArea;
 
-        public SimulationEngine()
+        public SimulationEngine(Canvas mapArea)
+        {
+            _mapArea = mapArea;
+
+            initialize();
+            loadMap();
+            buildMap();
+        }
+
+        private void initialize()
         {
             _autoEvent = new AutoResetEvent(false);
             _ticks = 0;
             _state = CycleState.Initiated;
+        }
+
+        private void loadMap()
+        {
+            // TODO implementation
+        }
+
+        private void buildMap()
+        {
+            // TODO load Map
+            Map map = new Map();
+
+            // just 4 testing without map-loading
+            Robot robot = new Robot(map, new Label());
+            robot.ApplyTo(_mapArea);
+
+            Point p = new Point();
+            p.X = 200;
+            p.Y = 300;
+
+            robot.MoveTo(p);
         }
 
         #region Canvas MouseHandling
@@ -99,6 +133,28 @@ namespace SearchRobot.Library.Simulation
                 // TODO reset Map Explored
                 // TODO reset Robot Position
             }
+        }
+        #endregion
+
+        #region Robot Handling
+        public Point GetRobotPosition()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public int GetRobotOrientation()
+        {
+            throw new NotImplementedException();
+        }
+            
+        public void Move()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Turn(int deg)
+        {
+
         }
         #endregion
     }

@@ -50,20 +50,22 @@
     <Compile Include="Maps\ICanvasListener.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapElement.cs" />
+    <Compile Include="Maps\MapElementStatus.cs" />
+    <Compile Include="Maps\MapExplored.cs" />
     <Compile Include="Maps\MapTool.cs" />
     <Compile Include="Maps\MoveTool.cs" />
     <Compile Include="Maps\Point.cs" />
+    <Compile Include="RobotParts\Brain.cs" />
     <Compile Include="Maps\RemoveTool.cs" />
-    <Compile Include="Robot\Brain.cs" />
-    <Compile Include="Robot\Robot.cs" />
+    <Compile Include="RobotParts\Robot.cs" />
     <Compile Include="Maps\UniqueMandatoryMapElement.cs" />
     <Compile Include="Maps\Wall.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolver.cs" />
     <Compile Include="Storage\IMapStorageManager.cs" />
     <Compile Include="Storage\XmlMapStorageManager.cs" />
-    <Compile Include="Robot\Sensor.cs" />
-    <Compile Include="Robot\Sight.cs" />
+    <Compile Include="RobotParts\Sensor.cs" />
+    <Compile Include="RobotParts\Sight.cs" />
     <Compile Include="Simulation\ExploredMap.cs" />
     <Compile Include="Simulation\SimulationEngine.cs" />
   </ItemGroup>

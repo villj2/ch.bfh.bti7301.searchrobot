@@ -10,15 +10,37 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Point = SearchRobot.Library.Maps.Point;
 
-namespace SearchRobot.Library.Robot
+namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement
     {
         Polyline _uiElement = new Polyline();
+        MapExplored _mapExplored = new MapExplored();
         public double Direction { get; set; }
 
         public Robot(Map map) : base(map)
         { }
+
+            // FIXME just4testing set waypoint
+            _mapExplored = new MapExplored();
+            Point waypoint = new Point();
+            waypoint.X = 333;
+            waypoint.Y = 333;
+            waypoint.Status = MapElementStatus.Blocked;
+
+            _mapExplored.AddPoint(waypoint);
+
+
+            Point pointToUpdate = new Point();
+            pointToUpdate.X = 333;
+            pointToUpdate.Y = 333;
+            _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
+
+
+            // Vorgehen
+            // Roboter sagt: Ich will 30° drehen und 15Px nach rechts bewegen.
+            // Anschliessend führt die Simulation diese Bewegung des Roboters aus. (moveTo)
+            // Aber grundsätzlich berechnet der Roboter wie genau er sich bewegt
 
 		internal Robot() { }
 
@@ -63,11 +85,23 @@ namespace SearchRobot.Library.Robot
 
 			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
 
-			Canvas.SetLeft(_uiElement, StartPosition.X - 15);
-			Canvas.SetTop(_uiElement, StartPosition.Y - 15);
+			//Canvas.SetLeft(_uiElement, StartPosition.X - 15);
+			//Canvas.SetTop(_uiElement, StartPosition.Y - 15);
+            MoveTo(StartPosition);
 
 			canvas.Children.Add(_uiElement);
 		}
+
+        public void ExecuteCycle()
+        {
+
+        }
+
+        public void MoveTo(Point point)
+        {
+            Canvas.SetLeft(_uiElement, point.X - 15);
+            Canvas.SetTop(_uiElement, point.Y - 15);
+        }
 
 	    public override void Remove(Canvas canvas)
 	    {

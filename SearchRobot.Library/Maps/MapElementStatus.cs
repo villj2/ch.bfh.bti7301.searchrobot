@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace SearchRobot.Library.Maps
 {
-    public class Point
+    public enum MapElementStatus
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public MapElementStatus Status { get; set; }
+        Undiscovered,
+        Discovered,
+        Blocked,
+        Visited,
+        Waypoint,
+        Target
     }
 }
