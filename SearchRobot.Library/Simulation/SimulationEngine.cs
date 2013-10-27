@@ -12,18 +12,22 @@ using SearchRobot.Library.Global;
 using SearchRobot.Library.RobotParts;
 using SearchRobot.Library.Maps;
 using Point = SearchRobot.Library.Maps.Point;
+using System.Windows.Threading;
 
 
 namespace SearchRobot.Library.Simulation
 {
     public class SimulationEngine
     {
-        const int CYCLE_INTERVAL = 500;
+        const int CYCLE_INTERVAL = 10; // milliseconds
 
         private AutoResetEvent _autoEvent;
-        private Timer _timer;
         private int _ticks;
         private Canvas _mapArea;
+        private DispatcherTimer _dispatcherTimer;
+
+        private Robot _robot;
+        private Map _map;
 
         public SimulationEngine(Canvas mapArea)
         {
@@ -39,6 +43,11 @@ namespace SearchRobot.Library.Simulation
             _autoEvent = new AutoResetEvent(false);
             _ticks = 0;
             _state = CycleState.Initiated;
+
+            // create Timer
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += new EventHandler(dispatcherTimerTick);
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, CYCLE_INTERVAL);
         }
 
         private void loadMap()
@@ -49,17 +58,17 @@ namespace SearchRobot.Library.Simulation
         private void buildMap()
         {
             // TODO load Map
-            Map map = new Map();
+            _map = new Map();
 
             // just 4 testing without map-loading
-            Robot robot = new Robot(map, new Label());
-            robot.ApplyTo(_mapArea);
+            _robot = new Robot(this, _map);
+            _robot.ApplyTo(_mapArea);
 
             Point p = new Point();
             p.X = 200;
             p.Y = 300;
 
-            robot.MoveTo(p);
+            _robot.SetPos(p);
         }
 
         #region Canvas MouseHandling
@@ -97,35 +106,44 @@ namespace SearchRobot.Library.Simulation
         #region Cycle Handling
         private void CyclesStart()
         {
-            TimerCallback timerDelegate = new TimerCallback(CheckStatus);
-            _timer = new Timer(timerDelegate, _autoEvent, CYCLE_INTERVAL, CYCLE_INTERVAL);
-
             _state = CycleState.Running;
+            
+            _dispatcherTimer.Start();
         }
 
-        public void CheckStatus(Object stateInfo)
+        private void dispatcherTimerTick(object sender, EventArgs e)
         {
-            AutoResetEvent autoEvent = (AutoResetEvent)stateInfo;
-
             _ticks++;
-            Console.WriteLine("{0} ticks", _ticks.ToString());
+            _robot.Move();
+        }
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            _ticks++;
+            Console.WriteLine("timer tick, ticks: " + _robot);
+
+            _robot.Move();
+        }
+
+        public void ExecuteCycleTick(Object stateInfo)
+        {
+            _ticks++;
+
+            _robot.Move();
         }
 
         private void CyclesStop()
         {
-            _timer.Dispose();
-
             _state = CycleState.Paused;
+
+            _dispatcherTimer.Stop();
         }
 
         private void CyclesReset()
         {
             if (_state == CycleState.Paused || _state == CycleState.Running)
             {
-                _timer.Dispose();
-                _timer = null;
                 _ticks = 0;
-
                 _state = CycleState.Initiated;
 
                 Console.WriteLine("Reset, ticks: {0}", _ticks.ToString());

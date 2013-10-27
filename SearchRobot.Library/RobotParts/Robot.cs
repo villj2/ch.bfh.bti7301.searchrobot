@@ -9,17 +9,25 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Point = SearchRobot.Library.Maps.Point;
+using SearchRobot.Library.Simulation;
 
 namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement
     {
-        Polyline _uiElement = new Polyline();
-        MapExplored _mapExplored = new MapExplored();
-        public double Direction { get; set; }
+        private Polyline _uiElement;
+        private MapExplored _mapExplored;
+        private Brain _brain;
+        private SimulationEngine _simEngine;
 
-        public Robot(Map map) : base(map)
-        { }
+        private Point _position;
+        private double _direction;
+
+        public Robot(SimulationEngine simEngine, Map map) : base(map)
+        {
+            _simEngine = simEngine;
+
+            initialize();
 
             // FIXME just4testing set waypoint
             _mapExplored = new MapExplored();
@@ -30,19 +38,20 @@ namespace SearchRobot.Library.RobotParts
 
             _mapExplored.AddPoint(waypoint);
 
-
             Point pointToUpdate = new Point();
             pointToUpdate.X = 333;
             pointToUpdate.Y = 333;
             _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
+        }
 
+        internal Robot() { }
 
-            // Vorgehen
-            // Roboter sagt: Ich will 30° drehen und 15Px nach rechts bewegen.
-            // Anschliessend führt die Simulation diese Bewegung des Roboters aus. (moveTo)
-            // Aber grundsätzlich berechnet der Roboter wie genau er sich bewegt
-
-		internal Robot() { }
+        private void initialize()
+        {
+            _uiElement = new Polyline();
+            _mapExplored = new MapExplored();
+            _brain = new Brain(_mapExplored);
+        }
 
 	    protected override Geometry GeometryShape
 	    {
@@ -62,8 +71,7 @@ namespace SearchRobot.Library.RobotParts
 
         public override void MouseMove(Canvas canvas, Point point)
         {
-            Direction = GeometryHelper.GetAngle(StartPosition, point);
-            _uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
+            SetDirection(GeometryHelper.GetAngle(StartPosition, point));
         }
 
 	    public override void ApplyTo(Canvas canvas)
@@ -83,24 +91,35 @@ namespace SearchRobot.Library.RobotParts
 
 			_uiElement.Fill = Brushes.DarkGreen;
 
-			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
-
-			//Canvas.SetLeft(_uiElement, StartPosition.X - 15);
-			//Canvas.SetTop(_uiElement, StartPosition.Y - 15);
-            MoveTo(StartPosition);
+            SetPos(StartPosition);
+            SetDirection(_direction);
 
 			canvas.Children.Add(_uiElement);
 		}
 
-        public void ExecuteCycle()
+        public void Move()
         {
+            //Console.WriteLine("Robot execute cycle");
+            //Console.WriteLine("direction: " + _direction);
 
+            MovementObject mo = _brain.GetNextMove(_position, _direction);
+
+            SetPos(mo.Position);
+            SetDirection(mo.Direction);
         }
 
-        public void MoveTo(Point point)
+        public void SetPos(Point point)
         {
-            Canvas.SetLeft(_uiElement, point.X - 15);
-            Canvas.SetTop(_uiElement, point.Y - 15);
+            _position = point;
+
+            Canvas.SetLeft(_uiElement, _position.X - 15);
+            Canvas.SetTop(_uiElement, _position.Y - 15);
+        }
+
+        public void SetDirection(double direction)
+        {
+            _direction = direction;
+            _uiElement.RenderTransform = new RotateTransform(_direction + 90, 15, 15);
         }
 
 	    public override void Remove(Canvas canvas)
