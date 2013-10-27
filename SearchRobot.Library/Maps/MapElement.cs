@@ -15,7 +15,7 @@ namespace SearchRobot.Library.Maps
 	[XmlInclude(typeof(Goal))]
 	[XmlInclude(typeof(Robot.Robot))]
 	[XmlInclude(typeof(Wall))]
-	public abstract class MapElement : ICanvasListener
+	public abstract class MapElement : ICanvasListener, ICloneable
 	{
 		protected Map Map { get; private set; }
 
@@ -94,9 +94,20 @@ namespace SearchRobot.Library.Maps
 
 		public abstract void Remove(Canvas canvas);
 
-        protected virtual bool IsValid()
-        {
-            return !IsOverlapping();
-        }
+		protected virtual bool IsValid()
+		{
+			return !IsOverlapping();
+		}
+
+		public abstract void Move(Canvas canvas, int offsetX, int offsetY);
+
+		/// <summary>
+		/// Creates a new object that is a copy of the current instance.
+		/// </summary>
+		/// <returns>
+		/// A new object that is a copy of this instance.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public abstract object Clone();
 	}
 }
