@@ -13,6 +13,8 @@ using SearchRobot.Library.RobotParts;
 using SearchRobot.Library.Maps;
 using Point = SearchRobot.Library.Maps.Point;
 using System.Windows.Threading;
+using Microsoft.Win32;
+using System.ComponentModel;
 
 
 namespace SearchRobot.Library.Simulation
@@ -50,25 +52,57 @@ namespace SearchRobot.Library.Simulation
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, CYCLE_INTERVAL);
         }
 
-        private void loadMap()
-        {
-            // TODO implementation
-        }
-
         private void buildMap()
         {
             // TODO load Map
-            _map = new Map();
+            //_map = new Map();
 
             // just 4 testing without map-loading
-            _robot = new Robot(this, _map);
+            //_robot = new Robot(_map);
+            //_robot.ApplyTo(_mapArea);
+
+            //Point p = new Point();
+            //p.X = 200;
+            //p.Y = 300;
+
+            //_robot.SetPos(p);
+
+            // get reference of robot
+            _robot = _map.Elements.OfType<Robot>().First();
+            _robot.initialize();
             _robot.ApplyTo(_mapArea);
 
-            Point p = new Point();
-            p.X = 200;
-            p.Y = 300;
+            // FIXME robot not instanciated after loading map
+            //Point p = new Point();
+            //p.X = 300;
+            //p.Y = 250;
+            //_robot.SetPos(p);
+            //_robot.SetDirection(0);
+        }
 
-            _robot.SetPos(p);
+        private void loadMap()
+        {
+            var fileDialog = new OpenFileDialog
+            {
+                Filter = "Map Files|*.xml",
+                Multiselect = false
+            };
+            fileDialog.FileOk += LoadMapFromFile;
+
+            fileDialog.ShowDialog();
+        }
+
+        void LoadMapFromFile(object sender, CancelEventArgs e)
+        {
+            var dialog = sender as OpenFileDialog;
+            if (dialog != null)
+            {
+                var filename = dialog.FileName;
+
+                _map = Resolver.StorageManager.Load(filename);
+                _mapArea.Children.Clear();
+                _map.ApplyToCanvas(_mapArea);
+            }
         }
 
         #region Canvas MouseHandling

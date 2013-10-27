@@ -35,7 +35,7 @@ namespace SearchRobot.Library.RobotParts
             // check if waypoint is reached
             if (GeometryHelper.ComparePoints(currentPosition, waypoint))
             {
-                Console.WriteLine("HIT");
+                Console.WriteLine("WAYPOINT HIT");
                 // change status of old waypoint
                 _mapExplored.SetStatus(waypoint, MapElementStatus.Visited);
 
@@ -47,7 +47,6 @@ namespace SearchRobot.Library.RobotParts
             mo.Position = currentPosition;
             mo.Direction = currentDirection;
             // either change direction or position
-            // TODO Set acceptable range of direction inaccuracy
             double targetDirection = CalculateTargetDirection(currentPosition, waypoint);
             if (currentDirection != targetDirection)
             {

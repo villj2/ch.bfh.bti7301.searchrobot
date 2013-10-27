@@ -18,39 +18,35 @@ namespace SearchRobot.Library.RobotParts
         private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
-        private SimulationEngine _simEngine;
 
         private Point _position;
         private double _direction;
 
-        public Robot(SimulationEngine simEngine, Map map) : base(map)
+        public Robot(Map map) : base(map) {}
+
+        internal Robot() { }
+
+        public void initialize()
         {
-            _simEngine = simEngine;
+            Console.WriteLine("Robot initialize");
 
-            initialize();
-
-            // FIXME just4testing set waypoint
+            // FIXME just4testing
             _mapExplored = new MapExplored();
-            Point waypoint = new Point();
-            waypoint.X = 333;
-            waypoint.Y = 333;
-            waypoint.Status = MapElementStatus.Blocked;
-
-            _mapExplored.AddPoint(waypoint);
 
             Point pointToUpdate = new Point();
             pointToUpdate.X = 333;
             pointToUpdate.Y = 333;
             _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
-        }
 
-        internal Robot() { }
-
-        private void initialize()
-        {
             _uiElement = new Polyline();
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
+
+
+
+
+            SetPos(StartPosition);
+            SetDirection(_direction);
         }
 
 	    protected override Geometry GeometryShape
