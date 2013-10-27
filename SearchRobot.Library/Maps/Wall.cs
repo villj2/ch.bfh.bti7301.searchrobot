@@ -61,7 +61,7 @@ namespace SearchRobot.Library.Maps
 			_uiElement.Width = GeometryHelper.GetWidth(StartPosition, EndPoint);
 			_uiElement.RenderTransform = new RotateTransform(GeometryHelper.GetAngle(StartPosition, EndPoint));
 
-		    _geometry = null;
+			_geometry = null;
 			_uiElement.Fill = IsValid() ? Brushes.Black : Brushes.Red;
 		}
 
@@ -97,7 +97,7 @@ namespace SearchRobot.Library.Maps
 			EndPoint.Y += offsetY;
 
 			Canvas.SetLeft(_uiElement, Canvas.GetLeft(_uiElement) + offsetX);
-			Canvas.SetTop(_uiElement, Canvas.GetLeft(_uiElement) + offsetY);
+			Canvas.SetTop(_uiElement, Canvas.GetTop(_uiElement) + offsetY);
 		}
 
 		/// <summary>

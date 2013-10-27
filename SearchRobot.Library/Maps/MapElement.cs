@@ -21,7 +21,7 @@ namespace SearchRobot.Library.Maps
 
 		protected abstract Geometry GeometryShape { get; }
 
-	    public abstract UIElement UiElement { get;  }
+		public abstract UIElement UiElement { get; }
 
 		public Point StartPosition { get; set; }
 
@@ -61,11 +61,6 @@ namespace SearchRobot.Library.Maps
 			var currrentGeometry = GeometryShape;
 			var result =  Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
 
-			if (result)
-			{
-				
-			}
-
 			return result;
 		}
 
@@ -94,7 +89,7 @@ namespace SearchRobot.Library.Maps
 
 		public abstract void Remove(Canvas canvas);
 
-		protected virtual bool IsValid()
+		public virtual bool IsValid()
 		{
 			return !IsOverlapping();
 		}
