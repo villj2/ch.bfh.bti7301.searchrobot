@@ -87,5 +87,29 @@ namespace SearchRobot.Library.Maps
 			canvas.Children.Remove(_uiElement);
 			Map.Remove(this);
 		}
+
+		public override void Move(Canvas canvas, int offsetX, int offsetY)
+		{
+			StartPosition.X += offsetX;
+			StartPosition.Y += offsetY;
+
+			EndPoint.X += offsetX;
+			EndPoint.Y += offsetY;
+
+			Canvas.SetLeft(_uiElement, Canvas.GetLeft(_uiElement) + offsetX);
+			Canvas.SetTop(_uiElement, Canvas.GetLeft(_uiElement) + offsetY);
+		}
+
+		/// <summary>
+		/// Creates a new object that is a copy of the current instance.
+		/// </summary>
+		/// <returns>
+		/// A new object that is a copy of this instance.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override object Clone()
+		{
+			return new Wall {StartPosition = this.StartPosition.Clone(), EndPoint = this.EndPoint.Clone()};
+		}
 	}
 }
