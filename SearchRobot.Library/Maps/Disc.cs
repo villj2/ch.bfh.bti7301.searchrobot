@@ -31,12 +31,12 @@ namespace SearchRobot.Library.Maps
 			}
 		}
 
-        public override UIElement UiElement
-	    {
-            get { return _uiElement;  }
-	    }
+		public override UIElement UiElement
+		{
+			get { return _uiElement;  }
+		}
 
-	    public override void MouseDown(Canvas canvas, Point point)
+		public override void MouseDown(Canvas canvas, Point point)
 		{
 			StartPosition = point;
 			ApplyTo(canvas);
@@ -53,12 +53,11 @@ namespace SearchRobot.Library.Maps
 		public override void MouseMove(Canvas canvas, Point point)
 		{
 			Radius = GetRadius(StartPosition, point);
-            _uiElement.Width = _uiElement.Height = 2 * Radius;
+			_uiElement.Width = _uiElement.Height = 2 * Radius;
 
-			Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
-			Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
+			Move(canvas, 0, 0);
 
-		    _geometry = null;
+			_geometry = null;
 			_uiElement.Fill = IsValid() ? Brushes.Black : Brushes.Red;
 		}
 
@@ -66,8 +65,7 @@ namespace SearchRobot.Library.Maps
 		{
 			_uiElement = new Ellipse { Width = Radius*2, Height = Radius*2, Fill = Brushes.Black };
 
-			Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
-			Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
+			Move(canvas, 0, 0);
 
 			canvas.Children.Add(_uiElement);
 		}
@@ -76,6 +74,27 @@ namespace SearchRobot.Library.Maps
 		{
 			canvas.Children.Remove(_uiElement);
 			Map.Remove(this);
+		}
+
+		public override void Move(Canvas canvas, int offsetX, int offsetY)
+		{
+			StartPosition.X += offsetX;
+			StartPosition.Y += offsetY;
+
+			Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
+			Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
+		}
+
+		/// <summary>
+		/// Creates a new object that is a copy of the current instance.
+		/// </summary>
+		/// <returns>
+		/// A new object that is a copy of this instance.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override object Clone()
+		{
+			return new Disc {Radius = this.Radius, StartPosition = this.StartPosition.Clone() };
 		}
 	}
 }

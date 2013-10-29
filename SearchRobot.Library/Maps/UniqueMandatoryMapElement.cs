@@ -7,22 +7,22 @@ using System.Windows.Controls;
 
 namespace SearchRobot.Library.Maps
 {
-    public abstract class UniqueMandatoryMapElement : MapElement
-    {
-        protected UniqueMandatoryMapElement(Map map) : base(map)
-        { }
+	public abstract class UniqueMandatoryMapElement : MapElement
+	{
+		protected UniqueMandatoryMapElement(Map map) : base(map)
+		{ }
 
 		protected UniqueMandatoryMapElement()
 		{ }
 
-	    protected bool IsUnique()
+		protected bool IsUnique()
 		{
 			return Map.Elements.All(e => e.GetType() != GetType());
 		}
 
-        protected override bool IsValid()
-        {
-            return IsUnique() && base.IsValid();
-        }
-    }
+		public override bool IsValid()
+		{
+			return IsUnique() && base.IsValid();
+		}
+	}
 }
