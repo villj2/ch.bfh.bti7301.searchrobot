@@ -33,10 +33,13 @@ namespace SearchRobot.Library.Maps
 
 		public override void MouseUp(Canvas canvas, Point point)
 		{
-			if (_mapElement != null && _mapElement.IsValid())
+			if (_mapElement != null && !_mapElement.IsValid())
 			{
 				_mapElement.Remove(canvas);
 				_copy.ApplyTo(canvas);
+
+                Map.Add(_copy);
+                _copy.Bind(Map);
 			}
 		}
 
@@ -47,7 +50,7 @@ namespace SearchRobot.Library.Maps
 				_mapElement.Move(canvas, point.X - _startPoint.X, point.Y - _startPoint.Y);
 				_startPoint.X = point.X;
 				_startPoint.Y = point.Y;
-			}
+            }
 		}
 
 		public override void MouseLeave(Canvas canvas)

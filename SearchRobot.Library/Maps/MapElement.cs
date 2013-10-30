@@ -54,13 +54,14 @@ namespace SearchRobot.Library.Maps
 
 		public bool IsOverlapping()
 		{
-			if (GeometryShape == null)
+			if (GeometryShape == null || Map == null)
 			{
 				return false;
 			}
 
 			var currrentGeometry = GeometryShape;
-			var result =  Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
+
+            var result = Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
 
 			return result;
 		}
@@ -68,13 +69,12 @@ namespace SearchRobot.Library.Maps
 		public abstract void MouseDown(Canvas canvas, Point point);
 
 		public virtual void MouseUp(Canvas canvas, Point point)
-		{
-            if (IsValid())
+        {
+            Map.Add(this);
+
+            if (!IsValid())
             {
-                Map.Add(this);
-            }
-            else
-            {
+                Map.Remove(this);
                 canvas.Children.Remove(UiElement);
             }
 		}

@@ -14,13 +14,14 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement
     {
+        private const int Size = 30;
         Polyline _uiElement = new Polyline();
         MapExplored _mapExplored = new MapExplored();
         public double Direction { get; set; }
 
-        public Robot(Map map) : base(map)
-        { }
-
+        public Robot(Map map)
+            : base(map)
+        {
             // FIXME just4testing set waypoint
             _mapExplored = new MapExplored();
             Point waypoint = new Point();
@@ -41,12 +42,17 @@ namespace SearchRobot.Library.RobotParts
             // Roboter sagt: Ich will 30° drehen und 15Px nach rechts bewegen.
             // Anschliessend führt die Simulation diese Bewegung des Roboters aus. (moveTo)
             // Aber grundsätzlich berechnet der Roboter wie genau er sich bewegt
+        }
 
-		internal Robot() { }
+        internal Robot() { }
 
 	    protected override Geometry GeometryShape
 	    {
-			get { return _uiElement.RenderedGeometry; }
+            get
+            {
+                return new RectangleGeometry(new Rect(StartPosition.X, StartPosition.Y, Size, Size), 0, 0,
+                                       new RotateTransform(Direction, StartPosition.X, StartPosition.Y));
+            }
 	    }
 
         public override UIElement UiElement

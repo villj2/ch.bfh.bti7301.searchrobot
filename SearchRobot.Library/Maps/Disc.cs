@@ -27,7 +27,7 @@ namespace SearchRobot.Library.Maps
 		{
 			get
 			{
-			    return _geometry ?? new EllipseGeometry(new System.Windows.Point(StartPosition.X, StartPosition.Y), Radius, Radius);
+                return _geometry ?? new EllipseGeometry(GeometryHelper.Convert(StartPosition), Radius, Radius);
 			}
 		}
 
@@ -63,17 +63,19 @@ namespace SearchRobot.Library.Maps
 
 		public override void ApplyTo(Canvas canvas)
 		{
-			_uiElement = new Ellipse { Width = Radius*2, Height = Radius*2, Fill = Brushes.Black };
-
+			_uiElement = new Ellipse { Width = Radius * 2, Height = Radius * 2, Fill = Brushes.Black };
 			Move(canvas, 0, 0);
-
 			canvas.Children.Add(_uiElement);
 		}
 
 		public override void Remove(Canvas canvas)
 		{
 			canvas.Children.Remove(_uiElement);
-			Map.Remove(this);
+
+            if (Map != null)
+            {
+                Map.Remove(this);
+            }
 		}
 
 		public override void Move(Canvas canvas, int offsetX, int offsetY)
@@ -83,6 +85,8 @@ namespace SearchRobot.Library.Maps
 
 			Canvas.SetLeft(_uiElement, StartPosition.X - Radius);
 			Canvas.SetTop(_uiElement, StartPosition.Y - Radius);
+
+		    _geometry = null;
 		}
 
 		/// <summary>
@@ -94,7 +98,7 @@ namespace SearchRobot.Library.Maps
 		/// <filterpriority>2</filterpriority>
 		public override object Clone()
 		{
-			return new Disc {Radius = this.Radius, StartPosition = this.StartPosition.Clone() };
+			return new Disc {Radius = Radius, StartPosition = StartPosition.Clone() };
 		}
 	}
 }

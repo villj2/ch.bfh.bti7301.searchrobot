@@ -17,7 +17,7 @@ namespace SearchRobot.Library.Maps
 
 		protected bool IsUnique()
 		{
-			return Map.Elements.All(e => e.GetType() != GetType());
+			return Map.Elements.Count(e => e.GetType() == GetType()) <= 1;
 		}
 
 		public override bool IsValid()

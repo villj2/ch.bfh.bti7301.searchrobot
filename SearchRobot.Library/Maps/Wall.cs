@@ -98,6 +98,8 @@ namespace SearchRobot.Library.Maps
 
 			Canvas.SetLeft(_uiElement, Canvas.GetLeft(_uiElement) + offsetX);
 			Canvas.SetTop(_uiElement, Canvas.GetTop(_uiElement) + offsetY);
+
+		    _geometry = null;
 		}
 
 		/// <summary>

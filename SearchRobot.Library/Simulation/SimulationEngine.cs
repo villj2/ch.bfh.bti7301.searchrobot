@@ -52,7 +52,7 @@ namespace SearchRobot.Library.Simulation
             Map map = new Map();
 
             // just 4 testing without map-loading
-            Robot robot = new Robot(map, new Label());
+            Robot robot = new Robot(map);
             robot.ApplyTo(_mapArea);
 
             Point p = new Point();
