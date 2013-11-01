@@ -1,4 +1,5 @@
-﻿using SearchRobot.Library.Maps;
+﻿using System.Windows;
+using SearchRobot.Library.Maps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,24 +14,28 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement
     {
+        private const int Size = 30;
         Polyline _uiElement = new Polyline();
         MapExplored _mapExplored = new MapExplored();
-        private Label _label;
-
         public double Direction { get; set; }
 
-        public Robot(Map map, Label label) : base(map)
+        public Robot(Map map)
+            : base(map)
         {
-            _label = label;
-
             // FIXME just4testing set waypoint
             _mapExplored = new MapExplored();
             Point waypoint = new Point();
             waypoint.X = 333;
             waypoint.Y = 333;
+            waypoint.Status = MapElementStatus.Blocked;
 
             _mapExplored.AddPoint(waypoint);
 
+
+            Point pointToUpdate = new Point();
+            pointToUpdate.X = 333;
+            pointToUpdate.Y = 333;
+            _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
 
 
             // Vorgehen
@@ -39,29 +44,26 @@ namespace SearchRobot.Library.RobotParts
             // Aber grundsätzlich berechnet der Roboter wie genau er sich bewegt
         }
 
-		internal Robot() { }
+        internal Robot() { }
 
 	    protected override Geometry GeometryShape
 	    {
-			get { return _uiElement.RenderedGeometry; }
+            get
+            {
+                return new RectangleGeometry(new Rect(StartPosition.X, StartPosition.Y, Size, Size), 0, 0,
+                                       new RotateTransform(Direction, StartPosition.X, StartPosition.Y));
+            }
 	    }
 
-	    public override void MouseDown(Canvas canvas, Point point)
+        public override UIElement UiElement
+        {
+            get { return _uiElement; }
+        }
+
+        public override void MouseDown(Canvas canvas, Point point)
         {
             StartPosition = point;
 			ApplyTo(canvas);
-        }
-
-        public override void MouseUp(Canvas canvas, Point point)
-		{
-			if (IsUnique())
-			{
-				Map.Add(this);
-			}
-			else
-			{
-				canvas.Children.Remove(_uiElement);
-			}
         }
 
         public override void MouseMove(Canvas canvas, Point point)
@@ -111,6 +113,27 @@ namespace SearchRobot.Library.RobotParts
 	    {
 			canvas.Children.Remove(_uiElement);
 			Map.Remove(this);
+	    }
+
+		public override void Move(Canvas canvas, int offsetX, int offsetY)
+		{
+			StartPosition.X += offsetX;
+			StartPosition.Y += offsetY;
+
+			Canvas.SetLeft(_uiElement, Canvas.GetLeft(_uiElement) + offsetX);
+			Canvas.SetTop(_uiElement, Canvas.GetTop(_uiElement) + offsetY);
+		}
+
+	    /// <summary>
+	    /// Creates a new object that is a copy of the current instance.
+	    /// </summary>
+	    /// <returns>
+	    /// A new object that is a copy of this instance.
+	    /// </returns>
+	    /// <filterpriority>2</filterpriority>
+	    public override object Clone()
+	    {
+		    return new Robot {StartPosition = this.StartPosition.Clone(), Direction = this.Direction};
 	    }
     }
 }

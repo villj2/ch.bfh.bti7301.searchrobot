@@ -6,17 +6,24 @@ using System.Threading.Tasks;
 
 namespace SearchRobot.Library.Maps
 {
+<<<<<<< HEAD
+    public class Point
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public MapElementStatus Status { get; set; }
+    }
+=======
 	public class Point
 	{
 		public int X { get; set; }
 
 		public int Y { get; set; }
-        
-                public MapElementStatus Status { get; set; }
-		
+
 		public Point Clone()
 		{
 			return new Point() {X = this.X, Y = this.Y};
 		}
 	}
+>>>>>>> 1164c1c7d6d9604a2e5c7ed611b0a5bac101e715
 }

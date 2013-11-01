@@ -16,11 +16,13 @@ namespace SearchRobot.Library.Maps
 	[XmlInclude(typeof(Goal))]
 	[XmlInclude(typeof(Robot))]
 	[XmlInclude(typeof(Wall))]
-	public abstract class MapElement
+	public abstract class MapElement : ICanvasListener, ICloneable
 	{
 		protected Map Map { get; private set; }
 
 		protected abstract Geometry GeometryShape { get; }
+
+		public abstract UIElement UiElement { get; }
 
 		public Point StartPosition { get; set; }
 
@@ -52,30 +54,56 @@ namespace SearchRobot.Library.Maps
 
 		public bool IsOverlapping()
 		{
-			if (GeometryShape == null)
+			if (GeometryShape == null || Map == null)
 			{
 				return false;
 			}
 
 			var currrentGeometry = GeometryShape;
-			var result =  Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
 
-			if (result)
-			{
-				
-			}
+            var result = Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
 
 			return result;
 		}
 
 		public abstract void MouseDown(Canvas canvas, Point point);
 
-		public abstract void MouseUp(Canvas canvas, Point point);
+		public virtual void MouseUp(Canvas canvas, Point point)
+        {
+            Map.Add(this);
+
+            if (!IsValid())
+            {
+                Map.Remove(this);
+                canvas.Children.Remove(UiElement);
+            }
+		}
 
 		public abstract void MouseMove(Canvas canvas, Point point);
 
-		public abstract void ApplyTo(Canvas canvas);
+        public virtual void MouseLeave(Canvas canvas)
+	    {
+            Remove(canvas);
+	    }
+
+	    public abstract void ApplyTo(Canvas canvas);
 
 		public abstract void Remove(Canvas canvas);
+
+		public virtual bool IsValid()
+		{
+			return !IsOverlapping();
+		}
+
+		public abstract void Move(Canvas canvas, int offsetX, int offsetY);
+
+		/// <summary>
+		/// Creates a new object that is a copy of the current instance.
+		/// </summary>
+		/// <returns>
+		/// A new object that is a copy of this instance.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public abstract object Clone();
 	}
 }

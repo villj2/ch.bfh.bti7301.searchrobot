@@ -47,12 +47,16 @@
     <Compile Include="Global\TextContent.cs" />
     <Compile Include="Maps\Disc.cs" />
     <Compile Include="Maps\Goal.cs" />
+    <Compile Include="Maps\ICanvasListener.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapElement.cs" />
     <Compile Include="Maps\MapElementStatus.cs" />
     <Compile Include="Maps\MapExplored.cs" />
+    <Compile Include="Maps\MapTool.cs" />
+    <Compile Include="Maps\MoveTool.cs" />
     <Compile Include="Maps\Point.cs" />
     <Compile Include="RobotParts\Brain.cs" />
+    <Compile Include="Maps\RemoveTool.cs" />
     <Compile Include="RobotParts\Robot.cs" />
     <Compile Include="Maps\UniqueMandatoryMapElement.cs" />
     <Compile Include="Maps\Wall.cs" />
@@ -65,7 +69,9 @@
     <Compile Include="Simulation\ExploredMap.cs" />
     <Compile Include="Simulation\SimulationEngine.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Maps\MapElements.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

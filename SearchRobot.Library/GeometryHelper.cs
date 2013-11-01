@@ -11,7 +11,7 @@ namespace SearchRobot.Library
 	{
 		public static double GetAngle(Point centerPoint, Point edgePoint)
 		{
-			return Math.Atan2(edgePoint.Y - centerPoint.Y, edgePoint.X - centerPoint.Y) / Math.PI * 180;
+			return Math.Atan2(edgePoint.Y - centerPoint.Y, edgePoint.X - centerPoint.X) / Math.PI * 180;
 		}
 
 		public static double GetWidth(Point centerPoint, Point edgePoint)
@@ -25,5 +25,10 @@ namespace SearchRobot.Library
 		{
 			return new System.Windows.Point(point.X, point.Y);
 		}
+
+        public static Point Convert(System.Windows.Point point)
+        {
+            return new Point { X = System.Convert.ToInt32(point.X), Y = System.Convert.ToInt32(point.Y) };
+        }
 	}
 }

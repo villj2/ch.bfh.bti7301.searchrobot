@@ -14,20 +14,26 @@
 
         <Canvas Grid.Row="0" Grid.Column="0" Name="MapArea" 
                 Background="Azure"
-                MouseLeftButtonDown="OnCanvasMouseDown" MouseLeftButtonUp="OnCanvasMouseUp" MouseMove="OnCanvasMouseMove"/>
+                MouseLeftButtonDown="OnCanvasMouseDown"
+                MouseLeftButtonUp="OnCanvasMouseUp"
+                MouseMove="OnCanvasMouseMove"
+                MouseLeave="OnCanvasMouseLeave"/>
         
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             
             <Button Name="Save" Content="Save" Grid.Column="0" Click="OnSaveClick"/>
             <Button Name="Load" Content="Load" Grid.Column="1" Click="OnLoadClick"/>
+            <Button Name="Reset" Content="Reset" Grid.Column="2" Click="OnResetClick"/>
         </Grid>
         
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
+                <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
@@ -40,6 +46,7 @@
             <Button Name="btnRobot" Content="Robot" Grid.Row="2" Grid.Column="0" Click="OnRobotSelectionClick"/>
             <Button Name="btnGoal" Content="Goal" Grid.Row="3" Grid.Column="0" Click="OnGoalSelectionClick" />
             <Button Name="btnRemove" Content="Remove" Grid.Row="4" Grid.Column="0" Click="OnRemoveSelectionClick" />
+            <Button Name="btnMove" Content="Move" Grid.Row="5" Grid.Column="0" Click="OnMoveSelectionClick" />
         </Grid>
         
         <Label Name="lblOutput" Content="Woooot?" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
