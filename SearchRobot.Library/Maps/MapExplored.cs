@@ -11,16 +11,11 @@ namespace SearchRobot.Library.Maps
     {
         private List<Point> _map = new List<Point>();
 
-        public void AddPoint(Point point)
-        {
-            _map.Add(point);
-        }
-
         public void SetStatus(Point point, MapElementStatus status)
         {
             // check if point exists at position x/y
             // true: update the status of that point
-            // false: write out "Point doesn't exist"
+            // false: write to console "Point doesn't exist"
 
             Point pointMapExplored = _map.Find(p => p.X == point.X && p.Y == point.Y);
 
@@ -39,7 +34,17 @@ namespace SearchRobot.Library.Maps
             throw new NotImplementedException();
         }
 
-        private Point GetWaypoint()
+        public void AddPoint(Point point)
+        {
+            _map.Add(point);
+        }
+
+        public bool WaypointExists()
+        {
+            return _map.Exists(p => p.Status == MapElementStatus.Waypoint);
+        }
+
+        public Point GetWaypoint()
         {
             return _map.Where(x => x.Status == MapElementStatus.Waypoint).FirstOrDefault();
         }

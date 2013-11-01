@@ -30,5 +30,10 @@ namespace SearchRobot.Library
         {
             return new Point { X = System.Convert.ToInt32(point.X), Y = System.Convert.ToInt32(point.Y) };
         }
+
+        public static bool ComparePoints(Point point1, Point point2)
+        {
+            return (point1.X == point2.X && point1.Y == point2.Y);
+        }
 	}
 }
