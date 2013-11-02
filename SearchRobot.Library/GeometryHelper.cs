@@ -14,6 +14,11 @@ namespace SearchRobot.Library
 			return Math.Atan2(edgePoint.Y - centerPoint.Y, edgePoint.X - centerPoint.X) / Math.PI * 180;
 		}
 
+        public static double GetAngle(double x1, double y1, double x2, double y2)
+        {
+            return Math.Atan2(y2 - y1, x2 - x1) / Math.PI * 180;
+        }
+
 		public static double GetWidth(Point centerPoint, Point edgePoint)
 		{
 			return Math.Sqrt(
@@ -34,6 +39,11 @@ namespace SearchRobot.Library
         public static bool ComparePoints(Point point1, Point point2)
         {
             return (point1.X == point2.X && point1.Y == point2.Y);
+        }
+
+        public static bool ComparePoints(double x1, double y1, double x2, double y2)
+        {
+            return (x1 == x2 && y1 == y2);
         }
 	}
 }

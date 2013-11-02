@@ -31,13 +31,14 @@ namespace SearchRobot.Library.Simulation
         private Robot _robot;
         private Map _map;
 
+        private string _filename;
+
         public SimulationEngine(Canvas mapArea)
         {
             _mapArea = mapArea;
 
             initialize();
-            loadMap();
-            buildMap();
+            LoadMap();
         }
 
         private void initialize()
@@ -54,34 +55,18 @@ namespace SearchRobot.Library.Simulation
 
         private void buildMap()
         {
-            // TODO load Map
-            //_map = new Map();
-
-            // just 4 testing without map-loading
-            //_robot = new Robot(_map);
-            //_robot.ApplyTo(_mapArea);
-
-            //Point p = new Point();
-            //p.X = 200;
-            //p.Y = 300;
-
-            //_robot.SetPos(p);
-
             // get reference of robot
-            _robot = _map.Elements.OfType<Robot>().First();
-            _robot.initialize();
-            _robot.ApplyTo(_mapArea);
-
-            // FIXME robot not instanciated after loading map
-            //Point p = new Point();
-            //p.X = 300;
-            //p.Y = 250;
-            //_robot.SetPos(p);
-            //_robot.SetDirection(0);
+            if (_map != null)
+            {
+                _robot = _map.Elements.OfType<Robot>().First();
+                _robot.initialize();
+            }
         }
 
-        private void loadMap()
+        public void LoadMap()
         {
+            Dispose();
+
             var fileDialog = new OpenFileDialog
             {
                 Filter = "Map Files|*.xml",
@@ -97,11 +82,12 @@ namespace SearchRobot.Library.Simulation
             var dialog = sender as OpenFileDialog;
             if (dialog != null)
             {
-                var filename = dialog.FileName;
+                _filename = dialog.FileName;
 
-                _map = Resolver.StorageManager.Load(filename);
-                _mapArea.Children.Clear();
-                _map.ApplyToCanvas(_mapArea);
+                if (_filename != null)
+                {
+                    Reset();
+                }
             }
         }
 
@@ -133,7 +119,16 @@ namespace SearchRobot.Library.Simulation
 
         public void Reset()
         {
-            CyclesReset();
+            Dispose();
+
+            if (_filename != null)
+            {
+                _map = Resolver.StorageManager.Load(_filename);
+                _mapArea.Children.Clear();
+                _map.ApplyToCanvas(_mapArea);
+
+                buildMap();
+            }
         }
         #endregion
 
@@ -141,7 +136,6 @@ namespace SearchRobot.Library.Simulation
         private void CyclesStart()
         {
             _state = CycleState.Running;
-            
             _dispatcherTimer.Start();
         }
 
@@ -151,40 +145,10 @@ namespace SearchRobot.Library.Simulation
             _robot.Move();
         }
 
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            _ticks++;
-            Console.WriteLine("timer tick, ticks: " + _robot);
-
-            _robot.Move();
-        }
-
-        public void ExecuteCycleTick(Object stateInfo)
-        {
-            _ticks++;
-
-            _robot.Move();
-        }
-
         private void CyclesStop()
         {
             _state = CycleState.Paused;
-
             _dispatcherTimer.Stop();
-        }
-
-        private void CyclesReset()
-        {
-            if (_state == CycleState.Paused || _state == CycleState.Running)
-            {
-                _ticks = 0;
-                _state = CycleState.Initiated;
-
-                Console.WriteLine("Reset, ticks: {0}", _ticks.ToString());
-
-                // TODO reset Map Explored
-                // TODO reset Robot Position
-            }
         }
         #endregion
 
@@ -209,5 +173,17 @@ namespace SearchRobot.Library.Simulation
 
         }
         #endregion
+
+        public void Dispose()
+        {
+            CyclesStop();
+            _ticks = 0;
+
+            _map = null;
+            _mapArea.Children.Clear();
+            if (_robot != null) _robot.Dispose();
+
+            _state = CycleState.Initiated;
+        }
     }
 }

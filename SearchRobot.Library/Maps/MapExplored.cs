@@ -7,26 +7,32 @@ using Point = SearchRobot.Library.Maps.Point;
 
 namespace SearchRobot.Library.Maps
 {
-    public class MapExplored
+    public class MapExplored : IDisposable
     {
-        private List<Point> _map = new List<Point>();
+        //private List<Point> _map = new List<Point>();
+        private MapElementStatus[,] _map = new MapElementStatus[800,600];
 
-        public void SetStatus(Point point, MapElementStatus status)
+        private Point _waypointActive;
+        public Point WaypointActive
         {
-            // check if point exists at position x/y
-            // true: update the status of that point
-            // false: write to console "Point doesn't exist"
-
-            Point pointMapExplored = _map.Find(p => p.X == point.X && p.Y == point.Y);
-
-            if (pointMapExplored != null)
+            set
             {
-                pointMapExplored.Status = status;
-            }
-            else
+                // disable old waypoint
+                if(WaypointExists()) SetStatus(_waypointActive.X, _waypointActive.Y, MapElementStatus.Visited);
+
+                // set new waypoint
+                _waypointActive = value;
+                SetStatus(_waypointActive.X, _waypointActive.Y, MapElementStatus.Waypoint);
+            } 
+            get
             {
-                Console.WriteLine("Point doesn't exist");
+                return _waypointActive;
             }
+        }
+
+        public void SetStatus(int x, int y, MapElementStatus status)
+        {
+            _map[x, y] = status;
         }
             
         public MapElementStatus GetStatus(Point point)
@@ -34,19 +40,15 @@ namespace SearchRobot.Library.Maps
             throw new NotImplementedException();
         }
 
-        public void AddPoint(Point point)
-        {
-            _map.Add(point);
-        }
-
         public bool WaypointExists()
         {
-            return _map.Exists(p => p.Status == MapElementStatus.Waypoint);
+            return _waypointActive != null;
         }
 
-        public Point GetWaypoint()
+        public void Dispose()
         {
-            return _map.Where(x => x.Status == MapElementStatus.Waypoint).FirstOrDefault();
+            _map = new MapElementStatus[800, 600];
+            _waypointActive = null;
         }
     }
 }
