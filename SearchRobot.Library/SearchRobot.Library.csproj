@@ -34,6 +34,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +54,7 @@
     <Compile Include="Maps\MapElementStatus.cs" />
     <Compile Include="Maps\MapExplored.cs" />
     <Compile Include="Maps\MapTool.cs" />
+    <Compile Include="Maps\Minimap.cs" />
     <Compile Include="Maps\MoveTool.cs" />
     <Compile Include="Maps\Point.cs" />
     <Compile Include="RobotParts\Brain.cs" />
@@ -67,10 +69,10 @@
     <Compile Include="Storage\XmlMapStorageManager.cs" />
     <Compile Include="RobotParts\Sensor.cs" />
     <Compile Include="RobotParts\Sight.cs" />
-    <Compile Include="Simulation\ExploredMap.cs" />
     <Compile Include="Simulation\SimulationEngine.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Global\Simulation.cd" />
     <None Include="Maps\MapElements.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

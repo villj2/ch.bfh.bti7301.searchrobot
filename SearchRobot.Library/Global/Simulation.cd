@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SearchRobot.Library.Simulation.SimulationEngine">
+    <Position X="3.25" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="SearchRobot.Library.Simulation.SimulationEngine.CycleState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Simulation\SimulationEngine.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CEAAGCAKALAABAYAAAEDCAEEkAAAABAAAEQAAAQAAAE=</HashCode>
+      <FileName>Simulation\SimulationEngine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_minimap" />
+      <Field Name="_robot" />
+      <Field Name="_map" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.MovementObject">
+    <Position X="0.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Simulation\MovementObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Brain">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAQACAAAQAAACAAAAAAAAAAAAAAACAAEAAAAAA=</HashCode>
+      <FileName>RobotParts\Brain.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_mapExplored" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Robot">
+    <Position X="13.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AoAAAAgAAKAAAACAAAGABAIAAAAAEAAAAAOIMACAAAA=</HashCode>
+      <FileName>RobotParts\Robot.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_brain" />
+      <Field Name="_mapExplored" />
+      <Field Name="_sensor" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.212" />
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Sensor" Collapsed="true">
+    <Position X="10.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>RobotParts\Sensor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Sight" Collapsed="true">
+    <Position X="10.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAEAAAAAAABA=</HashCode>
+      <FileName>RobotParts\Sight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MapExplored">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAIAAADAAAAAAAAAAgAAEQAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Maps\MapExplored.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_waypointActive" />
+      <Field Name="_map" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Minimap">
+    <Position X="0.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIACAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAA=</HashCode>
+      <FileName>Maps\Minimap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.Global.TextContent" Collapsed="true">
+    <Position X="0.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAABAAAAA=</HashCode>
+      <FileName>Global\TextContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Point">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Maps\Point.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Storage.XmlMapStorageManager" Collapsed="true">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\XmlMapStorageManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.GeometryHelper" Collapsed="true">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAEAAAAA=</HashCode>
+      <FileName>GeometryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Map">
+    <Position X="8.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAACAAAAAAAAAAAQBAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Maps\Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="SearchRobot.Library.Maps.MapElementStatus">
+    <Position X="11" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABQAAAAAAAAABAAiAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Maps\MapElementStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

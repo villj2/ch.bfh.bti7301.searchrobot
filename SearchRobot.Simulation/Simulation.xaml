@@ -22,7 +22,7 @@
                 <RowDefinition Height="50px" />
             </Grid.RowDefinitions>
 
-            <Canvas Grid.Row="0" Grid.Column="0" Name="MapExploredArea" Background="Cyan" />
+            <Canvas Grid.Row="0" Grid.Column="0" Name="MinimapArea" Background="Cyan"></Canvas>
             <Label Name="lblOutput" Content="" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <Button Name="btnLoad" Content="" Grid.Row="2" Grid.Column="0" Click="OnBtnLoadClick" />
             <Button Name="btnStart" Content="" Grid.Row="3" Grid.Column="0" Click="OnBtnStartClick" />

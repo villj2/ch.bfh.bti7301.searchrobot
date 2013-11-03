@@ -43,9 +43,7 @@ namespace SearchRobot.Library.RobotParts
             }
             else
             {
-                MovementObject positionNew;
-
-                positionNew = GetNextMovementPoint(posX, posY);
+                MovementObject positionNew = GetNextMovementPoint(posX, posY);
 
                 settingNew.X = positionNew.X;
                 settingNew.Y = positionNew.Y;

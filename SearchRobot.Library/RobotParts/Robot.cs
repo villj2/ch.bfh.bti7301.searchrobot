@@ -15,9 +15,12 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement, IDisposable
     {
+        public MapExplored MapExplored { get { return _mapExplored; } }
+
         private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
+        private Sensor _sensor;
 
         private double _positionX;
         private double _positionY;
@@ -32,8 +35,8 @@ namespace SearchRobot.Library.RobotParts
             Console.WriteLine("Robot initialize");
 
             _mapExplored = new MapExplored();
-
             _brain = new Brain(_mapExplored);
+            _sensor = new Sensor();
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);

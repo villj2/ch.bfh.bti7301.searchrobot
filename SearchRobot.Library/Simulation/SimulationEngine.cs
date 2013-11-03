@@ -22,20 +22,24 @@ namespace SearchRobot.Library.Simulation
     public class SimulationEngine
     {
         const int CYCLE_INTERVAL = 10; // milliseconds
+        const int CYCLE_MINIMAP_UPDATE = 100; // minimap updates every 100th time interval is dispatched 
 
         private AutoResetEvent _autoEvent;
         private int _ticks;
         private Canvas _mapArea;
+        private Canvas _minimapArea;
         private DispatcherTimer _dispatcherTimer;
 
         private Robot _robot;
         private Map _map;
+        private Minimap _minimap;
 
         private string _filename;
 
-        public SimulationEngine(Canvas mapArea)
+        public SimulationEngine(Canvas mapArea, Canvas minimapArea)
         {
             _mapArea = mapArea;
+            _minimapArea = minimapArea;
 
             initialize();
             LoadMap();
@@ -60,6 +64,7 @@ namespace SearchRobot.Library.Simulation
             {
                 _robot = _map.Elements.OfType<Robot>().First();
                 _robot.initialize();
+                _minimap = new Minimap(_minimapArea, _robot.MapExplored);
             }
         }
 
@@ -137,12 +142,16 @@ namespace SearchRobot.Library.Simulation
         {
             _state = CycleState.Running;
             _dispatcherTimer.Start();
+
+            _minimap.Update();
         }
 
         private void dispatcherTimerTick(object sender, EventArgs e)
         {
             _ticks++;
             _robot.Move();
+            
+            if(_ticks % CYCLE_MINIMAP_UPDATE == 0) _minimap.Update();
         }
 
         private void CyclesStop()
@@ -182,6 +191,7 @@ namespace SearchRobot.Library.Simulation
             _map = null;
             _mapArea.Children.Clear();
             if (_robot != null) _robot.Dispose();
+            if (_minimap != null) _minimap.Dispose();
 
             _state = CycleState.Initiated;
         }
