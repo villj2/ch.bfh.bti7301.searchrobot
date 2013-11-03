@@ -95,7 +95,7 @@ namespace SearchRobot.Library.Maps
 			return !IsOverlapping();
 		}
 
-		public abstract void Move(Canvas canvas, int offsetX, int offsetY);
+		public abstract void Move(Canvas canvas, double offsetX, double offsetY);
 
 		/// <summary>
 		/// Creates a new object that is a copy of the current instance.

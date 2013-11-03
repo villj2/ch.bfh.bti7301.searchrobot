@@ -21,7 +21,7 @@ namespace SearchRobot.Library.RobotParts
         private Brain _brain;
         private Point _position;
         private double _direction;
-        
+
         public double Direction { get; set; }
 
         public Robot(Map map) : base(map) {}
@@ -40,13 +40,9 @@ namespace SearchRobot.Library.RobotParts
             pointToUpdate.Y = 333;
             _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
 
-            _uiElement = new Polyline();
+            // _uiElement = new Polyline();
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
-
-
-
-
 
             SetPos(StartPosition);
             SetDirection(_direction);
@@ -131,7 +127,7 @@ namespace SearchRobot.Library.RobotParts
 			Map.Remove(this);
 	    }
 
-		public override void Move(Canvas canvas, int offsetX, int offsetY)
+		public override void Move(Canvas canvas, double offsetX, double offsetY)
 		{
 			StartPosition.X += offsetX;
 			StartPosition.Y += offsetY;

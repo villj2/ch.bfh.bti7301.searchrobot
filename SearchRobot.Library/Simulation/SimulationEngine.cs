@@ -70,7 +70,7 @@ namespace SearchRobot.Library.Simulation
             // get reference of robot
             _robot = _map.Elements.OfType<Robot>().First();
             _robot.initialize();
-            _robot.ApplyTo(_mapArea);
+            // _robot.ApplyTo(_mapArea);
 
             // FIXME robot not instanciated after loading map
             //Point p = new Point();
@@ -102,6 +102,7 @@ namespace SearchRobot.Library.Simulation
                 _map = Resolver.StorageManager.Load(filename);
                 _mapArea.Children.Clear();
                 _map.ApplyToCanvas(_mapArea);
+
             }
         }
 
@@ -149,6 +150,13 @@ namespace SearchRobot.Library.Simulation
         {
             _ticks++;
             _robot.Move();
+
+			_robot.Remove(_mapArea);
+
+			Sensor mySensor = new Sensor(null, null, null, null);
+			// mySensor.ToBitmap(_mapArea);
+
+			_robot.ApplyTo(_mapArea);
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
