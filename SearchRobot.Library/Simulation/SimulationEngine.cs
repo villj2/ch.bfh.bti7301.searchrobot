@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Media.Imaging;
 using Timer = System.Threading.Timer;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,8 @@ namespace SearchRobot.Library.Simulation
         private int _ticks;
         private Canvas _mapArea;
         private DispatcherTimer _dispatcherTimer;
+
+        private readonly Sight sight = new Sight() {Angle = 90, Reach = int.MaxValue};
 
         private Robot _robot;
         private Map _map;
@@ -153,10 +156,17 @@ namespace SearchRobot.Library.Simulation
 
 			_robot.Remove(_mapArea);
 
-			Sensor mySensor = new Sensor(null, null, null, null);
-			// mySensor.ToBitmap(_mapArea);
+			Sensor mySensor = new Sensor(_robot, _map, _mapArea, sight);
+            
+            Size size = new Size(_mapArea.ActualWidth, _mapArea.ActualHeight);
+            BitmapConverter converter = new BitmapConverter(size);
 
-			_robot.ApplyTo(_mapArea);
+            var image = BitmapConverter.AsImage(converter.ToBitmap(_mapArea));
+            image.Width = 200;
+            
+            _mapArea.Children.Add(image);
+
+  		    _robot.ApplyTo(_mapArea);
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
