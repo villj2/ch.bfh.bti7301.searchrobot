@@ -15,7 +15,15 @@ namespace SearchRobot.Library.Maps
 		
 		public Point Clone()
 		{
-			return new Point() {X = this.X, Y = this.Y};
+			return new Point {X = X, Y = Y};
 		}
+
+        public Point() {}
+
+        public Point(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
 	}
 }

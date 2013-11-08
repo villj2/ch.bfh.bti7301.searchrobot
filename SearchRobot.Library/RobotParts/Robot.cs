@@ -38,7 +38,7 @@ namespace SearchRobot.Library.RobotParts
 
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
-            _sensor = new Sensor();
+            _sensor = new Sensor(this, Map, null, new Sight { Angle = 180, Reach = int.MaxValue });
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
@@ -127,7 +127,7 @@ namespace SearchRobot.Library.RobotParts
 			Map.Remove(this);
 	    }
 
-		public override void Move(Canvas canvas, double offsetX, double offsetY)
+        public override void Move(Canvas canvas, int offsetX, int offsetY)
 		{
 			StartPosition.X += offsetX;
 			StartPosition.Y += offsetY;

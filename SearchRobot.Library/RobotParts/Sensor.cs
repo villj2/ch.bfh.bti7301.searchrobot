@@ -72,6 +72,21 @@ namespace SearchRobot.Library.RobotParts
             return map;
         }
 
+        private NegativeArray<FieldState> GetVisibleField()
+        {
+            PointRotator rotator = new PointRotator(Robot.StartPosition, Robot.Direction);
+
+            // Rotate the Edges;
+            Point topleft, topright, bottomleft, bottomright;
+            topleft = rotator.Rotate(new Point(0, 0));
+            topright = rotator.Rotate(new Point(BaseArea.GetUpperBound(0), 0));
+            bottomleft = rotator.Rotate(new Point(0, BaseArea.GetUpperBound(1)));
+            bottomright = rotator.Rotate(new Point(BaseArea.GetUpperBound(0), BaseArea.GetUpperBound(1)));
+
+
+
+        }
+
 		public List<Point> GetView()
 		{
 			return null;

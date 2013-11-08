@@ -10,7 +10,6 @@ namespace SearchRobot.Library
     public class PointRotator
     {
         private static Point Center { get; set; }
-        private static double Angle { get; set; }
 
         private static double AngleCos { get; set; }
         private static double AngleSin { get; set; }
@@ -23,6 +22,7 @@ namespace SearchRobot.Library
 
         public PointRotator(double angleInDegree)
         {
+            Center = null;
             CalculateAngles(angleInDegree);
         }
 
