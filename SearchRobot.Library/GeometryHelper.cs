@@ -37,5 +37,15 @@ namespace SearchRobot.Library
         {
             return (Math.Abs(point1.X - point2.X) < EPSILON && Math.Abs(point1.Y - point2.Y) < EPSILON);
         }
+
+        public static double ToDegree(double radians)
+        {
+            return radians*180/Math.PI;
+        }
+
+        public static double ToRadians(double degree)
+        {
+            return degree/180*Math.PI;
+        }
 	}
 }
