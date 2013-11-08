@@ -9,60 +9,54 @@ using System.Windows.Controls;
 
 namespace SearchRobot.Library.RobotParts
 {
-    public class Brain
+    public class Brain : IDisposable
     {
         private MapExplored _mapExplored;
 
         public Brain(MapExplored mapExplored) {
 
             _mapExplored = mapExplored;
+
+            // set first waypoint
+            CreateNextWaypoint();
         }
 
-        public MovementObject GetNextMove(Point currentPosition, double currentDirection)
+        public MovementObject GetNextMove(double posX, double posY, double currentDirection)
         {
-            // if waypoint doesn't exist, create one and add to mapExplored
-            Point waypoint;
-            if (!_mapExplored.WaypointExists())
-            {
-                waypoint = CalculateNextWaypoint();
-                _mapExplored.AddPoint(waypoint);
-            }
-            else
-            {
-                waypoint = _mapExplored.GetWaypoint();
-            }
-
             // check if waypoint is reached
-            if (GeometryHelper.ComparePoints(currentPosition, waypoint))
+            if (GeometryHelper.ComparePoints(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y))
             {
-                Console.WriteLine("WAYPOINT HIT");
-                // change status of old waypoint
-                _mapExplored.SetStatus(waypoint, MapElementStatus.Visited);
-
-                waypoint = CalculateNextWaypoint();
-                _mapExplored.AddPoint(waypoint);
+                CreateNextWaypoint();
             }
 
-            MovementObject mo = new MovementObject();
-            mo.Position = currentPosition;
-            mo.Direction = currentDirection;
+            MovementObject settingNew = new MovementObject();
+            settingNew.X = posX;
+            settingNew.Y = posY;
+            settingNew.Direction = currentDirection;
+
+            double targetDirection = CalculateTargetDirection(posX, posY, _mapExplored.WaypointActive);
+
             // either change direction or position
-            double targetDirection = CalculateTargetDirection(currentPosition, waypoint);
             if (currentDirection != targetDirection)
             {
-                mo.Direction = AdjustDirection(currentDirection, targetDirection);
+                settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
             }
             else
             {
-                mo.Position = GetNextMovementPoint(currentPosition);
+                MovementObject positionNew = GetNextMovementPoint(posX, posY);
+
+                settingNew.X = positionNew.X;
+                settingNew.Y = positionNew.Y;
             }
 
-            return mo;
+            return settingNew;
         }
 
-        /* calculates new waypoint based mapExplored
-        /****************************************************************/
-        private Point CalculateNextWaypoint()
+        /// <summary>
+        /// calculates new waypoint based mapExplored
+        /// </summary>
+        /// <returns></returns>
+        private void CreateNextWaypoint()
         {
             // TODO implement logic by deciding what the next waypoint is based on _mapExplored
 
@@ -73,24 +67,22 @@ namespace SearchRobot.Library.RobotParts
             waypointNew.Y = rnd.Next(0, 600);
             waypointNew.Status = MapElementStatus.Waypoint;
 
-            Console.WriteLine("waypointNew.X: " + waypointNew.X);
-            Console.WriteLine("waypointNew.Y: " + waypointNew.Y);
-
-            return waypointNew;
+            _mapExplored.WaypointActive = waypointNew;
         }
 
         /* calculates new movementPoint based on next waypoint
         /****************************************************************/
-        private Point GetNextMovementPoint(Point currentPosition)
+        //private Point GetNextMovementPoint(Point currentPosition)
+        private MovementObject GetNextMovementPoint(double x, double y)
         {
-            Point waypoint = _mapExplored.GetWaypoint();
+            var movementObject = new MovementObject();
 
-            double movementX = waypoint.X - currentPosition.X;
-            double movementY = waypoint.Y - currentPosition.Y;
+            double movementX = _mapExplored.WaypointActive.X - x;
+            double movementY = _mapExplored.WaypointActive.Y - y;
 
-            Point movementPoint = new Point();
+            double posX;
+            double posY;
 
-            // moving to the top of the map not possible atm
             int dirX = movementX >= 0 ? 1 : -1;
             int dirY = movementY >= 0 ? 1 : -1;
 
@@ -99,16 +91,19 @@ namespace SearchRobot.Library.RobotParts
 
             if (movementX >= movementY)
             {
-                movementPoint.X = currentPosition.X + 1 * dirX;
-                movementPoint.Y = currentPosition.Y + (1 / movementX * movementY) * dirY;
+                posX = x + 1 * dirX;
+                posY = y + (1 / movementX * movementY) * dirY;
             }
             else
             {
-                movementPoint.Y = currentPosition.Y + 1 * dirY;
-                movementPoint.X = currentPosition.X + (1 / movementY * movementX) * dirX;
+                posY = y + 1 * dirY;
+                posX = x + (1 / movementY * movementX) * dirX;
             }
 
-            return movementPoint;
+            movementObject.X = posX;
+            movementObject.Y = posY;
+
+            return movementObject;
         }
 
         /* calculates new direction based on next waypoint
@@ -127,9 +122,14 @@ namespace SearchRobot.Library.RobotParts
             return currentDirection;
         }
 
-        private double CalculateTargetDirection(Point currentPosition, Point waypoint)
+        private double CalculateTargetDirection(double posX, double posY, Point waypoint)
         {
-            return Math.Floor(GeometryHelper.GetAngle(currentPosition, waypoint));
-        } 
+            return Math.Floor(GeometryHelper.GetAngle(posX, posY, waypoint.X, waypoint.Y));
+        }
+
+        public void Dispose()
+        {
+            _mapExplored.Dispose();
+        }
     }
 }

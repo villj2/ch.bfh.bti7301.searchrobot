@@ -13,13 +13,17 @@ using SearchRobot.Library.Simulation;
 
 namespace SearchRobot.Library.RobotParts
 {
-    public class Robot : UniqueMandatoryMapElement
+    public class Robot : UniqueMandatoryMapElement, IDisposable
     {
         private const int Size = 30;
+        public MapExplored MapExplored { get { return _mapExplored; } }
+
         private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
-        private Point _position;
+        private Sensor _sensor;
+        private double _positionX;
+        private double _positionY;
         private double _direction;
 
         public double Direction { get; set; }
@@ -32,19 +36,11 @@ namespace SearchRobot.Library.RobotParts
         {
             Console.WriteLine("Robot initialize");
 
-            // FIXME just4testing
-            _mapExplored = new MapExplored();
-
-            Point pointToUpdate = new Point();
-            pointToUpdate.X = 333;
-            pointToUpdate.Y = 333;
-            _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
-
-            // _uiElement = new Polyline();
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
+            _sensor = new Sensor();
 
-            SetPos(StartPosition);
+            SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
         }
 
@@ -90,7 +86,7 @@ namespace SearchRobot.Library.RobotParts
 
 			_uiElement.Fill = Brushes.DarkGreen;
 
-            SetPos(StartPosition);
+            SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
 
 			canvas.Children.Add(_uiElement);
@@ -98,21 +94,25 @@ namespace SearchRobot.Library.RobotParts
 
         public void Move()
         {
-            //Console.WriteLine("Robot execute cycle");
-            //Console.WriteLine("direction: " + _direction);
+            MovementObject mo = _brain.GetNextMove(_positionX, _positionY, _direction);
 
-            MovementObject mo = _brain.GetNextMove(_position, _direction);
-
-            SetPos(mo.Position);
+            SetPos(mo.X, mo.Y);
             SetDirection(mo.Direction);
         }
 
-        public void SetPos(Point point)
+        public void SetPos(double x, double y)
         {
-            _position = point;
+            _positionX = x;
+            _positionY = y;
 
-            Canvas.SetLeft(_uiElement, _position.X - 15);
-            Canvas.SetTop(_uiElement, _position.Y - 15);
+            StartPosition.X = (int)_positionX;
+            StartPosition.Y = (int)_positionY;
+
+            //_position.X = (int)Math.Round(_positionExactlyX);
+            //_position.Y = (int)Math.Round(_positionExactlyY);
+
+            Canvas.SetLeft(_uiElement, StartPosition.X - 15);
+            Canvas.SetTop(_uiElement, StartPosition.Y - 15);
         }
 
         public void SetDirection(double direction)
@@ -147,5 +147,11 @@ namespace SearchRobot.Library.RobotParts
 	    {
 		    return new Robot {StartPosition = this.StartPosition.Clone(), Direction = this.Direction};
 	    }
+
+        public void Dispose()
+        {
+            _mapExplored.Dispose();
+            _brain.Dispose();
+        }
     }
 }

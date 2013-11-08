@@ -8,8 +8,8 @@ namespace SearchRobot.Library.Maps
 {
 	public class Point
 	{
-        public double X { get; set; }
-        public double Y { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
         
                 public MapElementStatus Status { get; set; }
 		

@@ -28,13 +28,20 @@ namespace SearchRobot.Simulation
             InitializeComponent();
             InitializeText();
 
-            _simulationEngine = new SimulationEngine(MapArea);
+            _simulationEngine = new SimulationEngine(MapArea, MinimapArea);
         }
 
         private void InitializeText()
         {
+            btnLoad.Content = TextContent.Instance["Simulation-Button-Load"];
             btnStart.Content = TextContent.Instance["Simulation-Button-Start"];
             btnReset.Content = TextContent.Instance["Simulation-Button-Reset"];
+        }
+
+        private void OnBtnLoadClick(object sender, RoutedEventArgs e)
+        {
+            _simulationEngine.LoadMap();
+            InitializeText();
         }
 
         private void OnBtnStartClick(object sender, RoutedEventArgs e)
