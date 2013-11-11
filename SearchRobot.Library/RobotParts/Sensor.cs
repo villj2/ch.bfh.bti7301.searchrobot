@@ -43,6 +43,7 @@ namespace SearchRobot.Library.RobotParts
 
 			Converter = new BitmapConverter(new Size(canvas.ActualWidth, canvas.ActualHeight));
 		    BaseArea = GetBaseFieldMap(GetStructureBitmap(canvas));
+		    BaseArea = GetBaseFieldMap(GetStructureBitmap(canvas));
 		}
 
         private Bitmap GetStructureBitmap(Canvas canvas)
@@ -76,15 +77,7 @@ namespace SearchRobot.Library.RobotParts
         {
             PointRotator rotator = new PointRotator(Robot.StartPosition, Robot.Direction);
 
-            // Rotate the Edges;
-            Point topleft, topright, bottomleft, bottomright;
-            topleft = rotator.Rotate(new Point(0, 0));
-            topright = rotator.Rotate(new Point(BaseArea.GetUpperBound(0), 0));
-            bottomleft = rotator.Rotate(new Point(0, BaseArea.GetUpperBound(1)));
-            bottomright = rotator.Rotate(new Point(BaseArea.GetUpperBound(0), BaseArea.GetUpperBound(1)));
-
-
-
+            return null;
         }
 
 		public List<Point> GetView()

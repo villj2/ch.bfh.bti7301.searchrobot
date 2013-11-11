@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SearchRobot.Library.Maps;
 
 namespace SearchRobot.Library
 {
@@ -22,10 +23,18 @@ namespace SearchRobot.Library
 
         public int YOffset { get; private set; }
 
+        public Point TopLeftCoordinate { get; private set; }
+
+        public Point TopRightCoordinate { get; private set; }
+
+        public Point BottomLeftCoordinate { get; private set; }
+
+        public Point BottomRightCoordinate { get; private set; }
+
         public TDataType this[int x, int y]
         {
-            get { return _data[x + XOffset, y + YOffset]; }
-            set { _data[x + XOffset, y + YOffset] = value; }
+            get { return _data[x - XOffset, y - YOffset]; }
+            set { _data[x - XOffset, y - YOffset] = value; }
         }
 
         public NegativeArray(int width, int height, int xOffset, int yOffset)
@@ -34,6 +43,12 @@ namespace SearchRobot.Library
             Height = height;
             XOffset = xOffset;
             YOffset = yOffset;
+
+            TopLeftCoordinate = new Point(xOffset, yOffset);
+            TopRightCoordinate = new Point(xOffset, width - 1 + yOffset);
+            BottomLeftCoordinate = new Point(xOffset - 1 + height, yOffset);
+            BottomRightCoordinate = new Point(xOffset - 1 + height, width - 1 + yOffset);
+
             _data = new TDataType[width, height];
         }
     }
