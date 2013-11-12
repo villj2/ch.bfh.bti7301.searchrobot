@@ -64,6 +64,15 @@ namespace SearchRobot.Library.Simulation
             {
                 _robot = _map.Elements.OfType<Robot>().First();
                 _robot.initialize();
+                //_robot.Bind(_map);
+
+                // bind all Elements to map
+                
+                foreach (MapElement me in _map.Elements)
+                {
+                    me.Bind(_map);
+                }
+
                 _minimap = new Minimap(_minimapArea, _robot.MapExplored);
             }
         }
@@ -143,7 +152,7 @@ namespace SearchRobot.Library.Simulation
             _state = CycleState.Running;
             _dispatcherTimer.Start();
 
-            _minimap.Update();
+            
         }
 
         private void dispatcherTimerTick(object sender, EventArgs e)
@@ -151,7 +160,8 @@ namespace SearchRobot.Library.Simulation
             _ticks++;
             _robot.Move();
             
-            if(_ticks % CYCLE_MINIMAP_UPDATE == 0) _minimap.Update();
+
+            if(_ticks % CYCLE_MINIMAP_UPDATE == 1) _minimap.Update();
         }
 
         private void CyclesStop()

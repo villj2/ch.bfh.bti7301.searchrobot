@@ -17,12 +17,14 @@ namespace SearchRobot.Library.Maps
 
 	    protected bool IsUnique()
 		{
-			return Map.Elements.All(e => e.GetType() != GetType());
+			return Map.Elements.All(e => e != this && e.GetType() != GetType());
 		}
 
         protected override bool IsValid()
         {
-            return IsUnique() && base.IsValid();
+            // FIXME just4testing
+            return base.IsValid();
+            //return IsUnique() && base.IsValid();
         }
     }
 }
