@@ -81,14 +81,13 @@ namespace SearchRobot.Library
 
             // rotate all not default values
             TDataType defaultValue = default(TDataType);
-            for (int x = smallestX; x <= biggestX; x++)
+            for (int x = srcArray.XOffset; x < srcArray.XOffset + srcArray.Width; x++)
             {
-                for (int y = smallestY; y <= biggestY; y++)
+                for (int y = srcArray.YOffset; y < srcArray.YOffset + srcArray.Height; y++)
                 {
                     if (!srcArray[x, y].Equals(defaultValue))
                     {
                         Point p = Rotate(new Point(x, y));
-
                         result[p.X, p.Y] = srcArray[x, y];
                     }
                 }

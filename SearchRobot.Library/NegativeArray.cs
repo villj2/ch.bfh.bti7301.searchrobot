@@ -44,10 +44,10 @@ namespace SearchRobot.Library
             XOffset = xOffset;
             YOffset = yOffset;
 
-            TopLeftCoordinate = new Point(xOffset, yOffset);
-            TopRightCoordinate = new Point(xOffset, width - 1 + yOffset);
-            BottomLeftCoordinate = new Point(xOffset - 1 + height, yOffset);
-            BottomRightCoordinate = new Point(xOffset - 1 + height, width - 1 + yOffset);
+            BottomLeftCoordinate = new Point(xOffset, yOffset);
+            TopRightCoordinate = new Point(xOffset + width - 1, yOffset + height - 1);
+            TopLeftCoordinate = new Point(xOffset, yOffset + height - 1);
+            BottomRightCoordinate = new Point(xOffset + width - 1, yOffset);
 
             _data = new TDataType[width, height];
         }
