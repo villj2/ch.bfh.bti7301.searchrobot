@@ -43,6 +43,9 @@ namespace SearchRobot.Library.Tests
                 
             Assert.AreEqual(result.BottomRightCoordinate.X, 3);
             Assert.AreEqual(result.BottomRightCoordinate.Y, -5);
+
+            Assert.AreEqual(src[2, 2], result[-2, 2]);
+            Assert.AreEqual(src[2, 3], result[-3, 2]);
         }
 
         [TestMethod]
@@ -58,5 +61,60 @@ namespace SearchRobot.Library.Tests
             Assert.AreEqual(rotate.Y, 3);
         }
 
+        [TestMethod]
+        public void RotationTest180Degree()
+        {
+            Point p = new Point(3, 2);
+
+            PointRotator rotator = new PointRotator(180);
+
+            var rotate = rotator.Rotate(p);
+
+            Assert.AreEqual(rotate.X, -3);
+            Assert.AreEqual(rotate.Y, -2);
+        }
+
+        [TestMethod]
+        public void RotationTest270Degree()
+        {
+            Point p = new Point(3, 2);
+
+            PointRotator rotator = new PointRotator(270);
+
+            var rotate = rotator.Rotate(p);
+
+            Assert.AreEqual(rotate.X, 2);
+            Assert.AreEqual(rotate.Y, -3);
+        }
+
+        [TestMethod]
+        public void RotationTest30Degree()
+        {
+            // Results calculated with Wolfram Alpha
+            Point p = new Point(10, 10);
+
+            PointRotator rotator = new PointRotator(30);
+
+            var rotate = rotator.Rotate(p);
+
+            Assert.AreEqual(rotate.X, 4);
+            Assert.AreEqual(rotate.Y, 14);
+        }
+
+
+        [TestMethod]
+        public void RotationTest212Degree()
+        {
+            // Results calculated with Wolfram Alpha
+            Point p = new Point(10, 10);
+
+            PointRotator rotator = new PointRotator(212);
+
+            var rotate = rotator.Rotate(p);
+
+            Assert.AreEqual(rotate.X, -3);
+            Assert.AreEqual(rotate.Y, -14);
+        }
+    
     }
 }
