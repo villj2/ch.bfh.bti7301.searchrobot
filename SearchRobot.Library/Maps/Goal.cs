@@ -13,16 +13,20 @@ namespace SearchRobot.Library.Maps
 	public class Goal : UniqueMandatoryMapElement
 	{
 		private Ellipse _uiElement;
+	    private const int Radius = 5;
 
 		public Goal(Map map) : base(map)
 		{ }
 
 		public Goal() { }
 
-		protected override Geometry GeometryShape
-		{
-			get { return _uiElement.RenderedGeometry; }
-		}
+        protected override Geometry GeometryShape
+        {
+            get
+            {
+                return new EllipseGeometry(GeometryHelper.Convert(StartPosition), Radius, Radius);
+            }
+        }
 
         public override UIElement UiElement
 	    {
@@ -42,8 +46,8 @@ namespace SearchRobot.Library.Maps
 		{
 			_uiElement = new Ellipse
 			                 {
-			                     Width = 10,
-                                 Height = 10,
+                                 Width = Radius * 2,
+                                 Height = Radius * 2,
                                  Fill = Brushes.DarkRed
 			                 };
 
@@ -57,6 +61,27 @@ namespace SearchRobot.Library.Maps
 		{
 			Map.Remove(this);
 			canvas.Children.Remove(_uiElement);
+		}
+
+        public override void Move(Canvas canvas, int offsetX, int offsetY)
+		{
+			StartPosition.X += offsetX;
+			StartPosition.Y += offsetY;
+
+			Canvas.SetLeft(_uiElement, Canvas.GetLeft(_uiElement) + offsetX);
+			Canvas.SetTop(_uiElement, Canvas.GetTop(_uiElement) + offsetY);
+		}
+
+		/// <summary>
+		/// Creates a new object that is a copy of the current instance.
+		/// </summary>
+		/// <returns>
+		/// A new object that is a copy of this instance.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override object Clone()
+		{
+			return new Goal {StartPosition = StartPosition.Clone()};
 		}
 	}
 }

@@ -9,6 +9,8 @@ namespace SearchRobot.Library
 {
 	public static class GeometryHelper
 	{
+		private const double EPSILON = 0.001;
+
 		public static double GetAngle(Point centerPoint, Point edgePoint)
 		{
 			return Math.Atan2(edgePoint.Y - centerPoint.Y, edgePoint.X - centerPoint.X) / Math.PI * 180;
@@ -38,7 +40,17 @@ namespace SearchRobot.Library
 
         public static bool ComparePoints(Point point1, Point point2)
         {
-            return (point1.X == point2.X && point1.Y == point2.Y);
+            return (Math.Abs(point1.X - point2.X) < EPSILON && Math.Abs(point1.Y - point2.Y) < EPSILON);
+        }
+
+        public static double ToDegree(double radians)
+        {
+            return radians*180/Math.PI;
+        }
+
+        public static double ToRadians(double degree)
+        {
+            return degree/180*Math.PI;
         }
 
         public static bool ComparePoints(double x1, double y1, double x2, double y2)

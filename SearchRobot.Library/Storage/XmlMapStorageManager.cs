@@ -25,7 +25,10 @@ namespace SearchRobot.Library.Storage
 					{
 						if (Serializer.Value.CanDeserialize(xmlReader))
 						{
-							return Serializer.Value.Deserialize(xmlReader) as Map;
+							var map = Serializer.Value.Deserialize(xmlReader) as Map;
+							map.Elements.ForEach(ele => ele.Bind(map));
+
+							return map;
 						}
 						else
 						{

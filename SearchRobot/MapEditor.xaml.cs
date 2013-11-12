@@ -105,6 +105,9 @@ namespace SearchRobot
                 case Tools.Remove:
                     btnRemove.IsEnabled = !flag;
                     break;
+				case Tools.Move:
+		            btnMove.IsEnabled = !flag;
+					break;
             }
         }
 
@@ -123,7 +126,7 @@ namespace SearchRobot
                 case Tools.Remove:
                     return new RemoveTool(Map);
                 case Tools.Move:
-                    return new RemoveTool(Map);
+                    return new MoveTool(Map);
                 default:
                     return null;
             }

@@ -15,16 +15,18 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement, IDisposable
     {
+        private const int Size = 30;
         public MapExplored MapExplored { get { return _mapExplored; } }
 
         private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
         private Sensor _sensor;
-
         private double _positionX;
         private double _positionY;
         private double _direction;
+
+        public double Direction { get; set; }
 
         public Robot(Map map) : base(map) {}
 
@@ -36,7 +38,7 @@ namespace SearchRobot.Library.RobotParts
 
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
-            _sensor = new Sensor();
+            _sensor = new Sensor(this, Map, null, new Sight { Angle = 180, Reach = int.MaxValue });
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
@@ -46,7 +48,11 @@ namespace SearchRobot.Library.RobotParts
 
 	    protected override Geometry GeometryShape
 	    {
-			get { return _uiElement.RenderedGeometry; }
+            get
+            {
+                return new RectangleGeometry(new Rect(StartPosition.X, StartPosition.Y, Size, Size), 0, 0,
+                                       new RotateTransform(Direction, StartPosition.X, StartPosition.Y));
+            }
 	    }
 
         public override UIElement UiElement
@@ -125,6 +131,27 @@ namespace SearchRobot.Library.RobotParts
 	    {
 			canvas.Children.Remove(_uiElement);
 			Map.Remove(this);
+	    }
+
+        public override void Move(Canvas canvas, int offsetX, int offsetY)
+		{
+			StartPosition.X += offsetX;
+			StartPosition.Y += offsetY;
+
+			Canvas.SetLeft(_uiElement, Canvas.GetLeft(_uiElement) + offsetX);
+			Canvas.SetTop(_uiElement, Canvas.GetTop(_uiElement) + offsetY);
+		}
+
+	    /// <summary>
+	    /// Creates a new object that is a copy of the current instance.
+	    /// </summary>
+	    /// <returns>
+	    /// A new object that is a copy of this instance.
+	    /// </returns>
+	    /// <filterpriority>2</filterpriority>
+	    public override object Clone()
+	    {
+		    return new Robot {StartPosition = this.StartPosition.Clone(), Direction = this.Direction};
 	    }
 
         public void Dispose()

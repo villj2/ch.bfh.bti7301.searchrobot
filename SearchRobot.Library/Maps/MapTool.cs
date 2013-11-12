@@ -18,6 +18,11 @@ namespace SearchRobot.Library.Maps
             _map = map;
         }
 
+        protected Map Map
+        {
+            get { return _map; }
+        }
+
         protected MapElement GetElementAtPoint(Canvas canvas, Point point)
         {
             var result = VisualTreeHelper.HitTest(canvas, GeometryHelper.Convert(point));
