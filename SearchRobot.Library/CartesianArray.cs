@@ -11,7 +11,7 @@ namespace SearchRobot.Library
     /// 2D Array which supports negative index.
     /// </summary>
     /// <typeparam name="TDataType">Datatype of the array elements.</typeparam>
-    public class NegativeArray<TDataType>
+    public class CartesianArray<TDataType>
     {
         private readonly TDataType[,] _data;
 
@@ -37,7 +37,7 @@ namespace SearchRobot.Library
             set { _data[x - XOffset, y - YOffset] = value; }
         }
 
-        public NegativeArray(int width, int height, int xOffset, int yOffset)
+        public CartesianArray(int width, int height, int xOffset, int yOffset)
         {
             Width = width;
             Height = height;

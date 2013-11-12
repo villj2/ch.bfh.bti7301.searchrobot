@@ -73,7 +73,7 @@ namespace SearchRobot.Library.RobotParts
             return map;
         }
 
-        private NegativeArray<FieldState> GetVisibleField()
+        private CartesianArray<FieldState> GetVisibleField()
         {
             PointRotator rotator = new PointRotator(Robot.StartPosition, Robot.Direction);
 

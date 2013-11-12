@@ -10,8 +10,8 @@ namespace SearchRobot.Library.Tests
         [TestMethod]
         public void RotationTest()
         {
-            NegativeArray<int> src = new NegativeArray<int>(11, 11, -5, -5);
-            NegativeArrayTester.FillArray(src);
+            CartesianArray<int> src = new CartesianArray<int>(11, 11, -5, -5);
+            CartesianArrayTester.FillArray(src);
 
             PointRotator rotator = new PointRotator(90);
 
@@ -26,8 +26,8 @@ namespace SearchRobot.Library.Tests
         [TestMethod]
         public void RotationTestUnshapped()
         {
-            NegativeArray<int> src = new NegativeArray<int>(11, 7, -5, -3);
-            NegativeArrayTester.FillArray(src);
+            CartesianArray<int> src = new CartesianArray<int>(11, 7, -5, -3);
+            CartesianArrayTester.FillArray(src);
 
             src[5, -3] = int.MaxValue;
 
@@ -115,6 +115,5 @@ namespace SearchRobot.Library.Tests
             Assert.AreEqual(rotate.X, -3);
             Assert.AreEqual(rotate.Y, -14);
         }
-    
     }
 }

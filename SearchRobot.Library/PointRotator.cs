@@ -44,7 +44,7 @@ namespace SearchRobot.Library
                 };
         }
 
-        public NegativeArray<TDataType> Rotate<TDataType>(NegativeArray<TDataType> srcArray)
+        public CartesianArray<TDataType> Rotate<TDataType>(CartesianArray<TDataType> srcArray)
         {
             // Get Edges after rotation
             int smallestX, biggestX, smallestY, biggestY;
@@ -73,7 +73,7 @@ namespace SearchRobot.Library
             }
 
             // create the resulting array with the correct sizes
-            NegativeArray<TDataType> result = new NegativeArray<TDataType>(
+            CartesianArray<TDataType> result = new CartesianArray<TDataType>(
                                                             biggestX - smallestX + 1,
                                                             biggestY - smallestY + 1,
                                                             smallestX,

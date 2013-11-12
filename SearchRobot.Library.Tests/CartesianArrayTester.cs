@@ -4,9 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace SearchRobot.Library.Tests
 {
     [TestClass]
-    public class NegativeArrayTester
+    public class CartesianArrayTester
     {
-        public static void FillArray(NegativeArray<int> array)
+        public static void FillArray(CartesianArray<int> array)
         {
             for (int x = array.XOffset; x < (array.XOffset + array.Width); x++)
             {
@@ -21,7 +21,7 @@ namespace SearchRobot.Library.Tests
         public void NegativeIndexTest()
         {
             // array -5 to 5
-            NegativeArray<int> array = new NegativeArray<int>(11, 11, -5, -5);
+            CartesianArray<int> array = new CartesianArray<int>(11, 11, -5, -5);
             FillArray(array);
 
             Assert.AreEqual(array[-5, -5], 25);
@@ -38,7 +38,7 @@ namespace SearchRobot.Library.Tests
         public void NegativeIndexUnevenShaped()
         {
             // array -5 to 5, -5 to 3
-            NegativeArray<int> array = new NegativeArray<int>(11, 9, -5, -5);
+            CartesianArray<int> array = new CartesianArray<int>(11, 9, -5, -5);
             FillArray(array);
 
             Assert.AreEqual(array[-5, -5], 25);
@@ -54,7 +54,7 @@ namespace SearchRobot.Library.Tests
         public void NegativeIndexUnevenShapedException()
         {
             // array -5 to 5, -5 to 3
-            NegativeArray<int> array = new NegativeArray<int>(11, 9, -5, -5);
+            CartesianArray<int> array = new CartesianArray<int>(11, 9, -5, -5);
             FillArray(array);
 
             Assert.AreEqual(array[15, 15], 0);
