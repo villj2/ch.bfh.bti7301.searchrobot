@@ -25,5 +25,11 @@ namespace SearchRobot.Library.Maps
             X = x;
             Y = y;
         }
+
+        public override bool Equals(object obj)
+        {
+            var p = obj as Point;
+            return p != null && p.X == X && p.Y == Y; 
+        }
 	}
 }

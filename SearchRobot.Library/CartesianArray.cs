@@ -37,7 +37,25 @@ namespace SearchRobot.Library
             set { _data[x - XOffset, y - YOffset] = value; }
         }
 
+        public TDataType this[Point point]
+        {
+            get { return this[point.X, point.Y]; }
+            set { this[point.X, point.Y] = value; }
+        }
+
         public CartesianArray(int width, int height, int xOffset, int yOffset)
+        {
+            InitBoundaries(width, height, xOffset, yOffset);
+            _data = new TDataType[width, height];
+        }
+
+        private CartesianArray(int width, int height, int xOffset, int yOffset, TDataType[,] data)
+        {
+            InitBoundaries(width, height, xOffset, yOffset);
+            _data = data.Clone() as TDataType[,];
+        }
+
+        private void InitBoundaries(int width, int height, int xOffset, int yOffset)
         {
             Width = width;
             Height = height;
@@ -49,7 +67,6 @@ namespace SearchRobot.Library
             TopLeftCoordinate = new Point(xOffset, yOffset + height - 1);
             BottomRightCoordinate = new Point(xOffset + width - 1, yOffset);
 
-            _data = new TDataType[width, height];
         }
 
         public TDataType[,] ToArray()
@@ -82,6 +99,11 @@ namespace SearchRobot.Library
             }
 
             return result;
+        }
+
+        public CartesianArray<TDataType> Clone()
+        {
+            return new CartesianArray<TDataType>(Width, Height, XOffset, YOffset, _data);
         }
     }
 }

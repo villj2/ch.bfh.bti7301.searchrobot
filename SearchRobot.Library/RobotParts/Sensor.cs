@@ -16,48 +16,31 @@ namespace SearchRobot.Library.RobotParts
 {
 	public class Sensor
 	{
-	    private enum FieldState
-	    {
-	        Undiscovered,
-            Blocked,
-            Shadow,
-            Visited,
-            Outside
-	    }
-
-		private BitmapConverter Converter { get; set; }
-
-        private FieldState[,] BaseArea { get; set; }
+        private CartesianArray<MapElementStatus> BaseArea { get; set; }
         
-        private Map Map { get; set; }
-
 		private Robot Robot { get; set; }
 
 		private Sight Sight { get; set; }
 
-		public Sensor(Robot robot, Map map, Canvas canvas, Sight sight)
+		public Sensor(Robot robot, Canvas canvas, Sight sight)
 		{
-			Map = map;
 			Robot = robot;
 			Sight = sight;
-
-			Converter = new BitmapConverter(new Size(canvas.ActualWidth, canvas.ActualHeight));
-		    BaseArea = GetBaseFieldMap(GetStructureBitmap(canvas));
-		    BaseArea = GetBaseFieldMap(GetStructureBitmap(canvas));
+            BaseArea = CartesianArray<MapElementStatus>.FromArray(GetBaseFieldMap(GetStructureBitmap(canvas)));
 		}
 
         private Bitmap GetStructureBitmap(Canvas canvas)
         {
             Robot.Remove(canvas);
-            Bitmap result = Converter.ToBitmap(canvas);
+            Bitmap result = (new BitmapConverter(new Size(canvas.ActualWidth, canvas.ActualHeight))).ToBitmap(canvas);
             Robot.ApplyTo(canvas);
 
             return result;
         }
 
-        private FieldState[,] GetBaseFieldMap(Bitmap bitmap)
+        private MapElementStatus[,] GetBaseFieldMap(Bitmap bitmap)
         {
-            FieldState[,] map = new FieldState[bitmap.Width, bitmap.Height];
+            MapElementStatus[,] map = new MapElementStatus[bitmap.Width, bitmap.Height];
 
             for (int x = 0; x < bitmap.Width; x++)
             {
@@ -65,7 +48,7 @@ namespace SearchRobot.Library.RobotParts
                 {
                     if (bitmap.GetPixel(x, y).R < 100)
                     {
-                        map[x,y] = FieldState.Blocked;
+                        map[x, y] = MapElementStatus.Blocked;
                     }
                 }
             }
@@ -73,16 +56,98 @@ namespace SearchRobot.Library.RobotParts
             return map;
         }
 
-        private CartesianArray<FieldState> GetVisibleField()
+        private CartesianArray<MapElementStatus> GetRotatedMapCopy(double angle)
         {
-            PointRotator rotator = new PointRotator(Robot.StartPosition, Robot.Direction);
-
-            return null;
+            return (new PointRotator(angle)).Rotate(GetRobotCenteredMapCopy(Robot, BaseArea));
         }
 
-		public List<Point> GetView()
-		{
-			return null;
+        public CartesianArray<MapElementStatus> GetRobotCenteredMapCopy(Robot robot, CartesianArray<MapElementStatus> src)
+        {
+            var copy = src.Clone();
+
+            copy.XOffset = -robot.StartPosition.X;
+            copy.YOffset = copy.Height - robot.StartPosition.Y;
+
+            return copy;
+        }
+
+	    public CartesianArray<MapElementStatus> GetView()
+        {
+            var currentViewPort = GetRotatedMapCopy(Robot.Direction);
+
+            int leftEdge = currentViewPort.XOffset;
+	        int topEdge = currentViewPort.YOffset + currentViewPort.Height;
+	        int rightEdge = currentViewPort.XOffset + currentViewPort.Width;
+
+            Queue<Point> pointQueue = new Queue<Point>();
+            pointQueue.Enqueue(new Point(0, 0));
+
+            while(pointQueue.Count > 0)
+            {
+                Point curPoint = pointQueue.Dequeue();
+                Point leftPoint = new Point(curPoint.X - 1, curPoint.Y);
+                Point topPoint = new Point(curPoint.X, curPoint.Y + 1);
+                Point rightPoint = new Point(curPoint.X + 1, curPoint.Y);
+
+                if (leftPoint.X >= leftEdge)
+                {
+                    HandlePoint(pointQueue, currentViewPort, leftPoint, leftEdge, topEdge, rightEdge);
+                }
+
+                if (topPoint.Y < topEdge)
+                {
+                    HandlePoint(pointQueue, currentViewPort, topPoint, leftEdge, topEdge, rightEdge);
+                }
+
+                if (rightPoint.X < rightEdge)
+                {
+                    HandlePoint(pointQueue, currentViewPort, rightPoint, leftEdge, topEdge, rightEdge);
+                }
+            }
+
+            return currentViewPort;
 		}
+
+
+        private void HandlePoint(Queue<Point> queue, CartesianArray<MapElementStatus> viewport, Point point, int leftEdge, int topEdge, int rightEdge)
+        {
+            if (viewport[point] == MapElementStatus.Undiscovered)
+            {
+                queue.Enqueue(point);
+                viewport[point] = MapElementStatus.Discovered;
+            }
+            if (viewport[point] == MapElementStatus.Blocked)
+            {
+                SpawnShadow(viewport, point, leftEdge, topEdge, rightEdge);
+            }
+        }
+
+        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int leftEdge, int topEdge, int rightEdge)
+        {
+            bool increaseX = Math.Abs(point.X) < point.Y;
+            double ratio = increaseX ? point.Y / point.X : point.X / point.Y;
+            int xdistance = 0;
+            int ydistance = 0;
+
+            bool first = true;
+
+            do
+            {
+                viewport[point.X + xdistance, point.Y + ydistance] = first ? MapElementStatus.BlockedShadowed : MapElementStatus.Shadowed;
+                first = false;
+
+                if (increaseX)
+                {
+                    xdistance += 1;
+                    ydistance = Convert.ToInt32(Math.Round(ratio * xdistance));
+                }
+                else
+                {
+                    ydistance += 1;
+                    xdistance = Convert.ToInt32(Math.Round(ratio * ydistance));
+                }
+
+            } while (point.X >= leftEdge && point.X < rightEdge && point.Y < topEdge);
+        }
 	}
 }

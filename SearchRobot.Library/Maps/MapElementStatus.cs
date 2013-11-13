@@ -13,6 +13,12 @@ namespace SearchRobot.Library.Maps
         Blocked,
         Visited,
         Waypoint,
-        Target
+        Target,
+
+        /// <summary>
+        /// Used for sensor view result.
+        /// </summary>
+        Shadowed,
+        BlockedShadowed
     }
 }

@@ -155,21 +155,7 @@ namespace SearchRobot.Library.Simulation
             _state = CycleState.Running;
             _dispatcherTimer.Start();
 
-            
-
-			_robot.Remove(_mapArea);
-
-			Sensor mySensor = new Sensor(_robot, _map, _mapArea, sight);
-            
-            Size size = new Size(_mapArea.ActualWidth, _mapArea.ActualHeight);
-            BitmapConverter converter = new BitmapConverter(size);
-
-            var image = BitmapConverter.AsImage(converter.ToBitmap(_mapArea));
-            image.Width = 200;
-            
-            _mapArea.Children.Add(image);
-
-  		    _robot.ApplyTo(_mapArea);
+			Sensor mySensor = new Sensor(_robot, _mapArea, sight);
         }
 
         private void dispatcherTimerTick(object sender, EventArgs e)
