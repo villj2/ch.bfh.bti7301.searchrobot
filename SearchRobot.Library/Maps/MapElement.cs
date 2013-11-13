@@ -60,6 +60,7 @@ namespace SearchRobot.Library.Maps
 			}
 
 			var currrentGeometry = GeometryShape;
+            //var result = Map.Elements.Any(e => e.IsOverlappingWith(currrentGeometry));
 
             var result = Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
 

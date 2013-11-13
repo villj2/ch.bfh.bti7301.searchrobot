@@ -19,10 +19,38 @@ namespace SearchRobot.Library.Maps
         private Canvas _minimapArea;
         private MapExplored _mapExplored;
 
+        private MapElementStatus[,] testarr1 = new MapElementStatus[800, 600];
+        private MapElementStatus[,] testarr2 = new MapElementStatus[800, 600];
+        private MapElementStatus[,] testarr3 = new MapElementStatus[800, 600];
+        private MapElementStatus[,] testarr4 = new MapElementStatus[800, 600];
+        private MapElementStatus[,] testarr5 = new MapElementStatus[800, 600];
+        private MapElementStatus[,] testarr6 = new MapElementStatus[800, 600];
+
+        private List<MapElementStatus[,]> allArrs = new List<MapElementStatus[,]>();
+
+        private int _ticks = 0;
+
         public Minimap(Canvas minimapArea, MapExplored mapExplored)
         {
             _minimapArea = minimapArea;
             _mapExplored = mapExplored;
+
+            allArrs.Add(testarr1);
+            allArrs.Add(testarr2);
+            allArrs.Add(testarr3);
+            allArrs.Add(testarr4);
+            allArrs.Add(testarr5);
+            allArrs.Add(testarr6);
+
+            // FIXME just4testing - fill testarrs
+            /*
+            for (int i = 0; i < 300; i++)
+            {
+                for (int j = 0; j < 200; j++)
+                {
+                    Random rnd = 
+                }
+            }*/
 
             // FIXME just4testing - fill mapExplored with testdata
             for (int i = 0; i < _mapExplored.Map.GetLength(0); i++)
@@ -32,6 +60,8 @@ namespace SearchRobot.Library.Maps
                     if (j % 20 == 0) _mapExplored.Map[i, j] = MapElementStatus.Blocked;
                 }
             }
+
+
         }
 
         internal void Update()
@@ -84,25 +114,34 @@ namespace SearchRobot.Library.Maps
 
 
             // FIXME Performance des Todes :(
-            _minimapArea.Children.Clear();
+            //_minimapArea.Children.Clear();
 
-            for (int i = _mapExplored.Map.GetLowerBound(0); i < _mapExplored.Map.GetUpperBound(0); i++)
+            ++_ticks;
+
+            if (_ticks == 1)
             {
-                for (int j = _mapExplored.Map.GetLowerBound(1); j < _mapExplored.Map.GetUpperBound(1); j++)
+                for (int i = _mapExplored.Map.GetLowerBound(0); i < _mapExplored.Map.GetUpperBound(0); i++)
                 {
-                    if (_mapExplored.Map[i, j] == MapElementStatus.Waypoint)
+                    for (int j = _mapExplored.Map.GetLowerBound(1); j < _mapExplored.Map.GetUpperBound(1); j++)
                     {
-                        drawPoint(i, j, System.Windows.Media.Brushes.DarkRed, 5);
-                    }
-                    else if (_mapExplored.Map[i, j] == MapElementStatus.Visited)
-                    {
-                        drawPoint(i, j, System.Windows.Media.Brushes.DeepPink, 5);
-                    }
-                    else if (_mapExplored.Map[i, j] == MapElementStatus.Blocked)
-                    {
-                        drawPoint(i, j, System.Windows.Media.Brushes.Black);
+                        if (_mapExplored.Map[i, j] == MapElementStatus.Waypoint)
+                        {
+                            drawPoint(i, j, System.Windows.Media.Brushes.DarkRed, 5);
+                        }
+                        else if (_mapExplored.Map[i, j] == MapElementStatus.Visited)
+                        {
+                            drawPoint(i, j, System.Windows.Media.Brushes.DeepPink, 5);
+                        }
+                        else if (_mapExplored.Map[i, j] == MapElementStatus.Blocked)
+                        {
+                            drawPoint(i, j, System.Windows.Media.Brushes.Black);
+                        }
                     }
                 }
+            }
+            else if (_ticks == 2)
+            {
+
             }
         }
 
@@ -120,8 +159,8 @@ namespace SearchRobot.Library.Maps
                 Fill = color
             };
 
-            Canvas.SetLeft(ellipse, posX / 4);
-            Canvas.SetTop(ellipse, posY / 4);
+            Canvas.SetLeft(ellipse, posX / (800 / _minimapArea.ActualWidth));
+            Canvas.SetTop(ellipse, posY / (600 / _minimapArea.ActualHeight));
 
             _minimapArea.Children.Add(ellipse);
         }

@@ -42,6 +42,8 @@ namespace SearchRobot.Library.RobotParts
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
+
+            Console.WriteLine("Robot Map: " + Map);
         }
 
 	    protected override Geometry GeometryShape
@@ -98,6 +100,10 @@ namespace SearchRobot.Library.RobotParts
 
             SetPos(mo.X, mo.Y);
             SetDirection(mo.Direction);
+
+            // Problem: Roboter ist nicht unique!!
+            Console.WriteLine("IsUnique: " + IsUnique());
+            Console.WriteLine("isValid: " + IsValid());
         }
 
         public void SetPos(double x, double y)
