@@ -19,9 +19,9 @@ namespace SearchRobot.Library
 
         public int Height { get; private set; }
 
-        public int XOffset { get; private set; }
+        public int XOffset { get; set; }
 
-        public int YOffset { get; private set; }
+        public int YOffset { get; set; }
 
         public Point TopLeftCoordinate { get; private set; }
 
@@ -50,6 +50,38 @@ namespace SearchRobot.Library
             BottomRightCoordinate = new Point(xOffset + width - 1, yOffset);
 
             _data = new TDataType[width, height];
+        }
+
+        public TDataType[,] ToArray()
+        {
+            int height = _data.GetUpperBound(1);
+            TDataType[,] result = new TDataType[_data.GetUpperBound(0) + 1, _data.GetUpperBound(1) + 1];
+
+            for (var x = 0; x <= _data.GetUpperBound(0); x++)
+            {
+                for (var y = 0; y <= _data.GetUpperBound(1); y++)
+                {
+                    result[x, height - y] = _data[x, y];
+                }
+            }
+
+            return result;
+        }
+
+        public static CartesianArray<TDataType> FromArray(TDataType[,] array)
+        {
+            int height = array.GetUpperBound(1);
+            var result = new CartesianArray<TDataType>(array.GetUpperBound(0) + 1, height + 1, 0, 0);
+           
+            for (var x = 0; x <= array.GetUpperBound(0); x++)
+            {
+                for (var y = 0; y <= array.GetUpperBound(1); y++)
+                {
+                    result[x, height - y] = array[x, y];
+                }
+            }
+
+            return result;
         }
     }
 }

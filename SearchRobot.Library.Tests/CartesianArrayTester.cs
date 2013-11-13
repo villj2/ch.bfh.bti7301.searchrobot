@@ -59,5 +59,45 @@ namespace SearchRobot.Library.Tests
 
             Assert.AreEqual(array[15, 15], 0);
         }
+
+        [TestMethod]
+        public void CreateFromArray()
+        {
+            // [11] [21] [31]
+            // [12] [22] [23]
+            // [13] [23] [33]
+
+            int[,] src = new int[3,3] { {11, 21, 31}, { 12 , 22, 23}, { 13, 23, 33} };
+
+            var cartesianArray = CartesianArray<int>.FromArray(src);
+
+            Assert.AreEqual(cartesianArray[0, 0], src[0, 2]);
+            Assert.AreEqual(cartesianArray[2, 0], src[2, 2]);
+            Assert.AreEqual(cartesianArray[1, 1], src[1, 1]);
+            Assert.AreEqual(cartesianArray[0, 2], src[0, 0]);
+        }
+
+        [TestMethod]
+        public void ToArray()
+        {
+            // [0] [2] [4]
+            // [0] [1] [2]
+            // [0] [0] [0]
+
+            var cartesianArray = new CartesianArray<int>(3, 3, 0, 0);
+            FillArray(cartesianArray);
+
+            var array = cartesianArray.ToArray();
+
+            Assert.AreEqual(array[0, 0], 0);
+            Assert.AreEqual(array[1, 0], 2);
+            Assert.AreEqual(array[2, 0], 4);
+
+            Assert.AreEqual(array[1, 1], 1);
+            Assert.AreEqual(array[2, 1], 2);
+            Assert.AreEqual(array[2, 2], 0);
+
+            Assert.AreEqual(array[0, 2], 0);
+        }
     }
 }
