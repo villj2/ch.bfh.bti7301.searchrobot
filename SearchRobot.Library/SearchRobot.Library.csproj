@@ -58,7 +58,7 @@
     <Compile Include="Maps\Minimap.cs" />
     <Compile Include="Maps\MoveTool.cs" />
     <Compile Include="Maps\Point.cs" />
-    <Compile Include="NegativeArray.cs" />
+    <Compile Include="CartesianArray.cs" />
     <Compile Include="PointRotator.cs" />
     <Compile Include="RobotParts\Brain.cs" />
     <Compile Include="Maps\RemoveTool.cs" />
