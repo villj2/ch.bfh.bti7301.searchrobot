@@ -73,9 +73,9 @@ namespace SearchRobot.Library.RobotParts
 
 	    public CartesianArray<MapElementStatus> GetView()
         {
-            var currentViewPort = GetRotatedMapCopy(Robot.Direction);
+            var currentViewPort = GetRotatedMapCopy(- Robot.Direction);
 
-            int leftEdge = currentViewPort.XOffset;
+            int bottomEdge = currentViewPort.YOffset - currentViewPort.Height;
 	        int topEdge = currentViewPort.YOffset + currentViewPort.Height;
 	        int rightEdge = currentViewPort.XOffset + currentViewPort.Width;
 
@@ -85,23 +85,23 @@ namespace SearchRobot.Library.RobotParts
             while(pointQueue.Count > 0)
             {
                 Point curPoint = pointQueue.Dequeue();
-                Point leftPoint = new Point(curPoint.X - 1, curPoint.Y);
                 Point topPoint = new Point(curPoint.X, curPoint.Y + 1);
                 Point rightPoint = new Point(curPoint.X + 1, curPoint.Y);
+                Point bottomPoint = new Point(curPoint.X, curPoint.Y - 1);
 
-                if (leftPoint.X >= leftEdge)
+                if (bottomPoint.Y > bottomEdge)
                 {
-                    HandlePoint(pointQueue, currentViewPort, leftPoint, leftEdge, topEdge, rightEdge);
+                    HandlePoint(pointQueue, currentViewPort, bottomPoint, topEdge, rightEdge, bottomEdge);
                 }
 
                 if (topPoint.Y < topEdge)
                 {
-                    HandlePoint(pointQueue, currentViewPort, topPoint, leftEdge, topEdge, rightEdge);
+                    HandlePoint(pointQueue, currentViewPort, topPoint, topEdge, rightEdge, bottomEdge);
                 }
 
                 if (rightPoint.X < rightEdge)
                 {
-                    HandlePoint(pointQueue, currentViewPort, rightPoint, leftEdge, topEdge, rightEdge);
+                    HandlePoint(pointQueue, currentViewPort, rightPoint, topEdge, rightEdge, bottomEdge);
                 }
             }
 
@@ -109,7 +109,7 @@ namespace SearchRobot.Library.RobotParts
 		}
 
 
-        private void HandlePoint(Queue<Point> queue, CartesianArray<MapElementStatus> viewport, Point point, int leftEdge, int topEdge, int rightEdge)
+        private void HandlePoint(Queue<Point> queue, CartesianArray<MapElementStatus> viewport, Point point, int topEdge, int rightEdge, int bottomEdge)
         {
             if (viewport[point] == MapElementStatus.Undiscovered)
             {
@@ -118,11 +118,11 @@ namespace SearchRobot.Library.RobotParts
             }
             if (viewport[point] == MapElementStatus.Blocked)
             {
-                SpawnShadow(viewport, point, leftEdge, topEdge, rightEdge);
+                SpawnShadow(viewport, point, topEdge, rightEdge, bottomEdge);
             }
         }
 
-        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int leftEdge, int topEdge, int rightEdge)
+        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int leftEdge, int topEdge, int bottomEdge)
         {
             bool increaseX = Math.Abs(point.X) < point.Y;
             double ratio = increaseX ? point.Y / point.X : point.X / point.Y;
@@ -147,7 +147,7 @@ namespace SearchRobot.Library.RobotParts
                     xdistance = Convert.ToInt32(Math.Round(ratio * ydistance));
                 }
 
-            } while (point.X >= leftEdge && point.X < rightEdge && point.Y < topEdge);
+            } while (point.X >= leftEdge && point.Y > bottomEdge && point.Y < topEdge);
         }
 	}
 }
