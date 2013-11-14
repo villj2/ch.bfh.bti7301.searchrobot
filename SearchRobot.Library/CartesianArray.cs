@@ -33,8 +33,8 @@ namespace SearchRobot.Library
 
         public TDataType this[int x, int y]
         {
-            get { return _data[x - XOffset, y - YOffset]; }
-            set { _data[x - XOffset, y - YOffset] = value; }
+            get { return _data[x - XOffset, (Height - 1 -(y - YOffset))]; }
+            set { _data[x - XOffset, (Height - 1 - (y - YOffset))] = value; }
         }
 
         public TDataType this[Point point]
@@ -66,39 +66,16 @@ namespace SearchRobot.Library
             TopRightCoordinate = new Point(xOffset + width - 1, yOffset + height - 1);
             TopLeftCoordinate = new Point(xOffset, yOffset + height - 1);
             BottomRightCoordinate = new Point(xOffset + width - 1, yOffset);
-
         }
 
         public TDataType[,] ToArray()
         {
-            int height = _data.GetUpperBound(1);
-            TDataType[,] result = new TDataType[_data.GetUpperBound(0) + 1, _data.GetUpperBound(1) + 1];
-
-            for (var x = 0; x <= _data.GetUpperBound(0); x++)
-            {
-                for (var y = 0; y <= _data.GetUpperBound(1); y++)
-                {
-                    result[x, height - y] = _data[x, y];
-                }
-            }
-
-            return result;
+            return _data.Clone() as TDataType[,];
         }
 
         public static CartesianArray<TDataType> FromArray(TDataType[,] array)
         {
-            int height = array.GetUpperBound(1);
-            var result = new CartesianArray<TDataType>(array.GetUpperBound(0) + 1, height + 1, 0, 0);
-           
-            for (var x = 0; x <= array.GetUpperBound(0); x++)
-            {
-                for (var y = 0; y <= array.GetUpperBound(1); y++)
-                {
-                    result[x, height - y] = array[x, y];
-                }
-            }
-
-            return result;
+            return new CartesianArray<TDataType>(array.GetUpperBound(0) + 1, array.GetUpperBound(1) + 1, 0, 0, array);
         }
 
         public CartesianArray<TDataType> Clone()
