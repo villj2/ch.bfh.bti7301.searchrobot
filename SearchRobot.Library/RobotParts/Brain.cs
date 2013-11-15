@@ -24,8 +24,11 @@ namespace SearchRobot.Library.RobotParts
         public MovementObject GetNextMove(double posX, double posY, double currentDirection)
         {
             // check if waypoint is reached
-            if (GeometryHelper.ComparePoints(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y))
+            // FIXME waypoint kann teilweise nicht perfekt getroffen werden!!
+            if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
             {
+                Console.WriteLine("waypoint reached");
+
                 CreateNextWaypoint();
             }
 
@@ -40,16 +43,25 @@ namespace SearchRobot.Library.RobotParts
             if (currentDirection != targetDirection)
             {
                 settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
+
+                //Console.WriteLine("dir: " + settingNew.Direction);
             }
             else
             {
                 MovementObject positionNew = GetNextMovementPoint(posX, posY);
 
+                //Console.WriteLine("x: " + positionNew.X + "y: " + positionNew.Y);
+
                 settingNew.X = positionNew.X;
                 settingNew.Y = positionNew.Y;
             }
-
+              
             return settingNew;
+        }
+
+        public void ForceNewWaypoint()
+        {
+            CreateNextWaypoint();
         }
 
         /// <summary>
@@ -72,7 +84,6 @@ namespace SearchRobot.Library.RobotParts
 
         /* calculates new movementPoint based on next waypoint
         /****************************************************************/
-        //private Point GetNextMovementPoint(Point currentPosition)
         private MovementObject GetNextMovementPoint(double x, double y)
         {
             var movementObject = new MovementObject();

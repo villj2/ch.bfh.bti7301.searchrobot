@@ -66,15 +66,17 @@ namespace SearchRobot.Library.Simulation
             if (_map != null)
             {
                 _robot = _map.Elements.OfType<Robot>().First();
-                _robot.initialize();
+                _robot.initialize(_mapArea);
                 //_robot.Bind(_map);
 
                 // bind all Elements to map
                 
+                /*
                 foreach (MapElement me in _map.Elements)
                 {
                     me.Bind(_map);
                 }
+                */
 
                 _minimap = new Minimap(_minimapArea, _robot.MapExplored);
             }
@@ -156,7 +158,7 @@ namespace SearchRobot.Library.Simulation
             _dispatcherTimer.Start();
 
             
-
+            /*
 			_robot.Remove(_mapArea);
 
 			Sensor mySensor = new Sensor(_robot, _map, _mapArea, sight);
@@ -170,6 +172,7 @@ namespace SearchRobot.Library.Simulation
             _mapArea.Children.Add(image);
 
   		    _robot.ApplyTo(_mapArea);
+             */
         }
 
         private void dispatcherTimerTick(object sender, EventArgs e)

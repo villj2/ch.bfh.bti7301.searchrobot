@@ -41,8 +41,7 @@ namespace SearchRobot.Library.RobotParts
 			Robot = robot;
 			Sight = sight;
 
-			Converter = new BitmapConverter(new Size(canvas.ActualWidth, canvas.ActualHeight));
-		    BaseArea = GetBaseFieldMap(GetStructureBitmap(canvas));
+			//Converter = new BitmapConverter(new Size(canvas.ActualWidth, canvas.ActualHeight));
 		    BaseArea = GetBaseFieldMap(GetStructureBitmap(canvas));
 		}
 

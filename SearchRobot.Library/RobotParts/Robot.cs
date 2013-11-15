@@ -18,10 +18,13 @@ namespace SearchRobot.Library.RobotParts
         private const int Size = 30;
         public MapExplored MapExplored { get { return _mapExplored; } }
 
-        private Polyline _uiElement;
+        private Rectangle _uiElement;
+        //private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
         private Sensor _sensor;
+        private Robot _collisionDummy;
+        private Canvas _mapArea;
         private double _positionX;
         private double _positionY;
         private double _direction;
@@ -32,13 +35,14 @@ namespace SearchRobot.Library.RobotParts
 
         internal Robot() { }
 
-        public void initialize()
+        public void initialize(Canvas mapArea)
         {
             Console.WriteLine("Robot initialize");
 
+            _mapArea = mapArea;
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
-            _sensor = new Sensor(this, Map, null, new Sight { Angle = 180, Reach = int.MaxValue });
+            //_sensor = new Sensor(this, Map, null, new Sight { Angle = 180, Reach = int.MaxValue });
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
@@ -50,8 +54,11 @@ namespace SearchRobot.Library.RobotParts
 	    {
             get
             {
-                return new RectangleGeometry(new Rect(StartPosition.X, StartPosition.Y, Size, Size), 0, 0,
-                                       new RotateTransform(Direction, StartPosition.X, StartPosition.Y));
+                var rect = new Rect(_positionX - 15, _positionY - 15, Size, Size);
+
+                // FIXME Ausrichtung des Rects wohl noch nicht korrekt.
+                //return new RectangleGeometry(rect, 0, 0, new RotateTransform(_direction, 15, 15));
+                return new RectangleGeometry(rect, 0, 0, new RotateTransform(_direction, 30, 30));
             }
 	    }
 
@@ -73,6 +80,7 @@ namespace SearchRobot.Library.RobotParts
 
 	    public override void ApplyTo(Canvas canvas)
 		{
+            /*
 			_uiElement = new Polyline();
 
 			_uiElement.Points.Add(new System.Windows.Point(10, 30));
@@ -87,6 +95,30 @@ namespace SearchRobot.Library.RobotParts
 			_uiElement.Height = 30;
 
 			_uiElement.Fill = Brushes.DarkGreen;
+            */
+
+
+
+
+
+
+            // FIXME just4testing - draw rectangle (same as collision detection)
+            
+            _uiElement = new Rectangle
+            {
+                Height = Size,
+                Fill = Brushes.Black,
+                Width = Size
+            };
+
+            Canvas.SetLeft(_uiElement, StartPosition.X);
+            Canvas.SetTop(_uiElement, StartPosition.Y);
+            _uiElement.RenderTransform = new RotateTransform(_direction + 90, 15, 15);
+            _uiElement.Fill = Brushes.DarkGreen;
+            
+
+
+
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(_direction);
@@ -98,12 +130,41 @@ namespace SearchRobot.Library.RobotParts
         {
             MovementObject mo = _brain.GetNextMove(_positionX, _positionY, _direction);
 
+            // temporarily deactivate robot to avoid collision with clone
+            IsActivated = false;
+            
+            // create clone for collision dection of next move
+            _collisionDummy = this.Clone() as Robot;
+            _collisionDummy.ApplyTo(_mapArea);
+            Map.Add(_collisionDummy);
+            _collisionDummy.Bind(Map);
+
+            // set new position
+            _collisionDummy.SetPos(mo.X, mo.Y);
+
+            if (_collisionDummy.IsOverlapping())
+            {
+                Console.WriteLine("COLLISION");
+
+                _collisionDummy.Dispose();
+                _collisionDummy.Remove(_mapArea);
+
+                // FIXME Problem: Roboter kommt teilweise in Endlos-Drehung. Ev. weil plötzlich 2 Waypoints existieren?
+                _brain.ForceNewWaypoint();
+                IsActivated = true;
+
+                return;
+            }
+
+            _collisionDummy.Dispose();
+            _collisionDummy.Remove(_mapArea);
+            IsActivated = true;
+
+
             SetPos(mo.X, mo.Y);
             SetDirection(mo.Direction);
 
-            // Problem: Roboter ist nicht unique!!
-            Console.WriteLine("IsUnique: " + IsUnique());
-            Console.WriteLine("isValid: " + IsValid());
+            //Console.WriteLine("isValid: " + IsValid());
         }
 
         public void SetPos(double x, double y)
@@ -156,8 +217,8 @@ namespace SearchRobot.Library.RobotParts
 
         public void Dispose()
         {
-            _mapExplored.Dispose();
-            _brain.Dispose();
+            if (_mapExplored != null) _mapExplored.Dispose();
+            if (_brain != null) _brain.Dispose();
         }
     }
 }
