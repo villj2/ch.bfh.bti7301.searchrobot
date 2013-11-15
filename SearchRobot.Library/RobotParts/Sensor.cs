@@ -16,17 +16,21 @@ namespace SearchRobot.Library.RobotParts
 {
 	public class Sensor
 	{
-        private CartesianArray<MapElementStatus> BaseArea { get; set; }
-        
+		private Lazy<CartesianArray<MapElementStatus>> BaseArea { get; set; }
+
 		private Robot Robot { get; set; }
 
 		private Sight Sight { get; set; }
+
+		private Canvas Canvas { get; set; }
 
 		public Sensor(Robot robot, Canvas canvas, Sight sight)
 		{
 			Robot = robot;
 			Sight = sight;
-            BaseArea = CartesianArray<MapElementStatus>.FromArray(GetBaseFieldMap(GetStructureBitmap(canvas)));
+			Canvas = canvas;
+			BaseArea = new Lazy<CartesianArray<MapElementStatus>>(
+				() => CartesianArray<MapElementStatus>.FromArray(GetBaseFieldMap(GetStructureBitmap(Canvas))));
 		}
 
         private Bitmap GetStructureBitmap(Canvas canvas)
@@ -58,7 +62,7 @@ namespace SearchRobot.Library.RobotParts
 
         private CartesianArray<MapElementStatus> GetRotatedMapCopy(double angle)
         {
-            return (new PointRotator(angle)).Rotate(GetRobotCenteredMapCopy(Robot, BaseArea));
+            return (new PointRotator(angle)).Rotate(GetRobotCenteredMapCopy(Robot, BaseArea.Value));
         }
 
         public CartesianArray<MapElementStatus> GetRobotCenteredMapCopy(Robot robot, CartesianArray<MapElementStatus> src)
@@ -66,7 +70,7 @@ namespace SearchRobot.Library.RobotParts
             var copy = src.Clone();
 
             copy.XOffset = -robot.StartPosition.X;
-            copy.YOffset = copy.Height - robot.StartPosition.Y;
+            copy.YOffset = - (src.Height - robot.StartPosition.Y);
 
             return copy;
         }
@@ -75,9 +79,9 @@ namespace SearchRobot.Library.RobotParts
         {
             var currentViewPort = GetRotatedMapCopy(- Robot.Direction);
 
-            int bottomEdge = currentViewPort.YOffset - currentViewPort.Height;
-	        int topEdge = currentViewPort.YOffset + currentViewPort.Height;
-	        int rightEdge = currentViewPort.XOffset + currentViewPort.Width;
+            int bottomEdge = currentViewPort.BottomRightCoordinate.Y;
+			int topEdge = currentViewPort.TopRightCoordinate.Y;
+	        int rightEdge = currentViewPort.TopRightCoordinate.X;
 
             Queue<Point> pointQueue = new Queue<Point>();
             pointQueue.Enqueue(new Point(0, 0));
@@ -105,6 +109,8 @@ namespace SearchRobot.Library.RobotParts
                 }
             }
 
+			DebugHelper.StoreAsBitmap(@"C:\sensorimage.bmp", currentViewPort);
+
             return currentViewPort;
 		}
 
@@ -122,14 +128,27 @@ namespace SearchRobot.Library.RobotParts
             }
         }
 
-        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int leftEdge, int topEdge, int bottomEdge)
+        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int topEdge, int rightEdge, int bottomEdge)
         {
-            bool increaseX = Math.Abs(point.X) < point.Y;
-            double ratio = increaseX ? point.Y / point.X : point.X / point.Y;
-            int xdistance = 0;
-            int ydistance = 0;
+			bool increaseX = point.X < Math.Abs(point.Y);
+			double ratio = 0.0;
+			if (point.X != 0 && point.Y != 0)
+			{
+				ratio = Math.Abs(increaseX ? point.Y / point.X : point.X / point.Y);
 
-            bool first = true;
+				if (!increaseX)
+				{
+					if (point.Y < 0)
+					{
+						ratio *= -1;
+					}
+				}
+			}
+
+			int xdistance = 0;
+			int ydistance = 0;
+
+			bool first = true;
 
             do
             {
@@ -147,7 +166,11 @@ namespace SearchRobot.Library.RobotParts
                     xdistance = Convert.ToInt32(Math.Round(ratio * ydistance));
                 }
 
-            } while (point.X >= leftEdge && point.Y > bottomEdge && point.Y < topEdge);
+				// TODO : Detect End of Map to increase Performance
+
+            } while (point.X + xdistance < rightEdge
+				  && point.Y + ydistance > bottomEdge 
+				  && point.Y + ydistance < topEdge);
         }
 	}
 }

@@ -23,13 +23,37 @@ namespace SearchRobot.Library
 
         public int YOffset { get; set; }
 
-        public Point TopLeftCoordinate { get; private set; }
+        public Point TopLeftCoordinate
+		{
+			get
+			{
+				return new Point(XOffset, YOffset + Height - 1);
+			}
+		}
 
-        public Point TopRightCoordinate { get; private set; }
+		public Point TopRightCoordinate
+		{
+			get
+			{
+				return new Point(XOffset + Width - 1, YOffset + Height - 1);
+			}
+		}
 
-        public Point BottomLeftCoordinate { get; private set; }
+		public Point BottomLeftCoordinate
+		{
+			get
+			{
+				return new Point(XOffset, YOffset);
+			}
+		}
 
-        public Point BottomRightCoordinate { get; private set; }
+		public Point BottomRightCoordinate
+		{
+			get
+			{
+				return new Point(XOffset + Width - 1, YOffset);
+			}
+		}
 
         public TDataType this[int x, int y]
         {
@@ -61,11 +85,6 @@ namespace SearchRobot.Library
             Height = height;
             XOffset = xOffset;
             YOffset = yOffset;
-
-            BottomLeftCoordinate = new Point(xOffset, yOffset);
-            TopRightCoordinate = new Point(xOffset + width - 1, yOffset + height - 1);
-            TopLeftCoordinate = new Point(xOffset, yOffset + height - 1);
-            BottomRightCoordinate = new Point(xOffset + width - 1, yOffset);
         }
 
         public TDataType[,] ToArray()

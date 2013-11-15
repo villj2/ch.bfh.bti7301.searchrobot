@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapConverter.cs" />
+    <Compile Include="DebugHelper.cs" />
     <Compile Include="GeometryHelper.cs" />
     <Compile Include="Global\TextContent.cs" />
     <Compile Include="Maps\Disc.cs" />

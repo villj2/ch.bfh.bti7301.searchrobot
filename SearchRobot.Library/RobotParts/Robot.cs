@@ -24,7 +24,6 @@ namespace SearchRobot.Library.RobotParts
         private Sensor _sensor;
         private double _positionX;
         private double _positionY;
-        private double _direction;
 
         public double Direction { get; set; }
 
@@ -32,15 +31,16 @@ namespace SearchRobot.Library.RobotParts
 
         internal Robot() { }
 
-        public void initialize()
+        public void Initialize(Sensor sensor)
         {
             Console.WriteLine("Robot initialize");
 
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
+	        _sensor = sensor;
 
             SetPos(StartPosition.X, StartPosition.Y);
-            SetDirection(_direction);
+            SetDirection(Direction);
 
             Console.WriteLine("Robot Map: " + Map);
         }
@@ -88,14 +88,19 @@ namespace SearchRobot.Library.RobotParts
 			_uiElement.Fill = Brushes.DarkGreen;
 
             SetPos(StartPosition.X, StartPosition.Y);
-            SetDirection(_direction);
+			SetDirection(Direction);
 
 			canvas.Children.Add(_uiElement);
 		}
 
+		public CartesianArray<MapElementStatus> GetView()
+		{
+			return _sensor.GetView();
+		}
+
         public void Move()
         {
-            MovementObject mo = _brain.GetNextMove(_positionX, _positionY, _direction);
+			MovementObject mo = _brain.GetNextMove(_positionX, _positionY, Direction);
 
             SetPos(mo.X, mo.Y);
             SetDirection(mo.Direction);
@@ -122,8 +127,8 @@ namespace SearchRobot.Library.RobotParts
 
         public void SetDirection(double direction)
         {
-            _direction = direction;
-            _uiElement.RenderTransform = new RotateTransform(_direction + 90, 15, 15);
+			Direction = direction;
+			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
         }
 
 	    public override void Remove(Canvas canvas)

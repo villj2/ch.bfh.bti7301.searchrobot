@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace SearchRobot.Library.RobotParts
 {
-    public class Sight
-    {
-        public Point Position { get; set; }
-        public int Angle { get; set; }
-        public int Reach { get; set; }
-    }
+	public class Sight
+	{
+		public int Angle { get; set; }
+		public int Reach { get; set; }
+	}
 }
