@@ -1,5 +1,6 @@
 ﻿using SearchRobot.Library.Maps;
 using SearchRobot.Library.Simulation;
+using SearchRobot.Library.Simulation.WayDecision;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,13 @@ namespace SearchRobot.Library.RobotParts
     {
         private MapExplored _mapExplored;
 
+        private Random _rnd;
+
         public Brain(MapExplored mapExplored) {
 
             _mapExplored = mapExplored;
+
+            _rnd = new Random();
 
             // set first waypoint
             CreateNextWaypoint();
@@ -24,11 +29,10 @@ namespace SearchRobot.Library.RobotParts
         public MovementObject GetNextMove(double posX, double posY, double currentDirection)
         {
             // check if waypoint is reached
-            // FIXME waypoint kann teilweise nicht perfekt getroffen werden!!
             if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
             {
                 Console.WriteLine("waypoint reached");
-
+                _mapExplored.SetStatus(posX, posY, MapElementStatus.WaypointVisited);
                 CreateNextWaypoint();
             }
 
@@ -38,49 +42,55 @@ namespace SearchRobot.Library.RobotParts
             settingNew.Direction = currentDirection;
 
             double targetDirection = CalculateTargetDirection(posX, posY, _mapExplored.WaypointActive);
+            //Console.WriteLine("targetDirection: " + targetDirection);
 
             // either change direction or position
-            if (currentDirection != targetDirection)
+            if ((currentDirection + 360) % 360 != (targetDirection + 360) % 360)
             {
                 settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
-
-                //Console.WriteLine("dir: " + settingNew.Direction);
             }
             else
             {
                 MovementObject positionNew = GetNextMovementPoint(posX, posY);
 
-                //Console.WriteLine("x: " + positionNew.X + "y: " + positionNew.Y);
-
                 settingNew.X = positionNew.X;
                 settingNew.Y = positionNew.Y;
+            }
+
+            // add new movement point to map explored and mark as VISITED
+            if (_mapExplored.GetStatus(settingNew.X, settingNew.Y) == MapElementStatus.Undiscovered)
+            {
+                _mapExplored.SetStatus(settingNew.X, settingNew.Y, MapElementStatus.Visited);
             }
               
             return settingNew;
         }
 
-        public void ForceNewWaypoint()
+        /// <summary>
+        /// Robot recognizes collision with obstacle and tells brain.
+        /// Brain adds point to mapExplored and calculates new Waypoint.
+        /// </summary>
+        /// <param name="mo"></param>
+        public void Collision(double posX, double posY, MovementObject mo)
         {
-            CreateNextWaypoint();
+            CreateNextWaypoint(new WayDecisionCollision(posX, posY, mo, _mapExplored));
         }
 
         /// <summary>
-        /// calculates new waypoint based mapExplored
+        /// calculates new waypoint based on mapExplored and _wayDecisionStatus
         /// </summary>
         /// <returns></returns>
         private void CreateNextWaypoint()
         {
-            // TODO implement logic by deciding what the next waypoint is based on _mapExplored
-
-            Random rnd = new Random();
-
-            Point waypointNew = new Point();
-            waypointNew.X = rnd.Next(0, 800);
-            waypointNew.Y = rnd.Next(0, 600);
-            waypointNew.Status = MapElementStatus.Waypoint;
-
-            _mapExplored.WaypointActive = waypointNew;
+            CreateNextWaypoint(new WayDecisionInit());
         }
+
+        private void CreateNextWaypoint(WayDecision wayDecision)
+        {
+            _mapExplored.WaypointActive = wayDecision.GetWaypoint();
+        }
+
+        
 
         /* calculates new movementPoint based on next waypoint
         /****************************************************************/
@@ -121,16 +131,22 @@ namespace SearchRobot.Library.RobotParts
         /****************************************************************/
         private double AdjustDirection(double currentDirection, double targetDirection)
         {
-            if (currentDirection > targetDirection)
-            {
-                currentDirection = currentDirection - 1;
-            }
-            else
+            double currentDirectionOri = currentDirection;
+
+            if(currentDirection < 0) currentDirection += 360;
+            if(targetDirection < 0) targetDirection += 360;
+
+            bool dir = ((currentDirection) - (targetDirection) + 360) % 360 > 180;
+            if (dir)
             {
                 currentDirection = currentDirection + 1;
             }
+            else
+            {
+                currentDirection = currentDirection - 1;
+            }
 
-            return currentDirection;
+            return currentDirection % 360;
         }
 
         private double CalculateTargetDirection(double posX, double posY, Point waypoint)

@@ -21,6 +21,11 @@ namespace SearchRobot.Library
             return Math.Atan2(y2 - y1, x2 - x1) / Math.PI * 180;
         }
 
+        public static double GetAngleAbsolute(double x1, double y1, double x2, double y2)
+        {
+            return (GetAngle(x1, y1, x2, y2) + 360) % 360;
+        }
+
 		public static double GetWidth(Point centerPoint, Point edgePoint)
 		{
 			return Math.Sqrt(

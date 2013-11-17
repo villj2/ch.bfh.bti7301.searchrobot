@@ -18,8 +18,8 @@ namespace SearchRobot.Library.RobotParts
         private const int Size = 30;
         public MapExplored MapExplored { get { return _mapExplored; } }
 
-        private Rectangle _uiElement;
-        //private Polyline _uiElement;
+        //private Rectangle _uiElement;
+        private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
         private Sensor _sensor;
@@ -80,7 +80,7 @@ namespace SearchRobot.Library.RobotParts
 
 	    public override void ApplyTo(Canvas canvas)
 		{
-            /*
+            
 			_uiElement = new Polyline();
 
 			_uiElement.Points.Add(new System.Windows.Point(10, 30));
@@ -95,7 +95,7 @@ namespace SearchRobot.Library.RobotParts
 			_uiElement.Height = 30;
 
 			_uiElement.Fill = Brushes.DarkGreen;
-            */
+            
 
 
 
@@ -103,7 +103,7 @@ namespace SearchRobot.Library.RobotParts
 
 
             // FIXME just4testing - draw rectangle (same as collision detection)
-            
+            /*
             _uiElement = new Rectangle
             {
                 Height = Size,
@@ -115,7 +115,7 @@ namespace SearchRobot.Library.RobotParts
             Canvas.SetTop(_uiElement, StartPosition.Y);
             _uiElement.RenderTransform = new RotateTransform(_direction + 90, 15, 15);
             _uiElement.Fill = Brushes.DarkGreen;
-            
+            */
 
 
 
@@ -131,7 +131,7 @@ namespace SearchRobot.Library.RobotParts
             MovementObject mo = _brain.GetNextMove(_positionX, _positionY, _direction);
 
             // temporarily deactivate robot to avoid collision with clone
-            IsActivated = false;
+            IsCollidable = false;
             
             // create clone for collision dection of next move
             _collisionDummy = this.Clone() as Robot;
@@ -149,16 +149,15 @@ namespace SearchRobot.Library.RobotParts
                 _collisionDummy.Dispose();
                 _collisionDummy.Remove(_mapArea);
 
-                // FIXME Problem: Roboter kommt teilweise in Endlos-Drehung. Ev. weil plötzlich 2 Waypoints existieren?
-                _brain.ForceNewWaypoint();
-                IsActivated = true;
+                _brain.Collision(_positionX, _positionY, mo);
+                IsCollidable = true;
 
                 return;
             }
 
             _collisionDummy.Dispose();
             _collisionDummy.Remove(_mapArea);
-            IsActivated = true;
+            IsCollidable = true;
 
 
             SetPos(mo.X, mo.Y);

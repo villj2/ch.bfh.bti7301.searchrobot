@@ -13,6 +13,8 @@ namespace SearchRobot.Library.Maps
         Blocked,
         Visited,
         Waypoint,
-        Target
+        WaypointVisited,
+        Target,
+        Collided
     }
 }

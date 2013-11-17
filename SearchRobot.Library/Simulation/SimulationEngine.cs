@@ -23,7 +23,7 @@ namespace SearchRobot.Library.Simulation
     public class SimulationEngine
     {
         const int CYCLE_INTERVAL = 10; // milliseconds
-        const int CYCLE_MINIMAP_UPDATE = 100; // minimap updates every 100th time interval is dispatched 
+        const int CYCLE_MINIMAP_UPDATE = 100; // minimap updates every 'x'th time interval is dispatched 
 
         private AutoResetEvent _autoEvent;
         private int _ticks;
