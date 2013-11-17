@@ -9,23 +9,18 @@ namespace SearchRobot.Library.Simulation.WayDecision
 {
     class WayDecisionCollision : WayDecision
     {
-        private double _posX;
-        private double _posY;
         private MovementObject _mo;
-        private MapExplored _me;
         private double _collisionAngle;
 
-        public WayDecisionCollision(double posX, double posY, MovementObject mo, MapExplored me) : base()
+        public WayDecisionCollision(double posX, double posY, MovementObject mo, MapExplored me) : base(posX, posY, me)
         {
-            _posX = posX;
-            _posY = posY;
             _mo = mo;
-            _me = me;
         }
 
         public override Point GetWaypoint()
         {
-            // TODO implement collision logic
+            // TODO implement collision logic (opposite angle)
+            Console.WriteLine("COLLISION");
 
             // calculate angle between robot and collided obstacle
             _collisionAngle = GeometryHelper.GetAngleAbsolute(_posX, _posY, _mo.X, _mo.Y);
@@ -33,12 +28,16 @@ namespace SearchRobot.Library.Simulation.WayDecision
             // update collided point status
             _me.SetStatus(_mo.X, _mo.Y, MapElementStatus.Collided);
 
-            Point p = new Point();
-            p.X = Random.Next(0, 800);
-            p.Y = Random.Next(0, 600);
-            p.Status = MapElementStatus.Waypoint;
+            Console.WriteLine("_collisionAngle: " + _collisionAngle);
 
-            return p;
+            //Point B = Math.Tan(
+
+            // calculate opposite angle
+            _point.X = _random.Next(0, 800);
+            _point.Y = _random.Next(0, 600);
+            _point.Status = MapElementStatus.Waypoint;
+
+            return _point;
         }
     }
 }

@@ -61,7 +61,6 @@
     <Compile Include="Maps\Point.cs" />
     <Compile Include="Maps\TackingMapEntry.cs" />
     <Compile Include="Simulation\WayDecision\WayDecisionInit.cs" />
-    <Compile Include="Simulation\WayDecision\WayDecisionStatus.cs" />
     <Compile Include="PointRotator.cs" />
     <Compile Include="RobotParts\Brain.cs" />
     <Compile Include="Maps\RemoveTool.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Simulation\MovementObject.cs" />
     <Compile Include="Simulation\WayDecision\WayDecision.cs" />
     <Compile Include="Simulation\WayDecision\WayDecisionCollision.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecisionWaypointReached.cs" />
     <Compile Include="Storage\IMapStorageManager.cs" />
     <Compile Include="Storage\XmlMapStorageManager.cs" />
     <Compile Include="RobotParts\Sensor.cs" />

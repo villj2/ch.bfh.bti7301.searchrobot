@@ -144,8 +144,6 @@ namespace SearchRobot.Library.RobotParts
 
             if (_collisionDummy.IsOverlapping())
             {
-                Console.WriteLine("COLLISION");
-
                 _collisionDummy.Dispose();
                 _collisionDummy.Remove(_mapArea);
 

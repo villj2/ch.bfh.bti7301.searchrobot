@@ -31,9 +31,7 @@ namespace SearchRobot.Library.RobotParts
             // check if waypoint is reached
             if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
             {
-                Console.WriteLine("waypoint reached");
-                _mapExplored.SetStatus(posX, posY, MapElementStatus.WaypointVisited);
-                CreateNextWaypoint();
+                CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
             }
 
             MovementObject settingNew = new MovementObject();

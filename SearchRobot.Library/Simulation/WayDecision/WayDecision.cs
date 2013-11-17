@@ -9,25 +9,46 @@ namespace SearchRobot.Library.Simulation.WayDecision
 {
     public abstract class WayDecision
     {
-        protected Point Point;
-        protected Random Random;
+        protected double _posX;
+        protected double _posY;
+        protected MapExplored _me;
+        protected Point _point;
+        protected Random _random;
 
         public WayDecision()
         {
-            Random = new Random();
-            Point = new Point();
+            init();
+        }
+
+        public WayDecision(double posX, double posY, MapExplored me)
+        {
+            _posX = posX;
+            _posY = posY;
+            _me = me;
+
+            init();
+        }
+
+        private void init()
+        {
+            _point = new Point();
+            _random = new Random();
         }
 
         //public abstract Point GetWaypoint();
 
         public virtual Point GetWaypoint()
         {
-            Point p = new Point();
-            p.X = Random.Next(0, 800);
-            p.Y = Random.Next(0, 600);
-            p.Status = MapElementStatus.Waypoint;
+            return GetRandomPoint(MapElementStatus.Undiscovered);
+        }
 
-            return p;
+        protected Point GetRandomPoint(MapElementStatus status)
+        {
+            _point.X = _random.Next(0, 800);
+            _point.Y = _random.Next(0, 600);
+            _point.Status = status;
+
+            return _point;
         }
     }
 }
