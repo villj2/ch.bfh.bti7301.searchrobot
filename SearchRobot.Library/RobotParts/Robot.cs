@@ -23,10 +23,9 @@ namespace SearchRobot.Library.RobotParts
         private MapExplored _mapExplored;
         private Brain _brain;
         private Sensor _sensor;
-        private Robot _collisionDummy;
-        private Canvas _mapArea;
         private double _positionX;
         private double _positionY;
+        private Canvas _mapArea;
 
         public double Direction { get; set; }
 
@@ -34,14 +33,14 @@ namespace SearchRobot.Library.RobotParts
 
         internal Robot() { }
 
-        public void Initialize(Sensor sensor)
+        public void Initialize(Canvas mapArea, Sensor sensor)
         {
             Console.WriteLine("Robot initialize");
 
             _mapArea = mapArea;
             _mapExplored = new MapExplored();
             _brain = new Brain(_mapExplored);
-	    _sensor = sensor;
+	        _sensor = sensor;
 
             SetPos(StartPosition.X, StartPosition.Y);
             SetDirection(Direction);
@@ -54,10 +53,7 @@ namespace SearchRobot.Library.RobotParts
             get
             {
                 var rect = new Rect(_positionX - 15, _positionY - 15, Size, Size);
-
-                // FIXME Ausrichtung des Rects wohl noch nicht korrekt.
-                //return new RectangleGeometry(rect, 0, 0, new RotateTransform(_direction, 15, 15));
-                return new RectangleGeometry(rect, 0, 0, new RotateTransform(_direction, 30, 30));
+                return new RectangleGeometry(rect, 0, 0, new RotateTransform(Direction, Size / 2, Size / 2));
             }
 	    }
 
@@ -95,12 +91,6 @@ namespace SearchRobot.Library.RobotParts
 
 			_uiElement.Fill = Brushes.DarkGreen;
             
-
-
-
-
-
-
             // FIXME just4testing - draw rectangle (same as collision detection)
             /*
             _uiElement = new Rectangle
@@ -115,10 +105,7 @@ namespace SearchRobot.Library.RobotParts
             _uiElement.RenderTransform = new RotateTransform(_direction + 90, 15, 15);
             _uiElement.Fill = Brushes.DarkGreen;
             */
-
-
-
-
+            
             SetPos(StartPosition.X, StartPosition.Y);
 			SetDirection(Direction);
 
@@ -138,18 +125,19 @@ namespace SearchRobot.Library.RobotParts
             IsCollidable = false;
             
             // create clone for collision dection of next move
-            _collisionDummy = this.Clone() as Robot;
-            _collisionDummy.ApplyTo(_mapArea);
-            Map.Add(_collisionDummy);
-            _collisionDummy.Bind(Map);
+            var collisionDummy = (Robot)this.Clone();
+
+            collisionDummy.ApplyTo(_mapArea);
+            Map.Add(collisionDummy);
+            collisionDummy.Bind(Map);
 
             // set new position
-            _collisionDummy.SetPos(mo.X, mo.Y);
+            collisionDummy.SetPos(mo.X, mo.Y);
 
-            if (_collisionDummy.IsOverlapping())
+            if (collisionDummy.IsOverlapping())
             {
-                _collisionDummy.Dispose();
-                _collisionDummy.Remove(_mapArea);
+                collisionDummy.Dispose();
+                collisionDummy.Remove(_mapArea);
 
                 _brain.Collision(_positionX, _positionY, mo);
                 IsCollidable = true;
@@ -157,8 +145,8 @@ namespace SearchRobot.Library.RobotParts
                 return;
             }
 
-            _collisionDummy.Dispose();
-            _collisionDummy.Remove(_mapArea);
+            collisionDummy.Dispose();
+            collisionDummy.Remove(_mapArea);
             IsCollidable = true;
 
 

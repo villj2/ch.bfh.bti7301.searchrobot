@@ -109,7 +109,7 @@ namespace SearchRobot.Library.RobotParts
                 }
             }
 
-			DebugHelper.StoreAsBitmap(@"C:\sensorimage.bmp", currentViewPort);
+			DebugHelper.StoreAsBitmap(@"C:\SensorImage.png", currentViewPort);
 
             return currentViewPort;
 		}
@@ -130,19 +130,30 @@ namespace SearchRobot.Library.RobotParts
 
         private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int topEdge, int rightEdge, int bottomEdge)
         {
-			bool increaseX = point.X < Math.Abs(point.Y);
+            /**
+             *            . .
+             *        . .   .
+             *    . .       .
+             *  . . . . . . .
+             *  
+             *  x : 6 ,  y : 3
+             * 
+             *  ratio -> 3 / 6 -> 0.5
+             *  
+             *  y : 1 -> y * ratio -> x : 0.5
+             *  y : 2 -> y * ratio -> x : 1
+             *  
+             * */
+            
+			bool increaseX = point.X > Math.Abs(point.Y);
 			double ratio = 0.0;
+
+            int xModifier = point.X > 0 ? 1 : -1;
+            int yModifier = point.Y > 0 ? 1 : -1;
+
 			if (point.X != 0 && point.Y != 0)
 			{
-				ratio = Math.Abs(increaseX ? point.Y / point.X : point.X / point.Y);
-
-				if (!increaseX)
-				{
-					if (point.Y < 0)
-					{
-						ratio *= -1;
-					}
-				}
+                ratio = Math.Abs(increaseX ? (double)point.Y / point.X : (double)point.X / point.Y);
 			}
 
 			int xdistance = 0;
@@ -157,13 +168,13 @@ namespace SearchRobot.Library.RobotParts
 
                 if (increaseX)
                 {
-                    xdistance += 1;
-                    ydistance = Convert.ToInt32(Math.Round(ratio * xdistance));
+                    xdistance += xModifier;
+                    ydistance = Convert.ToInt32(Math.Round(ratio * xdistance * xModifier * yModifier));
                 }
                 else
                 {
-                    ydistance += 1;
-                    xdistance = Convert.ToInt32(Math.Round(ratio * ydistance));
+                    ydistance += yModifier;
+                    xdistance = Convert.ToInt32(Math.Round(ratio * ydistance * xModifier * yModifier));
                 }
 
 				// TODO : Detect End of Map to increase Performance

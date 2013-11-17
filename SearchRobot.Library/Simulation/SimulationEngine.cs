@@ -66,7 +66,7 @@ namespace SearchRobot.Library.Simulation
             if (_map != null)
             {
                 _robot = _map.Elements.OfType<Robot>().First();
-                _robot.Initialize(new Sensor(_robot, _mapArea, new Sight { Angle = 180, Reach = int.MaxValue }));
+                _robot.Initialize(_mapArea, new Sensor(_robot, _mapArea, new Sight { Angle = 180, Reach = int.MaxValue }));
                 //_robot.Bind(_map);
 
                 /*
