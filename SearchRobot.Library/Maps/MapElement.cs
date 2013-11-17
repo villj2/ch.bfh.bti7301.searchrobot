@@ -25,14 +25,19 @@ namespace SearchRobot.Library.Maps
 		public abstract UIElement UiElement { get; }
 
 		public Point StartPosition { get; set; }
+        public bool IsCollidable { get; set; }
 
 		protected MapElement(Map map)
 		{
 			Bind(map);
 			StartPosition = new Point();
+            IsCollidable = true;
 		}
 
-		protected MapElement() { }
+		protected MapElement()
+        {
+            IsCollidable = true;
+        }
 
 		public void Bind(Map map)
 		{
@@ -62,7 +67,7 @@ namespace SearchRobot.Library.Maps
 			var currrentGeometry = GeometryShape;
             //var result = Map.Elements.Any(e => e.IsOverlappingWith(currrentGeometry));
 
-            var result = Map.Elements.Any(e => e != this && e.IsOverlappingWith(currrentGeometry));
+            var result = Map.Elements.Any(e => e != this && e.IsCollidable && e.IsOverlappingWith(currrentGeometry));
 
 			return result;
 		}

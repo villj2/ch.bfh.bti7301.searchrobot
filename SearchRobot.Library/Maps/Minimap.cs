@@ -19,14 +19,9 @@ namespace SearchRobot.Library.Maps
         private Canvas _minimapArea;
         private MapExplored _mapExplored;
 
-        private MapElementStatus[,] testarr1 = new MapElementStatus[800, 600];
-        private MapElementStatus[,] testarr2 = new MapElementStatus[800, 600];
-        private MapElementStatus[,] testarr3 = new MapElementStatus[800, 600];
-        private MapElementStatus[,] testarr4 = new MapElementStatus[800, 600];
-        private MapElementStatus[,] testarr5 = new MapElementStatus[800, 600];
-        private MapElementStatus[,] testarr6 = new MapElementStatus[800, 600];
-
-        private List<MapElementStatus[,]> allArrs = new List<MapElementStatus[,]>();
+        // Tracking Map - Same as MapExplored one Cycle before. Update drawn infos in this array. First always check if at specific position change was made.
+        // Only if there is a difference draw the new point.
+        private TrackingMapEntry[,] _trackingMap = new TrackingMapEntry[800, 600];
 
         private int _ticks = 0;
 
@@ -35,24 +30,8 @@ namespace SearchRobot.Library.Maps
             _minimapArea = minimapArea;
             _mapExplored = mapExplored;
 
-            allArrs.Add(testarr1);
-            allArrs.Add(testarr2);
-            allArrs.Add(testarr3);
-            allArrs.Add(testarr4);
-            allArrs.Add(testarr5);
-            allArrs.Add(testarr6);
-
-            // FIXME just4testing - fill testarrs
-            /*
-            for (int i = 0; i < 300; i++)
-            {
-                for (int j = 0; j < 200; j++)
-                {
-                    Random rnd = 
-                }
-            }*/
-
             // FIXME just4testing - fill mapExplored with testdata
+            /*
             for (int i = 0; i < _mapExplored.Map.GetLength(0); i++)
             {
                 for (int j = 0; j < _mapExplored.Map.GetLength(1); j++)
@@ -60,97 +39,65 @@ namespace SearchRobot.Library.Maps
                     if (j % 20 == 0) _mapExplored.Map[i, j] = MapElementStatus.Blocked;
                 }
             }
-
-
+            */
         }
 
         internal void Update()
         {
             // TODO display map explored in minimap
 
-            
-
-            //_minimapArea.Width = 800;
-            //_minimapArea.Height = 600;
-
-            /*
-            var bm = new Bitmap(800, 600);
-            bm.SetPixel(33, 100, System.Drawing.Color.Black);
-            bm.SetPixel(34, 100, System.Drawing.Color.Black);
-            bm.SetPixel(35, 100, System.Drawing.Color.Black);
-            bm.SetPixel(36, 100, System.Drawing.Color.Black);
-            bm.SetPixel(37, 100, System.Drawing.Color.Black);
-
-            bm.SetPixel(795, 599, System.Drawing.Color.Red);
-            bm.SetPixel(796, 599, System.Drawing.Color.Red);
-            bm.SetPixel(797, 599, System.Drawing.Color.Red);
-            bm.SetPixel(798, 599, System.Drawing.Color.Red);
-            bm.SetPixel(799, 599, System.Drawing.Color.Red);
-            
-              
-            var bmi = new BitmapImage();
-
-            //_minimapArea.Children.Add(bmi);
-
-            using (MemoryStream memory = new MemoryStream())
-            {
-                bm.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                bmi.BeginInit();
-                bmi.StreamSource = memory;
-                bmi.CacheOption = BitmapCacheOption.OnLoad;
-                bmi.EndInit();
-            }
-
-            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-            img.Source = bmi;
-
-            _minimapArea.Children.Add(img);
-             * 
-            */
-
-            // Plan b
-            // für jeden Punkt eine Ellipse erstellen und die x / y koordinaten so berechnen: x = 800 * 0.25, y = 600 * 0.25;
-
-
-            // FIXME Performance des Todes :(
-            //_minimapArea.Children.Clear();
 
             ++_ticks;
 
-            if (_ticks == 1)
+            for (int i = _mapExplored.GetStartIndex(0); i < _mapExplored.GetEndIndex(0); i++)
             {
-                for (int i = _mapExplored.Map.GetLowerBound(0); i < _mapExplored.Map.GetUpperBound(0); i++)
+                for (int j = _mapExplored.GetStartIndex(1); j < _mapExplored.GetEndIndex(1); j++)
                 {
-                    for (int j = _mapExplored.Map.GetLowerBound(1); j < _mapExplored.Map.GetUpperBound(1); j++)
+                    // create instance of Tracking Map Entry
+                    if (_trackingMap[i, j] == null) _trackingMap[i, j] = new TrackingMapEntry();
+
+                    // check if trackingMap differs from MapExplored, only then set new status / point
+                    if (_mapExplored.GetStatus(i, j) != _trackingMap[i, j].status)
                     {
-                        if (_mapExplored.Map[i, j] == MapElementStatus.Waypoint)
+                        // remove point before adding new status
+                        _minimapArea.Children.Remove(_trackingMap[i, j].point);
+                        _trackingMap[i, j].point = null;
+                        
+                        // draw point dependent of MapElementStatus in MapExplored 
+                        switch (_mapExplored.GetStatus(i, j))
                         {
-                            drawPoint(i, j, System.Windows.Media.Brushes.DarkRed, 5);
-                        }
-                        else if (_mapExplored.Map[i, j] == MapElementStatus.Visited)
-                        {
-                            drawPoint(i, j, System.Windows.Media.Brushes.DeepPink, 5);
-                        }
-                        else if (_mapExplored.Map[i, j] == MapElementStatus.Blocked)
-                        {
-                            drawPoint(i, j, System.Windows.Media.Brushes.Black);
+                            case MapElementStatus.Waypoint:
+                                _trackingMap[i, j].status = MapElementStatus.Waypoint;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.DarkRed, 2);
+                                break;
+                            case MapElementStatus.Visited:
+                                _trackingMap[i, j].status = MapElementStatus.Visited;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.DeepPink, 1);
+                                break;
+                            case MapElementStatus.Blocked:
+                                _trackingMap[i, j].status = MapElementStatus.Blocked;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Black);
+                                break;
+                            case MapElementStatus.Collided:
+                                _trackingMap[i, j].status = MapElementStatus.Collided;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Red, 5);
+                                break;
+                            case MapElementStatus.WaypointVisited:
+                                _trackingMap[i, j].status = MapElementStatus.WaypointVisited;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Blue, 5);
+                                break;
                         }
                     }
                 }
             }
-            else if (_ticks == 2)
-            {
-
-            }
         }
 
-        private void drawPoint(int posX, int posY, System.Windows.Media.Brush color)
+        private UIElement drawPoint(int posX, int posY, System.Windows.Media.Brush color)
         {
-            drawPoint(posX, posY, color, 1);
+            return drawPoint(posX, posY, color, 1);
         }
 
-        private void drawPoint(int posX, int posY, System.Windows.Media.Brush color, int size)
+        private UIElement drawPoint(int posX, int posY, System.Windows.Media.Brush color, int size)
         {
             UIElement ellipse = new Ellipse
             {
@@ -159,16 +106,22 @@ namespace SearchRobot.Library.Maps
                 Fill = color
             };
 
-            Canvas.SetLeft(ellipse, posX / (800 / _minimapArea.ActualWidth));
-            Canvas.SetTop(ellipse, posY / (600 / _minimapArea.ActualHeight));
+            Canvas.SetLeft(ellipse, (posX / (800 / _minimapArea.ActualWidth)) - size / 2);
+            Canvas.SetTop(ellipse, (posY / (600 / _minimapArea.ActualHeight)) - size / 2);
 
             _minimapArea.Children.Add(ellipse);
+
+            return ellipse;
         }
 
         public void Dispose()
         {
-            if(_minimapArea != null) _minimapArea.Children.Clear();
-            _minimapArea = null;
+            if (_minimapArea != null)
+            {
+                _minimapArea.Children.Clear();
+                _minimapArea = null;
+            }
+            
             _mapExplored = null;
         }
     }

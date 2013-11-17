@@ -14,7 +14,9 @@ namespace SearchRobot.Library.Maps
         Visited,
         Waypoint,
         Target,
-
+        WaypointVisited,
+        Collided        
+        
         /// <summary>
         /// Used for sensor view result.
         /// </summary>

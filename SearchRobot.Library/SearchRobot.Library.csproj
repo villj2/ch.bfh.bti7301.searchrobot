@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BitmapConverter.cs" />
     <Compile Include="DebugHelper.cs" />
+    <Compile Include="CartesianArray.cs" />
     <Compile Include="GeometryHelper.cs" />
     <Compile Include="Global\TextContent.cs" />
     <Compile Include="Maps\Disc.cs" />
@@ -59,7 +60,8 @@
     <Compile Include="Maps\Minimap.cs" />
     <Compile Include="Maps\MoveTool.cs" />
     <Compile Include="Maps\Point.cs" />
-    <Compile Include="CartesianArray.cs" />
+    <Compile Include="Maps\TackingMapEntry.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecisionInit.cs" />
     <Compile Include="PointRotator.cs" />
     <Compile Include="RobotParts\Brain.cs" />
     <Compile Include="Maps\RemoveTool.cs" />
@@ -69,6 +71,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolver.cs" />
     <Compile Include="Simulation\MovementObject.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecision.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecisionCollision.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecisionWaypointReached.cs" />
     <Compile Include="Storage\IMapStorageManager.cs" />
     <Compile Include="Storage\XmlMapStorageManager.cs" />
     <Compile Include="RobotParts\Sensor.cs" />
