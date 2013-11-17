@@ -44,20 +44,27 @@ namespace SearchRobot.Library.Simulation.WayDecision
             // normalize vector (length = 1)
             vector.Normalize();
 
-            // TODO stretch vector correctly! not out of map.
-            //vector *= 100;
-
+            // calculate distances to every border
             double tLeft = (-_posX) / vector.X;
             double tRight = (800 - _posX) / vector.X;
             double tTop = (-_posY) / vector.Y;
             double tBottom = (600 - _posY) / vector.Y;
 
-            // TODO now choose the smallest positive!
-            double leftOrRight = Math.Min(tLeft, tRight);
+            // now choose the smallest positive!
+            List<double> distancesToBorder = new List<double>();
+            if (tLeft > 0) distancesToBorder.Add(tLeft);
+            if (tRight > 0) distancesToBorder.Add(tRight);
+            if (tTop > 0) distancesToBorder.Add(tTop);
+            if (tBottom > 0) distancesToBorder.Add(tBottom);
 
-            // calculate opposite angle
-            //_point.X = _random.Next(0, 800);
-            //_point.Y = _random.Next(0, 600);
+            double min = int.MaxValue;
+            foreach (double val in distancesToBorder)
+            {
+                if (val < min) min = val;
+            }
+
+            // TODO random angle (not always perfectly opposite) and not always / 2
+            vector *= min / 2;
 
             _point.X = (int)_posX + (int)vector.X;
             _point.Y = (int)_posY + (int)vector.Y;
