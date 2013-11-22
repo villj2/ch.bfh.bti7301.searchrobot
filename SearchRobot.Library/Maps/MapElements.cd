@@ -61,9 +61,10 @@
   <Class Name="SearchRobot.Library.RobotParts.Robot">
     <Position X="7.25" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAAIAAgAABACAABAIAAAAIEAAAAAAAMACAABA=</HashCode>
+      <HashCode>AoAAAAgAAKAAgACAACGABAIAAAAAEAAAAAOIMACAABA=</HashCode>
       <FileName>RobotParts\Robot.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="SearchRobot.Library.Maps.ICanvasListener">
     <Position X="6" Y="0.5" Width="1.5" />

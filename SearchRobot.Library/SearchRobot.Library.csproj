@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapConverter.cs" />
+    <Compile Include="DebugHelper.cs" />
     <Compile Include="CartesianArray.cs" />
     <Compile Include="GeometryHelper.cs" />
     <Compile Include="Global\TextContent.cs" />
@@ -82,6 +83,7 @@
   <ItemGroup>
     <None Include="Global\Simulation.cd" />
     <None Include="Maps\MapElements.cd" />
+    <None Include="Sensor.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
