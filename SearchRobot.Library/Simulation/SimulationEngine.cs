@@ -66,6 +66,7 @@ namespace SearchRobot.Library.Simulation
             if (_map != null)
             {
                 _robot = _map.Elements.OfType<Robot>().First();
+                //_robot.Initialize(_mapArea, null); 
                 _robot.Initialize(_mapArea, new Sensor(_robot, _mapArea, new Sight { Angle = 180, Reach = int.MaxValue }));
                 //_robot.Bind(_map);
 
@@ -142,6 +143,11 @@ namespace SearchRobot.Library.Simulation
                 buildMap();
             }
         }
+
+        public void AnalyzeMap()
+        {
+            _robot.GetView();
+        }
         #endregion
 
         #region Cycle Handling
@@ -156,10 +162,34 @@ namespace SearchRobot.Library.Simulation
             _ticks++;
             _robot.Move();
 
-			if (_ticks % 100 == 0)
+
+            // FIXME just4testing disabled
+			if (_ticks % 250 == -1)
 			{
-				_robot.GetView();
+                _robot.GetView();
+
+
+
+
+                /*
+                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView()).ToArray();
+                // TODO crop res (array with padding)
+                // essenzielle infos sind 800 x 600 in dem zu grossen array zentriert
+
+                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView());
+
+                int x= 10, y = 10;
+
+                MapElementStatus[,] mapExplored = new MapElementStatus[20,20];
+
+                mapExplored[x - 1, y] = map[-1, 0];
+
+                // MapElementStatus: BlockedShadowed -> kanten
+                // Discovered: gesehen aber nicht blocked
+                */
 			}
+            
+
 
             if(_ticks % CYCLE_MINIMAP_UPDATE == 1) _minimap.Update();
         }

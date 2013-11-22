@@ -49,23 +49,31 @@ namespace SearchRobot.Library.Maps
 
             ++_ticks;
 
-            for (int i = _mapExplored.GetStartIndex(0); i < _mapExplored.GetEndIndex(0); i++)
+            //for (int i = _mapExplored.GetStartIndex(0); i < _mapExplored.GetEndIndex(0); i++)
+            for (int i = 0; i < 800; i++)
             {
-                for (int j = _mapExplored.GetStartIndex(1); j < _mapExplored.GetEndIndex(1); j++)
+                //for (int j = _mapExplored.GetStartIndex(1); j < _mapExplored.GetEndIndex(1); j++)
+                for (int j = 0; j < 600; j++)
                 {
                     // create instance of Tracking Map Entry
                     if (_trackingMap[i, j] == null) _trackingMap[i, j] = new TrackingMapEntry();
 
                     // check if trackingMap differs from MapExplored, only then set new status / point
-                    if (_mapExplored.GetStatus(i, j) != _trackingMap[i, j].status)
+                    // don't handle Undiscovered due to performance
+                    if (_mapExplored.GetStatus(i, j) != _trackingMap[i, j].status && _mapExplored.GetStatus(i, j) != MapElementStatus.Discovered && _mapExplored.GetStatus(i, j) != MapElementStatus.Undiscovered)
                     {
                         // remove point before adding new status
                         _minimapArea.Children.Remove(_trackingMap[i, j].point);
                         _trackingMap[i, j].point = null;
                         
                         // draw point dependent of MapElementStatus in MapExplored 
-                        switch (_mapExplored.GetStatus(i, j))
+                        MapElementStatus newStatus = _mapExplored.GetStatus(i, j);
+                        switch (newStatus)
                         {
+                            case MapElementStatus.BlockedShadowed:
+                                _trackingMap[i, j].status = MapElementStatus.BlockedShadowed;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Black, 1);
+                                break;
                             case MapElementStatus.Waypoint:
                                 _trackingMap[i, j].status = MapElementStatus.Waypoint;
                                 _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.DarkRed, 2);
@@ -86,6 +94,12 @@ namespace SearchRobot.Library.Maps
                                 _trackingMap[i, j].status = MapElementStatus.WaypointVisited;
                                 _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Blue, 5);
                                 break;
+                            /*
+                            case MapElementStatus.Discovered:
+                                _trackingMap[i, j].status = MapElementStatus.Discovered;
+                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Azure, 1);
+                                break;
+                            */
                         }
                     }
                 }

@@ -69,9 +69,15 @@ namespace SearchRobot.Library.Simulation.WayDecision
             _point.X = (int)_posX + (int)vector.X;
             _point.Y = (int)_posY + (int)vector.Y;
 
+
+
+
+
             _point.Status = MapElementStatus.Waypoint;
 
-            return _point;
+            //return _point;
+
+            return GetRandomPoint(MapElementStatus.Waypoint);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace SearchRobot.Library.Global
             this["Simulation-Button-Pause"] = "Pause";
             this["Simulation-Button-Reset"] = "Reset";
             this["Simulation-Button-Resume"] = "Resume";
+            this["Simulation-Button-Analyze"] = "Analyze";
         }
     }
 }

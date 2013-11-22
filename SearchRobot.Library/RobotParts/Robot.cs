@@ -18,6 +18,7 @@ namespace SearchRobot.Library.RobotParts
         private const int Size = 30;
         public MapExplored MapExplored { get { return _mapExplored; } }
 
+        //private Ellipse _uiElement;
         //private Rectangle _uiElement;
         private Polyline _uiElement;
         private MapExplored _mapExplored;
@@ -52,8 +53,10 @@ namespace SearchRobot.Library.RobotParts
 	    {
             get
             {
-                var rect = new Rect(_positionX - 15, _positionY - 15, Size, Size);
-                return new RectangleGeometry(rect, 0, 0, new RotateTransform(Direction, Size / 2, Size / 2));
+                return new EllipseGeometry(GeometryHelper.Convert(StartPosition), Size / 2, Size / 2);
+
+                //var rect = new Rect(StartPosition.X - 15, StartPosition.Y - 15, Size, Size);
+                // return new RectangleGeometry(rect, 0, 0, new RotateTransform(Direction, Size / 2, Size / 2));
             }
 	    }
 
@@ -91,6 +94,7 @@ namespace SearchRobot.Library.RobotParts
 
 			_uiElement.Fill = Brushes.DarkGreen;
             
+            
             // FIXME just4testing - draw rectangle (same as collision detection)
             /*
             _uiElement = new Rectangle
@@ -102,19 +106,35 @@ namespace SearchRobot.Library.RobotParts
 
             Canvas.SetLeft(_uiElement, StartPosition.X);
             Canvas.SetTop(_uiElement, StartPosition.Y);
-            _uiElement.RenderTransform = new RotateTransform(_direction + 90, 15, 15);
+            _uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
             _uiElement.Fill = Brushes.DarkGreen;
             */
-            
+
+
+            //_uiElement = new Ellipse { Width = Size, Height = Size, Fill = Brushes.DarkGreen };
+
+
             SetPos(StartPosition.X, StartPosition.Y);
 			SetDirection(Direction);
+            
+
+
 
 			canvas.Children.Add(_uiElement);
 		}
 
-		public CartesianArray<MapElementStatus> GetView()
+		//public CartesianArray<MapElementStatus> GetView()
+        public void GetView()
 		{
-			return _sensor.GetView();
+            //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()), StartPosition);
+            _mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray(), StartPosition);
+
+
+            //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray();
+            //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());
+
+
+			//return _sensor.GetView();
 		}
 
         public void Move()

@@ -66,6 +66,47 @@ namespace SearchRobot.Library.Maps
             return _map.GetUpperBound(dimension);
         }
 
+        public void UpdateSensordata(MapElementStatus[,] arrMap, Point posRobot)
+        //public void UpdateSensordata(CartesianArray<MapElementStatus> arrCartesian, Point posRobot)
+        {
+            // Methode 1: Vom CartesianArray ausgehend
+
+            /*
+            int offsetLeft = -posRobot.X;
+            int offsetRight = 800 - posRobot.X;
+            int offsetTop = -posRobot.Y;
+            int offsetBottom = 600 - posRobot.Y;
+
+            for (int i = offsetLeft; i < offsetRight; i++)
+            {
+                for (int j = offsetTop; j < offsetBottom; j++)
+                {
+                    // nur überschreiben wenn Undiscovered
+                    if (_map[posRobot.X + i, posRobot.Y + j] == MapElementStatus.Undiscovered)
+                    {
+                        _map[posRobot.X + i, posRobot.Y + j] = arrCartesian[i, j];
+                    }
+                }
+            }
+            */
+
+            // Methode 2: CartesianArray Croppen!
+            int offsetLeft = (arrMap.GetLength(0) - 800) / 2;
+            int offsetTop = (arrMap.GetLength(1) - 600) / 2;
+
+            for (int i = offsetLeft; i < 800 + offsetLeft; i++)
+            {
+                for (int j = offsetTop; j < 600 + offsetTop; j++)
+                {
+                    // nur überschreiben wenn Undiscovered
+                    if (_map[i - offsetLeft, j - offsetTop] == MapElementStatus.Undiscovered)
+                    {
+                        _map[i - offsetLeft, j - offsetTop] = arrMap[i, j];
+                    }
+                }
+            }
+        }
+
         private bool WaypointExists()
         {
             return _waypointActive != null;

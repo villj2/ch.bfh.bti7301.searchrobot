@@ -59,7 +59,7 @@ namespace SearchRobot.Library.Maps
 
 		public bool IsOverlapping()
 		{
-			if (GeometryShape == null || Map == null)
+			if (GeometryShape == null || Map == null || IsCollidable == false)
 			{
 				return false;
 			}
@@ -68,6 +68,11 @@ namespace SearchRobot.Library.Maps
             //var result = Map.Elements.Any(e => e.IsOverlappingWith(currrentGeometry));
 
             var result = Map.Elements.Any(e => e != this && e.IsCollidable && e.IsOverlappingWith(currrentGeometry));
+
+            if (result)
+            {
+                var all = Map.Elements.Where(e => e != this && e.IsCollidable && e.IsOverlappingWith(currrentGeometry)).ToList();
+            }
 
 			return result;
 		}
