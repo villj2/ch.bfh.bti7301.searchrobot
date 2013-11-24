@@ -72,6 +72,15 @@ namespace SearchRobot.Library.Maps
             if (result)
             {
                 var all = Map.Elements.Where(e => e != this && e.IsCollidable && e.IsOverlappingWith(currrentGeometry)).ToList();
+
+                // endpoint?
+                foreach (var el in all)
+                {
+                    if (el is Goal)
+                    {
+                        Console.WriteLine("Endpoint reached!");
+                    }
+                }
             }
 
 			return result;

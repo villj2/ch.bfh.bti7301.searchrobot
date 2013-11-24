@@ -23,20 +23,8 @@ namespace SearchRobot.Library.Simulation.WayDecision
             // TODO implement collision logic (opposite angle)
             Console.WriteLine("COLLISION");
 
-            // calculate angle between robot and collided obstacle
-            double collisionAngle = GeometryHelper.GetAngleAbsolute(_posX, _posY, _mo.X, _mo.Y);
-            double oppositeAngle = (collisionAngle + 180) % 360;
-
-            // FIXME collisionAngle = mo.Direction
-
-            double adjacent = 800 - _posX;
-
-            double x = adjacent / (Math.Cos(oppositeAngle / 2));
-
             // update collided point status
             _me.SetStatus(_mo.X, _mo.Y, MapElementStatus.Collided);
-
-            Console.WriteLine("_collisionAngle: " + collisionAngle);
 
             Vector vector = new Vector(_mo.X - _posX, _mo.Y - _posY);
             
@@ -53,6 +41,7 @@ namespace SearchRobot.Library.Simulation.WayDecision
             double tBottom = (600 - _posY) / vector.Y;
 
             // now choose the smallest positive!
+            /*
             List<double> distancesToBorder = new List<double>();
             if (tLeft > 0) distancesToBorder.Add(tLeft);
             if (tRight > 0) distancesToBorder.Add(tRight);
@@ -63,22 +52,18 @@ namespace SearchRobot.Library.Simulation.WayDecision
             foreach (double val in distancesToBorder)
             {
                 if (val < min) min = val;
-            }
+            }*/
 
-            // TODO random angle (not always perfectly opposite) and not always / 2
-            vector *= min / 2;
+            //vector *= min / 2;
+            vector *= 100;
 
             _point.X = (int)_posX + (int)vector.X;
             _point.Y = (int)_posY + (int)vector.Y;
 
-
-
-
-
             _point.Status = MapElementStatus.Waypoint;
 
-            //return _point;
-            return GetRandomPoint(MapElementStatus.Waypoint);
+            return _point;
+            //return GetRandomPoint(MapElementStatus.Waypoint);
         }
     }
 }

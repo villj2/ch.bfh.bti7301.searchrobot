@@ -27,6 +27,7 @@ namespace SearchRobot.Library.Maps
                 }
 
                 // set new waypoint
+                _waypointLast = _waypointActive;
                 _waypointActive = value;
                 SetStatus(_waypointActive.X, _waypointActive.Y, MapElementStatus.Waypoint);
             } 
@@ -35,10 +36,11 @@ namespace SearchRobot.Library.Maps
                 return _waypointActive;
             }
         }
+        private Point _waypointLast;
 
         public void SetStatus(int x, int y, MapElementStatus status)
         {
-            _map[x, y] = status;
+            if(_map[x, y] != status) _map[x, y] = status;
         }
 
         public void SetStatus(double x, double y, MapElementStatus status)
