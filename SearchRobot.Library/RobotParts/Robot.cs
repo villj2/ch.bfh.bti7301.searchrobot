@@ -30,6 +30,11 @@ namespace SearchRobot.Library.RobotParts
 
         public double Direction { get; set; }
 
+        public double CartasianDirection
+        {
+            get { return 360 - Direction; }
+        }
+
         public Robot(Map map) : base(map) {}
 
         internal Robot() { }
@@ -110,15 +115,10 @@ namespace SearchRobot.Library.RobotParts
             _uiElement.Fill = Brushes.DarkGreen;
             */
 
-
             //_uiElement = new Ellipse { Width = Size, Height = Size, Fill = Brushes.DarkGreen };
-
 
             SetPos(StartPosition.X, StartPosition.Y);
 			SetDirection(Direction);
-            
-
-
 
 			canvas.Children.Add(_uiElement);
 		}
@@ -127,12 +127,14 @@ namespace SearchRobot.Library.RobotParts
         public void GetView()
 		{
             //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()), StartPosition);
-            _mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray(), StartPosition);
+            var result = (new PointRotator(CartasianDirection)).Rotate(_sensor.GetView());
 
+            // DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImageR-{0}.png", DateTime.Now.Ticks), result);
+
+            _mapExplored.UpdateSensordata(result.ToArray(), StartPosition);
 
             //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray();
             //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());
-
 
 			//return _sensor.GetView();
 		}

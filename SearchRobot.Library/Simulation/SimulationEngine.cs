@@ -168,14 +168,13 @@ namespace SearchRobot.Library.Simulation
             // FIXME just4testing disabled
 			if (_ticks % 250 == -1)
 			{
-                _robot.GetView();
-
-
-
+                // _robot.GetView();
 
                 /*
                 var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView()).ToArray();
                 // TODO crop res (array with padding)
+                 * 
+                 * 
                 // essenzielle infos sind 800 x 600 in dem zu grossen array zentriert
 
                 var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView());
