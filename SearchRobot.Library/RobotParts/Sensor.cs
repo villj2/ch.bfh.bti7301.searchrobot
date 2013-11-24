@@ -50,9 +50,13 @@ namespace SearchRobot.Library.RobotParts
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
-                    if (bitmap.GetPixel(x, y).R < 100)
+                    if (bitmap.GetPixel(x, y).R < 25)
                     {
                         map[x, y] = MapElementStatus.Blocked;
+                    }
+                    else if (bitmap.GetPixel(x, y).R < 200)
+                    {
+                        map[x, y] = MapElementStatus.Target;
                     }
                 }
             }
