@@ -38,7 +38,7 @@ namespace SearchRobot.Library
 				}
 			}
 
-			// bitmap.Save(path);
+			bitmap.Save(path);
 		}
 	}
 }

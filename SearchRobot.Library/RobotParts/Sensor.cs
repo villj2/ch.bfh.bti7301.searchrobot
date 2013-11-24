@@ -50,9 +50,13 @@ namespace SearchRobot.Library.RobotParts
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
-                    if (bitmap.GetPixel(x, y).R < 100)
+                    if (bitmap.GetPixel(x, y).R < 25)
                     {
                         map[x, y] = MapElementStatus.Blocked;
+                    }
+                    else if (bitmap.GetPixel(x, y).R < 200)
+                    {
+                        map[x, y] = MapElementStatus.Target;
                     }
                 }
             }
@@ -69,7 +73,7 @@ namespace SearchRobot.Library.RobotParts
         {
             var copy = src.Clone();
 
-            copy.XOffset = -robot.StartPosition.X;
+            copy.XOffset = - robot.StartPosition.X;
             copy.YOffset = - (src.Height - robot.StartPosition.Y);
 
             return copy;
@@ -77,7 +81,9 @@ namespace SearchRobot.Library.RobotParts
 
 	    public CartesianArray<MapElementStatus> GetView()
         {
-            var currentViewPort = GetRotatedMapCopy(- Robot.Direction);
+            Console.WriteLine(Robot.CartasianDirection);
+
+            var currentViewPort = GetRotatedMapCopy(-Robot.CartasianDirection);
 
             int bottomEdge = currentViewPort.BottomRightCoordinate.Y;
 			int topEdge = currentViewPort.TopRightCoordinate.Y;
@@ -109,7 +115,7 @@ namespace SearchRobot.Library.RobotParts
                 }
             }
 
-			DebugHelper.StoreAsBitmap(@"C:\SensorImage.png", currentViewPort);
+			// DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImage-{0}.png", DateTime.Now.Ticks), currentViewPort);
 
             return currentViewPort;
 		}

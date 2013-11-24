@@ -9,10 +9,10 @@ namespace SearchRobot.Library
 {
 	public class PointRotator
 	{
-		private static Point Center { get; set; }
+		private Point Center { get; set; }
 
-		private static double AngleCos { get; set; }
-		private static double AngleSin { get; set; }
+		private double AngleCos { get; set; }
+		private double AngleSin { get; set; }
 
 		public PointRotator(Point center, double angleInDegree)
 		{
