@@ -58,7 +58,7 @@ namespace SearchRobot.Library.RobotParts
             // add new movement point to map explored and mark as VISITED
             if (_mapExplored.GetStatus(settingNew.X, settingNew.Y) == MapElementStatus.Undiscovered)
             {
-                //_mapExplored.SetStatus(settingNew.X, settingNew.Y, MapElementStatus.Visited);
+                _mapExplored.SetStatus(settingNew.X, settingNew.Y, MapElementStatus.Visited);
             }
               
             return settingNew;

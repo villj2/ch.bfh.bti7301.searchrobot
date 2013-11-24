@@ -91,8 +91,13 @@ namespace SearchRobot.Library.Maps
             */
 
             // Methode 2: CartesianArray Croppen!
-            int offsetLeft = (arrMap.GetLength(0) - 800) / 2;
-            int offsetTop = (arrMap.GetLength(1) - 600) / 2;
+            // FIXME arrMap teilweise kleiner als 800x600! Wie ist das möglich? -> Tritt auf wenn Roboter Direction = 180. Sprich nach links schauen.
+
+            int widthSensorMap = arrMap.GetLength(0);
+            int heightSensorMap = arrMap.GetLength(1);
+
+            int offsetLeft = (widthSensorMap - 800) / 2;
+            int offsetTop = (heightSensorMap - 600) / 2;
 
             for (int i = offsetLeft; i < 800 + offsetLeft; i++)
             {

@@ -12,7 +12,7 @@
         </Grid.ColumnDefinitions>
 
         <Canvas Grid.Row="0" Grid.Column="0" Name="MapArea" Background="Azure" />
-
+        
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150px" />
@@ -24,6 +24,7 @@
             </Grid.RowDefinitions>
 
             <Canvas Grid.Row="0" Grid.Column="0" Name="MinimapArea" Background="Cyan"></Canvas>
+            <Canvas Grid.Row="0" Grid.Column="0" Name="MinimapAreaVisited"></Canvas>
             <Label Name="lblOutput" Content="" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <Button Name="btnLoad" Content="" Grid.Row="2" Grid.Column="0" Click="OnBtnLoadClick" />
             <Button Name="btnStart" Content="" Grid.Row="3" Grid.Column="0" Click="OnBtnStartClick" />

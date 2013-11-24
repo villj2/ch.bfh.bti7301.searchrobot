@@ -29,6 +29,7 @@ namespace SearchRobot.Library.Simulation
         private int _ticks;
         private Canvas _mapArea;
         private Canvas _minimapArea;
+        private Canvas _minimapAreaVisited;
         private DispatcherTimer _dispatcherTimer;
 
         private readonly Sight sight = new Sight() {Angle = 90, Reach = int.MaxValue};
@@ -39,10 +40,11 @@ namespace SearchRobot.Library.Simulation
 
         private string _filename;
 
-        public SimulationEngine(Canvas mapArea, Canvas minimapArea)
+        public SimulationEngine(Canvas mapArea, Canvas minimapArea, Canvas minimapAreaVisited)
         {
             _mapArea = mapArea;
             _minimapArea = minimapArea;
+            _minimapAreaVisited = minimapAreaVisited;
 
             initialize();
             LoadMap();
@@ -72,7 +74,7 @@ namespace SearchRobot.Library.Simulation
 
                 /*
                 */
-                _minimap = new Minimap(_minimapArea, _robot.MapExplored);
+                _minimap = new Minimap(_minimapArea, _minimapAreaVisited, _robot.MapExplored);
             }
         }
 

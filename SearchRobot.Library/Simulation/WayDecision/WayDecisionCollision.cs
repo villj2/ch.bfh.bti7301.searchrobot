@@ -27,6 +27,8 @@ namespace SearchRobot.Library.Simulation.WayDecision
             double collisionAngle = GeometryHelper.GetAngleAbsolute(_posX, _posY, _mo.X, _mo.Y);
             double oppositeAngle = (collisionAngle + 180) % 360;
 
+            // FIXME collisionAngle = mo.Direction
+
             double adjacent = 800 - _posX;
 
             double x = adjacent / (Math.Cos(oppositeAngle / 2));
@@ -76,7 +78,6 @@ namespace SearchRobot.Library.Simulation.WayDecision
             _point.Status = MapElementStatus.Waypoint;
 
             //return _point;
-
             return GetRandomPoint(MapElementStatus.Waypoint);
         }
     }
