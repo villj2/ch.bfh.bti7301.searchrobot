@@ -32,68 +32,12 @@ namespace SearchRobot.Library.Simulation.WayDecision
                     {
                         goal.X = i;
                         goal.Y = j;
+                        goal.Status = MapElementStatus.Target;
                     }
                 }
             }
-            // FIXME just4testing -> set goal manually because sensor is not delivering that info at the moment
-            goal.X = 799;
-            goal.Y = 1;
 
-            double shiftX = goal.X - _posX;
-            double shiftY = goal.Y - _posY;
-
-            int dirX = shiftX > 0 ? 1 : -1;
-            int dirY = shiftY > 0 ? 1 : -1;
-
-            shiftX = Math.Abs(shiftX);
-            shiftY = Math.Abs(shiftY);
-
-            double stepX;
-            double stepY;
-
-            int loopCount = 0;
-
-            if (shiftX >= shiftY)
-            {
-                loopCount = (int)shiftX;
-                stepX = 1 * dirX;
-                stepY = (1 / shiftX * shiftY) * dirY;
-            }
-            else
-            {
-                loopCount = (int)shiftY;
-                stepX = (1 / shiftY * shiftX) * dirX;
-                stepY = 1 * dirY;
-            }
-
-            bool wayClear = true;
-
-            // step through array to goal (direct line) and check if there is a collision on its way
-            /*
-             * R x 0 0 0 0 0 0 0
-             * 0 0 x x 0 0 0 0 0
-             * 0 0 0 0 x x 0 0 0
-             * 0 0 0 0 0 0 x x 0
-             * 0 0 0 0 0 0 0 0 T
-             * 
-             * x = path
-             */
-
-            double x = _posX;
-            double y = _posY;
-            for (int i = 0; i < loopCount; i++)
-            {
-                x += stepX;
-                y += stepY;
-
-                MapElementStatus status = _me.GetStatus((int)x, (int)y);
-                if (status == MapElementStatus.Blocked
-                    || status == MapElementStatus.BlockedShadowed)
-                {
-                    wayClear = false;
-                    break;
-                }
-            }
+            bool wayClear = _me.PathAvailable(goal, new Point((int)_posX, (int)_posY));
 
             return GetRandomPoint(MapElementStatus.WaypointVisited);
         }

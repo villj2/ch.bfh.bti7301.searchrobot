@@ -133,6 +133,7 @@ namespace SearchRobot.Library.RobotParts
             // DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImageR-{0}.png", DateTime.Now.Ticks), result);
 
             _mapExplored.UpdateSensordata(result.ToArray(), StartPosition);
+            //_mapExplored.UpdateSensordata(result, StartPosition);
 
             //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray();
             //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());

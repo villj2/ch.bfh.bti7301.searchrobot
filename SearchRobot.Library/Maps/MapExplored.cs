@@ -72,7 +72,6 @@ namespace SearchRobot.Library.Maps
         //public void UpdateSensordata(CartesianArray<MapElementStatus> arrCartesian, Point posRobot)
         {
             // Methode 1: Vom CartesianArray ausgehend
-
             /*
             int offsetLeft = -posRobot.X;
             int offsetRight = 800 - posRobot.X;
@@ -91,10 +90,9 @@ namespace SearchRobot.Library.Maps
                 }
             }
             */
-
             // Methode 2: CartesianArray Croppen!
             // FIXME arrMap teilweise kleiner als 800x600! Wie ist das möglich? -> Tritt auf wenn Roboter Direction = 180. Sprich nach links schauen.
-
+            
             int widthSensorMap = arrMap.GetLength(0);
             int heightSensorMap = arrMap.GetLength(1);
 
@@ -108,7 +106,8 @@ namespace SearchRobot.Library.Maps
                     // nur überschreiben wenn Undiscovered
                     if (_map[i - offsetLeft, j - offsetTop] == MapElementStatus.Undiscovered)
                     {
-                        _map[i - offsetLeft, j - offsetTop] = arrMap[i, j];
+                        MapElementStatus status = offsetLeft < 0 || offsetTop < 0 ? MapElementStatus.Undiscovered : arrMap[i, j];
+                        _map[i - offsetLeft, j - offsetTop] = status;
                     }
                 }
             }
@@ -117,6 +116,66 @@ namespace SearchRobot.Library.Maps
         private bool WaypointExists()
         {
             return _waypointActive != null;
+        }
+
+        public bool PathAvailable(Point target, Point positionRobot)
+        {
+            double shiftX = target.X - positionRobot.X;
+            double shiftY = target.Y - positionRobot.Y;
+
+            int dirX = shiftX > 0 ? 1 : -1;
+            int dirY = shiftY > 0 ? 1 : -1;
+
+            shiftX = Math.Abs(shiftX);
+            shiftY = Math.Abs(shiftY);
+
+            double stepX;
+            double stepY;
+
+            int loopCount = 0;
+
+            if (shiftX >= shiftY)
+            {
+                loopCount = (int)shiftX;
+                stepX = 1 * dirX;
+                stepY = (1 / shiftX * shiftY) * dirY;
+            }
+            else
+            {
+                loopCount = (int)shiftY;
+                stepX = (1 / shiftY * shiftX) * dirX;
+                stepY = 1 * dirY;
+            }
+
+            bool wayClear = true;
+
+            // step through array to goal (direct line) and check if there is a collision on its way
+            /*
+             * R x 0 0 0 0 0 0 0
+             * 0 0 x x 0 0 0 0 0
+             * 0 0 0 0 x x 0 0 0
+             * 0 0 0 0 0 0 x x 0
+             * 0 0 0 0 0 0 0 0 T
+             * 
+             * x = path
+             */
+
+            double x = positionRobot.X;
+            double y = positionRobot.Y;
+            for (int i = 0; i < loopCount; i++)
+            {
+                x += stepX;
+                y += stepY;
+
+                MapElementStatus status = GetStatus((int)x, (int)y);
+                if (status == MapElementStatus.Blocked || status == MapElementStatus.BlockedShadowed)
+                {
+                    wayClear = false;
+                    break;
+                }
+            }
+
+            return wayClear;
         }
 
         public void Dispose()

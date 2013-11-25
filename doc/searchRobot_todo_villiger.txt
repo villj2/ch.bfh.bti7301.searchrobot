@@ -30,14 +30,16 @@ ToDo:
 - kollision mit endpoint wird erkannt - OK
 - Direkter Pfad durch MapExplored nehmen und prüfen ob ein Weg zum Goal existiert ohne Hindernisse. - OK
 
+25.11.2013
+- Umwandlung des CartesianArrays in normales Array und dann Croppen hat teilweise noch Fehler, weil das Array kleiner sein kann als die Map - OK
+- MapExplored mit neuen Sensordaten abfüllen - OK
+- sobald einmal analysiert wurde ist das zeichnen die hölle!!! -> Discovered zeichnen ist zu heftig..! - OK
+- Schauen ob die Berechnung mit dem direkten Pfad durch MapExplored zum Goal (MapElementStatus.Target) funktioniert - OK
+- Algorithmus zum direkten Pfad erkennen auslagern und verwenden z.bsp. beim waypoint setzen - OK
+- Schauen ob in den Sensordaten das MapElementStatus.Target vorhanden ist - OK
 
-- Umwandlung des CartesianArrays in normales Array und dann Croppen hat teilweise noch Fehler, weil das Array kleiner sein kann als die Map
-- MapExplored mit neuen Sensordaten abfüllen
-- Schauen ob in den Sensordaten das MapElementStatus.Target vorhanden ist
-- Schauen ob die Berechnung mit dem direkten Pfad durch MapExplored zum Goal (MapElementStatus.Target) funktioniert
 
-- sobald einmal analysiert wurde ist das zeichnen die hölle!!! -> Discovered zeichnen ist zu heftig..!
-- Teilweise ist die Sensor-Map kleiner als 800x600 Px. Wie ist das möglich? -> Direction = 180
+- Analyse wo in map explored noch viel undiscovered ist
 - Punkte werden von anderen Punkten verdeckt. Logisch, weil alles 4mal kleiner ist und je nachdem wann die Punkte gezeichnet werden überdecken sie die anderen.
 	-> Verschiedene Ebenen?
 - statistiken speichern (anzahl collides, waypoint reaches, ...)
