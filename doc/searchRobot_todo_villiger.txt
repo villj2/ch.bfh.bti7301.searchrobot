@@ -31,6 +31,7 @@ ToDo:
 - Direkter Pfad durch MapExplored nehmen und prüfen ob ein Weg zum Goal existiert ohne Hindernisse. - OK
 
 
+- Umwandlung des CartesianArrays in normales Array und dann Croppen hat teilweise noch Fehler, weil das Array kleiner sein kann als die Map
 - MapExplored mit neuen Sensordaten abfüllen
 - Schauen ob in den Sensordaten das MapElementStatus.Target vorhanden ist
 - Schauen ob die Berechnung mit dem direkten Pfad durch MapExplored zum Goal (MapElementStatus.Target) funktioniert
