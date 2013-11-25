@@ -175,6 +175,7 @@ namespace SearchRobot.Library.Maps
                 }
             }
 
+
             return wayClear;
         }
 
