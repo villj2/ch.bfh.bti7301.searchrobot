@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Point = SearchRobot.Library.Maps.Point;
 using SearchRobot.Library.Simulation;
+using SearchRobot.Library.Simulation.WayDecision;
 
 namespace SearchRobot.Library.RobotParts
 {

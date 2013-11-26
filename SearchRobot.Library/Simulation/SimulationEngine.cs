@@ -17,7 +17,6 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using System.ComponentModel;
 
-
 namespace SearchRobot.Library.Simulation
 {
     public class SimulationEngine
@@ -30,6 +29,7 @@ namespace SearchRobot.Library.Simulation
         private Canvas _mapArea;
         private Canvas _minimapArea;
         private Canvas _minimapAreaVisited;
+        private static Label _lblOutput;
         private DispatcherTimer _dispatcherTimer;
 
         private readonly Sight sight = new Sight() {Angle = 90, Reach = int.MaxValue};
@@ -40,11 +40,12 @@ namespace SearchRobot.Library.Simulation
 
         private string _filename;
 
-        public SimulationEngine(Canvas mapArea, Canvas minimapArea, Canvas minimapAreaVisited)
+        public SimulationEngine(Canvas mapArea, Canvas minimapArea, Canvas minimapAreaVisited, Label lblOutput)
         {
             _mapArea = mapArea;
             _minimapArea = minimapArea;
             _minimapAreaVisited = minimapAreaVisited;
+            _lblOutput = lblOutput;
 
             initialize();
             LoadMap();
@@ -233,8 +234,13 @@ namespace SearchRobot.Library.Simulation
             _mapArea.Children.Clear();
             if (_robot != null) _robot.Dispose();
             if (_minimap != null) _minimap.Dispose();
-
+            
             _state = CycleState.Initiated;
+        }
+
+        public static void ShowInfo(string info)
+        {
+            _lblOutput.Content = info;
         }
     }
 }

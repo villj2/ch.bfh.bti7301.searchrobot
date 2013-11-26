@@ -28,7 +28,7 @@ namespace SearchRobot.Simulation
             InitializeComponent();
             InitializeText();
 
-            _simulationEngine = new SimulationEngine(MapArea, MinimapArea, MinimapAreaVisited);
+            _simulationEngine = new SimulationEngine(MapArea, MinimapArea, MinimapAreaVisited, lblOutput);
         }
 
         private void InitializeText()

@@ -29,8 +29,17 @@ namespace SearchRobot.Library.RobotParts
             // check if waypoint is reached
             if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
             {
+                if (WayDecision.IgnoreDirection)
+                {
+                    CreateNextWaypoint(new WayDecisionWaypointReachedBackwards(posX, posY, _mapExplored));
+                }
+                else
+                {
+                    CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
+                }
                 WayDecision.IgnoreDirection = false;
-                CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
+                
+                
             }
 
             MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
@@ -74,7 +83,7 @@ namespace SearchRobot.Library.RobotParts
             }
             else
             {
-                wd = new WayDecisionInit();
+                wd = new WayDecisionCollisionBackwards(posX, posY, mo, _mapExplored);
                 WayDecision.IgnoreDirection = false;
             }
 
@@ -161,6 +170,7 @@ namespace SearchRobot.Library.RobotParts
 
         public void Dispose()
         {
+            WayDecision.Collisions = 0;
             _mapExplored.Dispose();
         }
     }

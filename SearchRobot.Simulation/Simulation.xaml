@@ -12,7 +12,7 @@
         </Grid.ColumnDefinitions>
 
         <Canvas Grid.Row="0" Grid.Column="0" Name="MapArea" Background="Azure" />
-        
+
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150px" />
@@ -32,4 +32,5 @@
             <Button Name="btnAnalyze" Content="" Grid.Row="5" Grid.Column="0" Click="OnBtnAnalyzeClick"/>
         </Grid>
     </Grid>
+    
 </Window>

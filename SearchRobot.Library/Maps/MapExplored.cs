@@ -22,7 +22,8 @@ namespace SearchRobot.Library.Maps
                     // set old waypoint to undiscovered if robot didn't reach it. because it means that robot collided on its way.
                     if (GetStatus(_waypointActive.X, _waypointActive.Y) != MapElementStatus.Visited)
                     {
-                        SetStatus(_waypointActive.X, _waypointActive.Y, MapElementStatus.Undiscovered);
+                        // FIXME undiscovered wird nicht behandelt in der minimap. Darum bleibt der punkt liegen.
+                        SetStatus(_waypointActive.X, _waypointActive.Y, MapElementStatus.Remove);
                     }
                 }
 
@@ -107,7 +108,12 @@ namespace SearchRobot.Library.Maps
                     if (_map[i - offsetLeft, j - offsetTop] == MapElementStatus.Undiscovered)
                     {
                         MapElementStatus status = offsetLeft < 0 || offsetTop < 0 ? MapElementStatus.Undiscovered : arrMap[i, j];
-                        _map[i - offsetLeft, j - offsetTop] = status;
+
+                        // Don't take all information
+                        if (status == MapElementStatus.BlockedShadowed || status == MapElementStatus.Discovered)
+                        {
+                            _map[i - offsetLeft, j - offsetTop] = status;
+                        }
                     }
                 }
             }

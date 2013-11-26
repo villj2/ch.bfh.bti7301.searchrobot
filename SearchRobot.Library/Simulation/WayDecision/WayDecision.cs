@@ -11,7 +11,7 @@ namespace SearchRobot.Library.Simulation.WayDecision
     public abstract class WayDecision
     {
         public static bool IgnoreDirection = false;
-        public static int ReverseCollisions = 0;
+        public static int Collisions = 0;
 
         protected double _posX;
         protected double _posY;
@@ -37,6 +37,7 @@ namespace SearchRobot.Library.Simulation.WayDecision
 
         private void init()
         {
+            /*
             // Every time Robot collides while driving backwards, ReverseCollisions increments and checked if max. ReverseCollisions are reached
             // If Robot collides while driving normally, after a few seconds the ReverseCollisions are set to 0. But while this timer is running and he collides again backwards, timer is stopped.
             // -> If the Robot collides frequently while driving backwards, he is stuck.
@@ -63,16 +64,19 @@ namespace SearchRobot.Library.Simulation.WayDecision
             {
                 if(!_dispatcherTimer.IsEnabled) _dispatcherTimer.Start();
             }
+            */
 
             _point = new Point();
             _random = new Random();
         }
 
+        /*
         private void dispatcherTimerTick(object sender, EventArgs e)
         {
             WayDecision.ReverseCollisions = 0;
             _dispatcherTimer.Stop();
         }
+        */
 
         public virtual Point GetWaypoint()
         {

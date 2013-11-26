@@ -38,10 +38,21 @@ ToDo:
 - Algorithmus zum direkten Pfad erkennen auslagern und verwenden z.bsp. beim waypoint setzen - OK
 - Schauen ob in den Sensordaten das MapElementStatus.Target vorhanden ist - OK
 
+26.11.2013
+- Alte Waypoints entfernen - OK
+- Kollision -> Rückwärts zum nächsten Waypoint gehen -> Neuer Waypoint berechnen - OK
+- Rückwärts-Fahr-Waypoints nicht aufzeichnen - OK
+- Robot Stuck: ReverseCollisions werden wohl auch hochgezählt wenn er normal kollidiert oder so. Jedenfalls kommt die Meldung nach wenigen normalen KOllisionen - OK
+- Blocked von Sensordata nicht übernehmen! Weil sonst zeichnet er die ganze map - OK
+- Infomeldungen darstellen können - OK
 
+
+
+- Minimap mit Bitmap darstellen
 - Analyse wo in map explored noch viel undiscovered ist
 - Punkte werden von anderen Punkten verdeckt. Logisch, weil alles 4mal kleiner ist und je nachdem wann die Punkte gezeichnet werden überdecken sie die anderen.
 	-> Verschiedene Ebenen?
+	-> Wieso sogar mit versch. Ebenen?
 - statistiken speichern (anzahl collides, waypoint reaches, ...)
 - Kommentare anpassen
 - Minimap
@@ -54,3 +65,26 @@ ToDo:
 Fragen:
 
 - Wieso werden Elemente vom 2. Minimap Canvas vom 1. überschrieben?
+
+
+
+
+
+ private Image ScaleToSize(Image src, Size size)
+  {
+   Image newImage = new Bitmap(size.Width, size.Height);
+
+   using (Graphics gr = Graphics.FromImage(newImage))
+   {
+    gr.SmoothingMode = SmoothingMode.HighQuality;
+    gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+    gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+    gr.DrawImage(src, new Rectangle(0, 0, size.Width, size.Height));
+   }
+
+   return newImage;
+  }
+
+
+Bitmap generieren:
+DebugHelper.StoreAsBitmap

@@ -1,4 +1,5 @@
 ﻿using SearchRobot.Library.RobotParts;
+using SearchRobot.Library.Simulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,7 +79,7 @@ namespace SearchRobot.Library.Maps
                 {
                     if (el is Goal)
                     {
-                        Console.WriteLine("Endpoint reached!");
+                        SimulationEngine.ShowInfo("WIN!");
                     }
                 }
             }
