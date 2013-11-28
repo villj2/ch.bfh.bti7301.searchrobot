@@ -12,6 +12,11 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Brain : IDisposable
     {
+        // FIXME just4testing
+        public List<Point> waypoints;
+        private int waypointindex = 0;
+
+        public MapExplored MapExplored { get { return _mapExplored; } }
         private MapExplored _mapExplored;
         private Robot _robot;
 
@@ -35,10 +40,11 @@ namespace SearchRobot.Library.RobotParts
                 }
                 else
                 {
-                    CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
+                    // FIXME just4testing waypoints from dijkstra
+                    _mapExplored.WaypointActive = waypoints[waypointindex++];
+                    //CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
                 }
                 WayDecision.IgnoreDirection = false;
-                
                 
             }
 
@@ -103,8 +109,6 @@ namespace SearchRobot.Library.RobotParts
         {
             _mapExplored.WaypointActive = wayDecision.GetWaypoint();
         }
-
-        
 
         /* calculates new movementPoint based on next waypoint
         /****************************************************************/

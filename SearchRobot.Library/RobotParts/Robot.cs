@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Point = SearchRobot.Library.Maps.Point;
 using SearchRobot.Library.Simulation;
 using SearchRobot.Library.Simulation.WayDecision;
+using SearchRobot.Library.Simulation.Dijkstra;
 
 namespace SearchRobot.Library.RobotParts
 {
@@ -140,6 +141,13 @@ namespace SearchRobot.Library.RobotParts
             //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());
 
 			//return _sensor.GetView();
+
+
+
+
+            // FIXME just4testing start dijkstra
+            _brain.waypoints = DijkstraHelper.GetPath(StartPosition, new Point(799, 599), _mapExplored);
+            _brain.MapExplored.WaypointActive = _brain.waypoints[0];
 		}
 
         public void Move()

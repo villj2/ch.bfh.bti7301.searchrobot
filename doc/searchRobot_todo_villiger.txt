@@ -46,8 +46,12 @@ ToDo:
 - Blocked von Sensordata nicht übernehmen! Weil sonst zeichnet er die ganze map - OK
 - Infomeldungen darstellen können - OK
 
+28.11.2013
+- DijkstraHelper: Simplify MapExplored - OK
+- Dijkstra Pfadfind-Algorithmus implementiert - OK
 
 
+- Sobald MapElementStatus.Target endteckt wurde den Roboter ausrichten und los.
 - Minimap mit Bitmap darstellen
 - Analyse wo in map explored noch viel undiscovered ist
 - Punkte werden von anderen Punkten verdeckt. Logisch, weil alles 4mal kleiner ist und je nachdem wann die Punkte gezeichnet werden überdecken sie die anderen.

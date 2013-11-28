@@ -9,6 +9,8 @@ namespace SearchRobot.Library.Maps
 {
     public class MapExplored : IDisposable
     {
+        public MapElementStatus[,] Map { get { return _map; } }
+
         private MapElementStatus[,] _map = new MapElementStatus[800,600];
 
         private Point _waypointActive;
