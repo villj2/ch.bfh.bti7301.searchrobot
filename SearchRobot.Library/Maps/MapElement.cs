@@ -1,4 +1,5 @@
 ﻿using SearchRobot.Library.RobotParts;
+using SearchRobot.Library.Simulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,15 @@ namespace SearchRobot.Library.Maps
             if (result)
             {
                 var all = Map.Elements.Where(e => e != this && e.IsCollidable && e.IsOverlappingWith(currrentGeometry)).ToList();
+
+                // endpoint?
+                foreach (var el in all)
+                {
+                    if (el is Goal)
+                    {
+                        SimulationEngine.ShowInfo("WIN!");
+                    }
+                }
             }
 
 			return result;

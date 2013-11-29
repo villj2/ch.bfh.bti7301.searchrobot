@@ -52,10 +52,17 @@ namespace SearchRobot.Library.Maps
                         // remove point before adding new status
                         //_minimapArea.Children.Remove(_trackingMap[i, j].point);
                         //_trackingMap[i, j].point = null;
-                        
+
                         // draw point dependent of MapElementStatus in MapExplored and update status in trackingMap
                         MapElementStatus newStatus = _mapExplored.GetStatus(i, j);
                         _trackingMap[i, j].status = newStatus;
+
+                        if (newStatus == MapElementStatus.Remove)
+                        {
+                            _minimapArea.Children.Remove(_trackingMap[i, j].point);
+                            _trackingMap[i, j].point = null;
+                            _trackingMap[i, j].status = MapElementStatus.Undiscovered;
+                        }
 
                         switch (newStatus)
                         {

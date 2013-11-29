@@ -10,12 +10,15 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Point = SearchRobot.Library.Maps.Point;
 using SearchRobot.Library.Simulation;
+using SearchRobot.Library.Simulation.WayDecision;
+using SearchRobot.Library.Simulation.Dijkstra;
 
 namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement, IDisposable
     {
         private const int Size = 30;
+
         public MapExplored MapExplored { get { return _mapExplored; } }
 
         //private Ellipse _uiElement;
@@ -45,7 +48,7 @@ namespace SearchRobot.Library.RobotParts
 
             _mapArea = mapArea;
             _mapExplored = new MapExplored();
-            _brain = new Brain(_mapExplored);
+            _brain = new Brain(_mapExplored, this);
 	        _sensor = sensor;
 
             SetPos(StartPosition.X, StartPosition.Y);
@@ -132,11 +135,19 @@ namespace SearchRobot.Library.RobotParts
             // DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImageR-{0}.png", DateTime.Now.Ticks), result);
 
             _mapExplored.UpdateSensordata(result.ToArray(), StartPosition);
+            //_mapExplored.UpdateSensordata(result, StartPosition);
 
             //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray();
             //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());
 
 			//return _sensor.GetView();
+
+
+
+
+            // FIXME just4testing start dijkstra
+            _brain.waypoints = DijkstraHelper.GetPath(StartPosition, new Point(799, 599), _mapExplored);
+            _brain.MapExplored.WaypointActive = _brain.waypoints[0];
 		}
 
         public void Move()

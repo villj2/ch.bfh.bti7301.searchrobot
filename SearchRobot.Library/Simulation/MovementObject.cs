@@ -14,6 +14,14 @@ namespace SearchRobot.Library.Simulation
         public double Y { get; set; }
         public double Direction { get; set; }
 
-        public MovementObject() {}
+        public MovementObject(double x, double y, double direction)
+        {
+            X = x;
+            Y = y;
+            Direction = direction;
+        }
+
+        public MovementObject()
+        {}
     }
 }

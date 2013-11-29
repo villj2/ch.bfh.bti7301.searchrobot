@@ -1,0 +1,94 @@
+ToDo:
+
+- Roboter rumbewegen lassen - OK
+- Sobald Waypoint erreicht wurde neuer setzen - OK
+- Map laden (Resolver.StorageManager.Load("filename");) - OK
+- Map laden cancel - OK
+- Performance verbessern, da die position nun immer ein INT ist - OK
+- prüfung ob waypoint erreicht wurde ist nicht mehr sauber - OK
+- Beim Roboter "StartPosition" statt "_position" verwenden - OK
+- Button-Funktionalitäten - OK
+	- Load
+	- Reset
+	- Start / Pause
+- Simulations-Klassendiagramm - OK
+- Abbildung MapExplored in diesem Stil: private MapElementStatus[,] _map = new MapElementStatus[800,600]; - OK
+
+17.11.2013
+- Drehung bei neuem Waypoint nicht immer in die korrekte Richtung - OK
+- Linie zeichnen des befahrenen Weges - OK
+- winkel zum kollisionspunkt ausrechnen - OK
+- länge des opposite-vektors setzen - OK
+- roboter kollisionen prüfen und neuen waypoint berechnen - OK
+- Sensor: Sensordaten werden in Form eines kartesischenArrays geliefert mit allen Infos. Ich muss dann das Array zurückrotieren in ein normales Array.
+	Anschliessend nur die geblockten Elemente rausnehmen und in die Minimap zeichnen.
+	Zusätzlich basierend auf dem Gesehenen die Weg-Logik implementieren.
+
+24.11.2013
+- performance minimap improved - OK
+- roboter erkennt wenn er festgefahren ist - OK
+- kollision mit endpoint wird erkannt - OK
+- Direkter Pfad durch MapExplored nehmen und prüfen ob ein Weg zum Goal existiert ohne Hindernisse. - OK
+
+25.11.2013
+- Umwandlung des CartesianArrays in normales Array und dann Croppen hat teilweise noch Fehler, weil das Array kleiner sein kann als die Map - OK
+- MapExplored mit neuen Sensordaten abfüllen - OK
+- sobald einmal analysiert wurde ist das zeichnen die hölle!!! -> Discovered zeichnen ist zu heftig..! - OK
+- Schauen ob die Berechnung mit dem direkten Pfad durch MapExplored zum Goal (MapElementStatus.Target) funktioniert - OK
+- Algorithmus zum direkten Pfad erkennen auslagern und verwenden z.bsp. beim waypoint setzen - OK
+- Schauen ob in den Sensordaten das MapElementStatus.Target vorhanden ist - OK
+
+26.11.2013
+- Alte Waypoints entfernen - OK
+- Kollision -> Rückwärts zum nächsten Waypoint gehen -> Neuer Waypoint berechnen - OK
+- Rückwärts-Fahr-Waypoints nicht aufzeichnen - OK
+- Robot Stuck: ReverseCollisions werden wohl auch hochgezählt wenn er normal kollidiert oder so. Jedenfalls kommt die Meldung nach wenigen normalen KOllisionen - OK
+- Blocked von Sensordata nicht übernehmen! Weil sonst zeichnet er die ganze map - OK
+- Infomeldungen darstellen können - OK
+
+28.11.2013
+- DijkstraHelper: Simplify MapExplored - OK
+- Dijkstra Pfadfind-Algorithmus implementiert - OK
+
+
+- Sobald MapElementStatus.Target endteckt wurde den Roboter ausrichten und los.
+- Minimap mit Bitmap darstellen
+- Analyse wo in map explored noch viel undiscovered ist
+- Punkte werden von anderen Punkten verdeckt. Logisch, weil alles 4mal kleiner ist und je nachdem wann die Punkte gezeichnet werden überdecken sie die anderen.
+	-> Verschiedene Ebenen?
+	-> Wieso sogar mit versch. Ebenen?
+- statistiken speichern (anzahl collides, waypoint reaches, ...)
+- Kommentare anpassen
+- Minimap
+
+
+
+
+
+
+Fragen:
+
+- Wieso werden Elemente vom 2. Minimap Canvas vom 1. überschrieben?
+
+
+
+
+
+ private Image ScaleToSize(Image src, Size size)
+  {
+   Image newImage = new Bitmap(size.Width, size.Height);
+
+   using (Graphics gr = Graphics.FromImage(newImage))
+   {
+    gr.SmoothingMode = SmoothingMode.HighQuality;
+    gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+    gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+    gr.DrawImage(src, new Rectangle(0, 0, size.Width, size.Height));
+   }
+
+   return newImage;
+  }
+
+
+Bitmap generieren:
+DebugHelper.StoreAsBitmap

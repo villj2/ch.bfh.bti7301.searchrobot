@@ -12,15 +12,18 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Brain : IDisposable
     {
+        // FIXME just4testing
+        public List<Point> waypoints;
+        private int waypointindex = 0;
+
+        public MapExplored MapExplored { get { return _mapExplored; } }
         private MapExplored _mapExplored;
+        private Robot _robot;
 
-        private Random _rnd;
-
-        public Brain(MapExplored mapExplored) {
+        public Brain(MapExplored mapExplored, Robot robot) {
 
             _mapExplored = mapExplored;
-
-            _rnd = new Random();
+            _robot = robot;
 
             // set first waypoint
             CreateNextWaypoint();
@@ -31,26 +34,32 @@ namespace SearchRobot.Library.RobotParts
             // check if waypoint is reached
             if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
             {
-                CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
+                if (WayDecision.IgnoreDirection)
+                {
+                    CreateNextWaypoint(new WayDecisionWaypointReachedBackwards(posX, posY, _mapExplored));
+                }
+                else
+                {
+                    // FIXME just4testing waypoints from dijkstra
+                    _mapExplored.WaypointActive = waypoints[waypointindex++];
+                    //CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
+                }
+                WayDecision.IgnoreDirection = false;
+                
             }
 
-            MovementObject settingNew = new MovementObject();
-            settingNew.X = posX;
-            settingNew.Y = posY;
-            settingNew.Direction = currentDirection;
+            MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
 
             double targetDirection = CalculateTargetDirection(posX, posY, _mapExplored.WaypointActive);
-            //Console.WriteLine("targetDirection: " + targetDirection);
 
             // either change direction or position
-            if ((currentDirection + 360) % 360 != (targetDirection + 360) % 360)
+            if ((currentDirection + 360) % 360 != (targetDirection + 360) % 360 && !WayDecision.IgnoreDirection)
             {
                 settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
             }
             else
             {
                 MovementObject positionNew = GetNextMovementPoint(posX, posY);
-
                 settingNew.X = positionNew.X;
                 settingNew.Y = positionNew.Y;
             }
@@ -71,7 +80,20 @@ namespace SearchRobot.Library.RobotParts
         /// <param name="mo"></param>
         public void Collision(double posX, double posY, MovementObject mo)
         {
-            CreateNextWaypoint(new WayDecisionCollision(posX, posY, mo, _mapExplored));
+            // Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
+            WayDecision wd;
+            if (!WayDecision.IgnoreDirection)
+            {
+                wd = new WayDecisionCollision(posX, posY, mo, _mapExplored);
+                WayDecision.IgnoreDirection = true;
+            }
+            else
+            {
+                wd = new WayDecisionCollisionBackwards(posX, posY, mo, _mapExplored);
+                WayDecision.IgnoreDirection = false;
+            }
+
+            CreateNextWaypoint(wd);
         }
 
         /// <summary>
@@ -87,8 +109,6 @@ namespace SearchRobot.Library.RobotParts
         {
             _mapExplored.WaypointActive = wayDecision.GetWaypoint();
         }
-
-        
 
         /* calculates new movementPoint based on next waypoint
         /****************************************************************/
@@ -154,6 +174,7 @@ namespace SearchRobot.Library.RobotParts
 
         public void Dispose()
         {
+            WayDecision.Collisions = 0;
             _mapExplored.Dispose();
         }
     }

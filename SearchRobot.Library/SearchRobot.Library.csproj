@@ -61,6 +61,12 @@
     <Compile Include="Maps\MoveTool.cs" />
     <Compile Include="Maps\Point.cs" />
     <Compile Include="Maps\TackingMapEntry.cs" />
+    <Compile Include="Simulation\Dijkstra\Dijkstra.cs" />
+    <Compile Include="Simulation\Dijkstra\DijkstraHelper.cs" />
+    <Compile Include="Simulation\Dijkstra\Edge.cs" />
+    <Compile Include="Simulation\Dijkstra\Node.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecisionCollisionBackwards.cs" />
+    <Compile Include="Simulation\WayDecision\WayDecisionWaypointReachedBackwards.cs" />
     <Compile Include="Simulation\WayDecision\WayDecisionInit.cs" />
     <Compile Include="PointRotator.cs" />
     <Compile Include="RobotParts\Brain.cs" />
