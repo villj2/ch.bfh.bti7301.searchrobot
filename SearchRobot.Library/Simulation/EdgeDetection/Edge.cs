@@ -9,6 +9,10 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 {
 	public class Edge
 	{
+		public Point StartPoint { get; private set; }
+		
+		public Point EndPoint { get; private set; }
+
 		private readonly List<Point> _points;
 
 		public IReadOnlyCollection<Point> Points
@@ -46,6 +50,49 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 		public bool IsPointTouching(Point point)
 		{
 			return _points.Any(edgePoint => ArePointTouching(edgePoint, point));
+		}
+
+		public Point GetCenteredEdgePoint()
+		{
+			var realCenter = FindCenter();
+
+			return GetClosestPoint(realCenter);
+		}
+
+		private Point GetClosestPoint(Point closestTo)
+		{
+			Point result = null;
+			double distance = double.MaxValue;
+
+			_points.ForEach(p =>
+				{
+					double newDistance = GeometryHelper.GetDistance(p, closestTo);
+					if (result == null || newDistance < distance)
+					{
+						result = p;
+						distance = newDistance;
+					}
+				});
+
+			return result;
+		}
+
+		private Point FindCenter()
+		{
+			int smallestX, smallestY, biggestY, biggestX;
+
+			smallestX = biggestX = Points.First().X;
+			smallestY = biggestY = Points.First().Y;
+
+			foreach (var point in Points)
+			{
+				smallestX = smallestX > point.X ? point.X : smallestX;
+				smallestY = smallestY > point.Y ? point.Y : smallestY;
+				biggestX = biggestX < point.X ? point.X : biggestX;
+				biggestY = biggestY > point.Y ? point.Y : biggestY;
+			}
+
+			return new Point(smallestX + (biggestX - smallestX)/2, smallestY + (biggestY - smallestY)/2);
 		}
 	}
 }
