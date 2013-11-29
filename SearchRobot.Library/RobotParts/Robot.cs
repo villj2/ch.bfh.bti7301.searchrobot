@@ -9,49 +9,59 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Point = SearchRobot.Library.Maps.Point;
+using SearchRobot.Library.Simulation;
 
 namespace SearchRobot.Library.RobotParts
 {
-    public class Robot : UniqueMandatoryMapElement
+    public class Robot : UniqueMandatoryMapElement, IDisposable
     {
         private const int Size = 30;
-        Polyline _uiElement = new Polyline();
-        MapExplored _mapExplored = new MapExplored();
+        public MapExplored MapExplored { get { return _mapExplored; } }
+
+        //private Ellipse _uiElement;
+        //private Rectangle _uiElement;
+        private Polyline _uiElement;
+        private MapExplored _mapExplored;
+        private Brain _brain;
+        private Sensor _sensor;
+        private double _positionX;
+        private double _positionY;
+        private Canvas _mapArea;
+
         public double Direction { get; set; }
 
-        public Robot(Map map)
-            : base(map)
+        public double CartasianDirection
         {
-            // FIXME just4testing set waypoint
-            _mapExplored = new MapExplored();
-            Point waypoint = new Point();
-            waypoint.X = 333;
-            waypoint.Y = 333;
-            waypoint.Status = MapElementStatus.Blocked;
-
-            _mapExplored.AddPoint(waypoint);
-
-
-            Point pointToUpdate = new Point();
-            pointToUpdate.X = 333;
-            pointToUpdate.Y = 333;
-            _mapExplored.SetStatus(pointToUpdate, MapElementStatus.Waypoint);
-
-
-            // Vorgehen
-            // Roboter sagt: Ich will 30° drehen und 15Px nach rechts bewegen.
-            // Anschliessend führt die Simulation diese Bewegung des Roboters aus. (moveTo)
-            // Aber grundsätzlich berechnet der Roboter wie genau er sich bewegt
+            get { return 360 - Direction; }
         }
 
+        public Robot(Map map) : base(map) {}
+
         internal Robot() { }
+
+        public void Initialize(Canvas mapArea, Sensor sensor)
+        {
+            Console.WriteLine("Robot initialize");
+
+            _mapArea = mapArea;
+            _mapExplored = new MapExplored();
+            _brain = new Brain(_mapExplored);
+	        _sensor = sensor;
+
+            SetPos(StartPosition.X, StartPosition.Y);
+            SetDirection(Direction);
+
+            Console.WriteLine("Robot Map: " + Map);
+        }
 
 	    protected override Geometry GeometryShape
 	    {
             get
             {
-                return new RectangleGeometry(new Rect(StartPosition.X, StartPosition.Y, Size, Size), 0, 0,
-                                       new RotateTransform(Direction, StartPosition.X, StartPosition.Y));
+                return new EllipseGeometry(GeometryHelper.Convert(StartPosition), Size / 2, Size / 2);
+
+                //var rect = new Rect(StartPosition.X - 15, StartPosition.Y - 15, Size, Size);
+                // return new RectangleGeometry(rect, 0, 0, new RotateTransform(Direction, Size / 2, Size / 2));
             }
 	    }
 
@@ -68,12 +78,12 @@ namespace SearchRobot.Library.RobotParts
 
         public override void MouseMove(Canvas canvas, Point point)
         {
-            Direction = GeometryHelper.GetAngle(StartPosition, point);
-            _uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
+            SetDirection(GeometryHelper.GetAngle(StartPosition, point));
         }
 
 	    public override void ApplyTo(Canvas canvas)
 		{
+            
 			_uiElement = new Polyline();
 
 			_uiElement.Points.Add(new System.Windows.Point(10, 30));
@@ -88,25 +98,105 @@ namespace SearchRobot.Library.RobotParts
 			_uiElement.Height = 30;
 
 			_uiElement.Fill = Brushes.DarkGreen;
+            
+            
+            // FIXME just4testing - draw rectangle (same as collision detection)
+            /*
+            _uiElement = new Rectangle
+            {
+                Height = Size,
+                Fill = Brushes.Black,
+                Width = Size
+            };
 
-			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
+            Canvas.SetLeft(_uiElement, StartPosition.X);
+            Canvas.SetTop(_uiElement, StartPosition.Y);
+            _uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
+            _uiElement.Fill = Brushes.DarkGreen;
+            */
 
-			//Canvas.SetLeft(_uiElement, StartPosition.X - 15);
-			//Canvas.SetTop(_uiElement, StartPosition.Y - 15);
-            MoveTo(StartPosition);
+            //_uiElement = new Ellipse { Width = Size, Height = Size, Fill = Brushes.DarkGreen };
+
+            SetPos(StartPosition.X, StartPosition.Y);
+			SetDirection(Direction);
 
 			canvas.Children.Add(_uiElement);
 		}
 
-        public void ExecuteCycle()
-        {
+		//public CartesianArray<MapElementStatus> GetView()
+        public void GetView()
+		{
+            //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()), StartPosition);
+            var result = (new PointRotator(CartasianDirection)).Rotate(_sensor.GetView());
 
+            // DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImageR-{0}.png", DateTime.Now.Ticks), result);
+
+            _mapExplored.UpdateSensordata(result.ToArray(), StartPosition);
+
+            //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray();
+            //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());
+
+			//return _sensor.GetView();
+		}
+
+        public void Move()
+        {
+			MovementObject mo = _brain.GetNextMove(_positionX, _positionY, Direction);
+
+            // temporarily deactivate robot to avoid collision with clone
+            IsCollidable = false;
+            
+            // create clone for collision dection of next move
+            var collisionDummy = (Robot)this.Clone();
+
+            collisionDummy.ApplyTo(_mapArea);
+            Map.Add(collisionDummy);
+            collisionDummy.Bind(Map);
+
+            // set new position
+            collisionDummy.SetPos(mo.X, mo.Y);
+
+            if (collisionDummy.IsOverlapping())
+            {
+                collisionDummy.Dispose();
+                collisionDummy.Remove(_mapArea);
+
+                _brain.Collision(_positionX, _positionY, mo);
+                IsCollidable = true;
+
+                return;
+            }
+
+            collisionDummy.Dispose();
+            collisionDummy.Remove(_mapArea);
+            IsCollidable = true;
+
+
+            SetPos(mo.X, mo.Y);
+            SetDirection(mo.Direction);
+
+            //Console.WriteLine("isValid: " + IsValid());
         }
 
-        public void MoveTo(Point point)
+        public void SetPos(double x, double y)
         {
-            Canvas.SetLeft(_uiElement, point.X - 15);
-            Canvas.SetTop(_uiElement, point.Y - 15);
+            _positionX = x;
+            _positionY = y;
+
+            StartPosition.X = (int)_positionX;
+            StartPosition.Y = (int)_positionY;
+
+            //_position.X = (int)Math.Round(_positionExactlyX);
+            //_position.Y = (int)Math.Round(_positionExactlyY);
+
+            Canvas.SetLeft(_uiElement, StartPosition.X - 15);
+            Canvas.SetTop(_uiElement, StartPosition.Y - 15);
+        }
+
+        public void SetDirection(double direction)
+        {
+			Direction = direction;
+			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
         }
 
 	    public override void Remove(Canvas canvas)
@@ -115,7 +205,7 @@ namespace SearchRobot.Library.RobotParts
 			Map.Remove(this);
 	    }
 
-		public override void Move(Canvas canvas, int offsetX, int offsetY)
+        public override void Move(Canvas canvas, int offsetX, int offsetY)
 		{
 			StartPosition.X += offsetX;
 			StartPosition.Y += offsetY;
@@ -135,5 +225,11 @@ namespace SearchRobot.Library.RobotParts
 	    {
 		    return new Robot {StartPosition = this.StartPosition.Clone(), Direction = this.Direction};
 	    }
+
+        public void Dispose()
+        {
+            if (_mapExplored != null) _mapExplored.Dispose();
+            if (_brain != null) _brain.Dispose();
+        }
     }
 }

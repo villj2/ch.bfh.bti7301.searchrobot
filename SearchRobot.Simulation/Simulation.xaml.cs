@@ -28,13 +28,21 @@ namespace SearchRobot.Simulation
             InitializeComponent();
             InitializeText();
 
-            _simulationEngine = new SimulationEngine(MapArea);
+            _simulationEngine = new SimulationEngine(MapArea, MinimapArea, MinimapAreaVisited);
         }
 
         private void InitializeText()
         {
+            btnLoad.Content = TextContent.Instance["Simulation-Button-Load"];
             btnStart.Content = TextContent.Instance["Simulation-Button-Start"];
             btnReset.Content = TextContent.Instance["Simulation-Button-Reset"];
+            btnAnalyze.Content = TextContent.Instance["Simulation-Button-Analyze"];
+        }
+
+        private void OnBtnLoadClick(object sender, RoutedEventArgs e)
+        {
+            _simulationEngine.LoadMap();
+            InitializeText();
         }
 
         private void OnBtnStartClick(object sender, RoutedEventArgs e)
@@ -46,6 +54,11 @@ namespace SearchRobot.Simulation
         {
             _simulationEngine.Reset();
             InitializeText();
+        }
+
+        private void OnBtnAnalyzeClick(object sender, RoutedEventArgs e)
+        {
+            _simulationEngine.AnalyzeMap();
         }
     }
 }

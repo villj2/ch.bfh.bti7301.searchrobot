@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Media.Imaging;
 using Timer = System.Threading.Timer;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,26 +13,41 @@ using SearchRobot.Library.Global;
 using SearchRobot.Library.RobotParts;
 using SearchRobot.Library.Maps;
 using Point = SearchRobot.Library.Maps.Point;
+using System.Windows.Threading;
+using Microsoft.Win32;
+using System.ComponentModel;
 
 
 namespace SearchRobot.Library.Simulation
 {
     public class SimulationEngine
     {
-        const int CYCLE_INTERVAL = 500;
+        const int CYCLE_INTERVAL = 10; // milliseconds
+        const int CYCLE_MINIMAP_UPDATE = 100; // minimap updates every 'x'th time interval is dispatched 
 
         private AutoResetEvent _autoEvent;
-        private Timer _timer;
         private int _ticks;
         private Canvas _mapArea;
+        private Canvas _minimapArea;
+        private Canvas _minimapAreaVisited;
+        private DispatcherTimer _dispatcherTimer;
 
-        public SimulationEngine(Canvas mapArea)
+        private readonly Sight sight = new Sight() {Angle = 90, Reach = int.MaxValue};
+
+        private Robot _robot;
+        private Map _map;
+        private Minimap _minimap;
+
+        private string _filename;
+
+        public SimulationEngine(Canvas mapArea, Canvas minimapArea, Canvas minimapAreaVisited)
         {
             _mapArea = mapArea;
+            _minimapArea = minimapArea;
+            _minimapAreaVisited = minimapAreaVisited;
 
             initialize();
-            loadMap();
-            buildMap();
+            LoadMap();
         }
 
         private void initialize()
@@ -39,27 +55,55 @@ namespace SearchRobot.Library.Simulation
             _autoEvent = new AutoResetEvent(false);
             _ticks = 0;
             _state = CycleState.Initiated;
-        }
 
-        private void loadMap()
-        {
-            // TODO implementation
+            // create Timer
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += new EventHandler(dispatcherTimerTick);
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, CYCLE_INTERVAL);
         }
 
         private void buildMap()
         {
-            // TODO load Map
-            Map map = new Map();
+            // get reference of robot
+            if (_map != null)
+            {
+                _robot = _map.Elements.OfType<Robot>().First();
+                //_robot.Initialize(_mapArea, null); 
+                _robot.Initialize(_mapArea, new Sensor(_robot, _mapArea, new Sight { Angle = 180, Reach = int.MaxValue }));
+                //_robot.Bind(_map);
 
-            // just 4 testing without map-loading
-            Robot robot = new Robot(map);
-            robot.ApplyTo(_mapArea);
+                /*
+                */
+                _minimap = new Minimap(_minimapArea, _minimapAreaVisited, _robot.MapExplored);
+            }
+        }
 
-            Point p = new Point();
-            p.X = 200;
-            p.Y = 300;
+        public void LoadMap()
+        {
+            Dispose();
 
-            robot.MoveTo(p);
+            var fileDialog = new OpenFileDialog
+            {
+                Filter = "Map Files|*.xml",
+                Multiselect = false
+            };
+            fileDialog.FileOk += LoadMapFromFile;
+
+            fileDialog.ShowDialog();
+        }
+
+        void LoadMapFromFile(object sender, CancelEventArgs e)
+        {
+            var dialog = sender as OpenFileDialog;
+            if (dialog != null)
+            {
+                _filename = dialog.FileName;
+
+                if (_filename != null)
+                {
+                    Reset();
+                }
+            }
         }
 
         #region Canvas MouseHandling
@@ -90,49 +134,71 @@ namespace SearchRobot.Library.Simulation
 
         public void Reset()
         {
-            CyclesReset();
+            Dispose();
+
+            if (_filename != null)
+            {
+                _map = Resolver.StorageManager.Load(_filename);
+                _mapArea.Children.Clear();
+                _map.ApplyToCanvas(_mapArea);
+
+                buildMap();
+            }
+        }
+
+        public void AnalyzeMap()
+        {
+            _robot.GetView();
         }
         #endregion
 
         #region Cycle Handling
         private void CyclesStart()
         {
-            TimerCallback timerDelegate = new TimerCallback(CheckStatus);
-            _timer = new Timer(timerDelegate, _autoEvent, CYCLE_INTERVAL, CYCLE_INTERVAL);
-
             _state = CycleState.Running;
+            _dispatcherTimer.Start();
         }
 
-        public void CheckStatus(Object stateInfo)
+        private void dispatcherTimerTick(object sender, EventArgs e)
         {
-            AutoResetEvent autoEvent = (AutoResetEvent)stateInfo;
-
             _ticks++;
-            Console.WriteLine("{0} ticks", _ticks.ToString());
+            _robot.Move();
+
+
+            // FIXME just4testing disabled
+			if (_ticks % 250 == -1)
+			{
+                // _robot.GetView();
+
+                /*
+                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView()).ToArray();
+                // TODO crop res (array with padding)
+                 * 
+                 * 
+                // essenzielle infos sind 800 x 600 in dem zu grossen array zentriert
+
+                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView());
+
+                int x= 10, y = 10;
+
+                MapElementStatus[,] mapExplored = new MapElementStatus[20,20];
+
+                mapExplored[x - 1, y] = map[-1, 0];
+
+                // MapElementStatus: BlockedShadowed -> kanten
+                // Discovered: gesehen aber nicht blocked
+                */
+			}
+            
+
+
+            if(_ticks % CYCLE_MINIMAP_UPDATE == 1) _minimap.Update();
         }
 
         private void CyclesStop()
         {
-            _timer.Dispose();
-
             _state = CycleState.Paused;
-        }
-
-        private void CyclesReset()
-        {
-            if (_state == CycleState.Paused || _state == CycleState.Running)
-            {
-                _timer.Dispose();
-                _timer = null;
-                _ticks = 0;
-
-                _state = CycleState.Initiated;
-
-                Console.WriteLine("Reset, ticks: {0}", _ticks.ToString());
-
-                // TODO reset Map Explored
-                // TODO reset Robot Position
-            }
+            _dispatcherTimer.Stop();
         }
         #endregion
 
@@ -157,5 +223,18 @@ namespace SearchRobot.Library.Simulation
 
         }
         #endregion
+
+        public void Dispose()
+        {
+            CyclesStop();
+            _ticks = 0;
+
+            _map = null;
+            _mapArea.Children.Clear();
+            if (_robot != null) _robot.Dispose();
+            if (_minimap != null) _minimap.Dispose();
+
+            _state = CycleState.Initiated;
+        }
     }
 }

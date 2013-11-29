@@ -44,8 +44,8 @@ namespace SearchRobot.Library.Maps
 
 		private int GetRadius(Point start, Point end)
 		{
-			int x = Math.Abs(start.X - end.X);
-			int y = Math.Abs(start.Y - end.Y);
+			double x = Math.Abs(start.X - end.X);
+			double y = Math.Abs(start.Y - end.Y);
 
 			return Convert.ToInt32(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
 		}
@@ -78,7 +78,7 @@ namespace SearchRobot.Library.Maps
             }
 		}
 
-		public override void Move(Canvas canvas, int offsetX, int offsetY)
+        public override void Move(Canvas canvas, int offsetX, int offsetY)
 		{
 			StartPosition.X += offsetX;
 			StartPosition.Y += offsetY;

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SearchRobot.Library.RobotParts
+namespace SearchRobot.Library.Simulation.WayDecision
 {
-	public class Sight
-	{
-		public int Angle { get; set; }
-		public int Reach { get; set; }
-	}
+    class WayDecisionInit : WayDecision
+    {
+        public WayDecisionInit() : base()
+        { }
+    }
 }

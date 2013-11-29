@@ -88,7 +88,7 @@ namespace SearchRobot.Library.Maps
 			Map.Remove(this);
 		}
 
-		public override void Move(Canvas canvas, int offsetX, int offsetY)
+        public override void Move(Canvas canvas, int offsetX, int offsetY)
 		{
 			StartPosition.X += offsetX;
 			StartPosition.Y += offsetY;

@@ -22,7 +22,8 @@ namespace SearchRobot.Library.Maps
 
 		public override bool IsValid()
 		{
-			return IsUnique() && base.IsValid();
+            return base.IsValid();
+			//return IsUnique() && base.IsValid();
 		}
 	}
 }

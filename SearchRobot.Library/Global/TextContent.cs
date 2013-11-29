@@ -14,10 +14,12 @@ namespace SearchRobot.Library.Global
 
         private TextContent()
         {
+            this["Simulation-Button-Load"] = "Load";
             this["Simulation-Button-Start"] = "Start";
             this["Simulation-Button-Pause"] = "Pause";
             this["Simulation-Button-Reset"] = "Reset";
             this["Simulation-Button-Resume"] = "Resume";
+            this["Simulation-Button-Analyze"] = "Analyze";
         }
     }
 }
