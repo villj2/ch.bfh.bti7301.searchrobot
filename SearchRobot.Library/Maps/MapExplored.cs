@@ -112,9 +112,10 @@ namespace SearchRobot.Library.Maps
                         MapElementStatus status = offsetLeft < 0 || offsetTop < 0 ? MapElementStatus.Undiscovered : arrMap[i, j];
 
                         // Don't take all information
-                        if (status == MapElementStatus.BlockedShadowed || status == MapElementStatus.Discovered)
+                        // FIXME just4testing - also take Blocked for dijkstra testing!
+                        if (status == MapElementStatus.BlockedShadowed || status == MapElementStatus.Discovered || status == MapElementStatus.Blocked)
                         {
-                            _map[i - offsetLeft, j - offsetTop] = status;
+                            _map[i - offsetLeft, j - offsetTop] = status == MapElementStatus.BlockedShadowed ? MapElementStatus.Blocked : status;
                         }
                     }
                 }

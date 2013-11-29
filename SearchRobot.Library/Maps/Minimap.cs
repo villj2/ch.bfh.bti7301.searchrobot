@@ -66,9 +66,9 @@ namespace SearchRobot.Library.Maps
 
                         switch (newStatus)
                         {
-                            case MapElementStatus.BlockedShadowed:
-                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Black, 1);
-                                break;
+                            //case MapElementStatus.BlockedShadowed:
+                            //    _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Black, 1);
+                            //    break;
                             case MapElementStatus.Waypoint:
                                 _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.DarkRed, 5);
                                 break;
@@ -84,12 +84,20 @@ namespace SearchRobot.Library.Maps
                             case MapElementStatus.WaypointVisited:
                                 _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Blue, 5);
                                 break;
-                            case MapElementStatus.Discovered:
-                                _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Azure, 1);
-                                break;
+                            //case MapElementStatus.Discovered:
+                            //    _trackingMap[i, j].point = drawPoint(i, j, System.Windows.Media.Brushes.Azure, 1);
+                            //    break;
                         }
                     }
                 }
+            }
+        }
+
+        internal void drawWaypoints(List<Point> waypoints)
+        {
+            foreach (Point p in waypoints)
+            {
+                drawPoint(p.X, p.Y, System.Windows.Media.Brushes.DarkRed, 5);
             }
         }
 

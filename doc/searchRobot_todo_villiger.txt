@@ -51,15 +51,20 @@ ToDo:
 - Dijkstra Pfadfind-Algorithmus implementiert - OK
 
 
-- Sobald MapElementStatus.Target endteckt wurde den Roboter ausrichten und los.
+- Dijkstra optimieren (er will sich häufig am rand durchsneaken obwohl er gar keinen platz hat)
+	-> Rand-Nodes gar nicht erst erzeugen?
+	-> der y-Index scheint ja nicht ok zu sein (ich rechne ja - 10). hat das auch was mit dem rand-durchsneaken zu tun?
+	-> Problem gar nicht beim Dijkstra, sondern wird der waypoint allgemein auf der y-achse falsch gezeichnet?
 - Minimap mit Bitmap darstellen
-- Analyse wo in map explored noch viel undiscovered ist
+
+- Sobald MapElementStatus.Target endteckt wurde den Roboter ausrichten und los. (nicht ausrichten, sondern einfach waypoint draufsetzen!)
+- Analyse wo in map explored noch viel undiscovered ist - NOT
 - Punkte werden von anderen Punkten verdeckt. Logisch, weil alles 4mal kleiner ist und je nachdem wann die Punkte gezeichnet werden überdecken sie die anderen.
 	-> Verschiedene Ebenen?
 	-> Wieso sogar mit versch. Ebenen?
 - statistiken speichern (anzahl collides, waypoint reaches, ...)
 - Kommentare anpassen
-- Minimap
+- Reihenfolge was der Roboter wann macht - SEILER
 
 
 

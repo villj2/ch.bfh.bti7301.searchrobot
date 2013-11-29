@@ -17,7 +17,7 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement, IDisposable
     {
-        private const int Size = 30;
+        public const int Size = 20;
 
         public MapExplored MapExplored { get { return _mapExplored; } }
 
@@ -127,7 +127,7 @@ namespace SearchRobot.Library.RobotParts
 		}
 
 		//public CartesianArray<MapElementStatus> GetView()
-        public void GetView()
+        public List<Point> GetView()
 		{
             //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()), StartPosition);
             var result = (new PointRotator(CartasianDirection)).Rotate(_sensor.GetView());
@@ -148,6 +148,8 @@ namespace SearchRobot.Library.RobotParts
             // FIXME just4testing start dijkstra
             _brain.waypoints = DijkstraHelper.GetPath(StartPosition, new Point(799, 599), _mapExplored);
             _brain.MapExplored.WaypointActive = _brain.waypoints[0];
+
+            return _brain.waypoints;
 		}
 
         public void Move()

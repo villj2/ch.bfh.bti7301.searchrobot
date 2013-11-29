@@ -149,7 +149,7 @@ namespace SearchRobot.Library.Simulation
 
         public void AnalyzeMap()
         {
-            _robot.GetView();
+            _minimap.drawWaypoints(_robot.GetView());
         }
         #endregion
 
