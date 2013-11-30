@@ -9,12 +9,14 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 {
     public class DijkstraHelper
     {
-        private static Node[,] _nodeMatrix;
-        private static List<Node> _nodeList;
+        public const int GRID_SIZE = 20;
 
-        private static List<Edge> _edgeList;
+        private Node[,] _nodeMatrix;
+        private List<Node> _nodeList;
 
-        public static List<Point> GetPath(Point pos, Point target, MapExplored mapExplored)
+        private List<Edge> _edgeList;
+
+        public List<Point> GetPath(Point pos, Point target, MapExplored mapExplored)
         {
             /* 
              * 1) Simplify MapExplored
@@ -24,7 +26,7 @@ namespace SearchRobot.Library.Simulation.Dijkstra
              */
 
             // initialize
-            _nodeMatrix = new Node[40, 30];
+            _nodeMatrix = new Node[800 / GRID_SIZE, 600 / GRID_SIZE];
             _nodeList = new List<Node>();
             _edgeList = new List<Edge>();
 
@@ -36,7 +38,8 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             Dijkstra d = new Dijkstra(_edgeList, _nodeList);
 
             // set start node and calculate distances
-            Node nodeStart = _nodeMatrix[pos.X / 20, pos.Y / 20];
+            Node nodeStart = _nodeMatrix[pos.X / GRID_SIZE, pos.Y / GRID_SIZE];
+            //Node nodeStart = _nodeList.First();
             d.calculateDistance(nodeStart);
 
             // get path to node
@@ -52,22 +55,22 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             return waypoints;
         }
 
-        private static bool[,] Simplify(MapExplored mapExplored)
+        private bool[,] Simplify(MapExplored mapExplored)
         {
-            bool[,] mapSimplified = new bool[40, 30];
+            bool[,] mapSimplified = new bool[800 / GRID_SIZE, 600 / GRID_SIZE];
 
-            for (int i = 0; i < 800; i += 20)
+            for (int i = 0; i < 800; i += GRID_SIZE)
             {
-                for (int j = 0; j < 600; j += 20)
+                for (int j = 0; j < 600; j += GRID_SIZE)
                 {
-                    mapSimplified[i / 20, j / 20] = CreateNode(i, j, 20, mapExplored);
+                    mapSimplified[i / GRID_SIZE, j / GRID_SIZE] = CreateNode(i, j, GRID_SIZE, mapExplored);
                 }
             }
 
             return mapSimplified;
         }
 
-        private static bool CreateNode(int startX, int startY, int range, MapExplored mapExplored)
+        private bool CreateNode(int startX, int startY, int range, MapExplored mapExplored)
         {
             for (int i = startX; i < startX + range; i++)
             {
@@ -83,33 +86,19 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             }
 
             // if node is free -> save
-            Node node = new Node(GenerateName(startX / 20, startY / 20));
-            _nodeMatrix[startX / 20, startY / 20] = node;
+            Node node = new Node(GenerateName(startX / GRID_SIZE, startY / GRID_SIZE));
+            _nodeMatrix[startX / GRID_SIZE, startY / GRID_SIZE] = node;
             _nodeList.Add(node);
 
             return true;
         }
 
-        private static void CreateEdges()
+        private void CreateEdges()
         {
-            // FIXME just4testing add three edges (0000 -> 0001 -> 0002) and (0000 -> 00002)
-            // vertical / horizontal
-            //_edgeList.Add(new Edge(_nodeMatrix[0, 0], _nodeMatrix[0, 1], 2));
-            //_edgeList.Add(new Edge(_nodeMatrix[0, 1], _nodeMatrix[1, 1], 2));
-            //_edgeList.Add(new Edge(_nodeMatrix[1, 1], _nodeMatrix[1, 2], 2));
-            //_edgeList.Add(new Edge(_nodeMatrix[1, 2], _nodeMatrix[2, 2], 2));
-            //_edgeList.Add(new Edge(_nodeMatrix[2, 2], _nodeMatrix[2, 3], 2));
-            //_edgeList.Add(new Edge(_nodeMatrix[2, 3], _nodeMatrix[3, 3], 2));
-
-            //// diagonal
-            //_edgeList.Add(new Edge(_nodeMatrix[0, 0], _nodeMatrix[1, 1], 1));
-            //_edgeList.Add(new Edge(_nodeMatrix[1, 1], _nodeMatrix[2, 2], 1));
-            //_edgeList.Add(new Edge(_nodeMatrix[2, 2], _nodeMatrix[3, 3], 1));
-
             // create all edges
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 800 / GRID_SIZE; i++)
             {
-                for (int j = 0; j < 30; j++)
+                for (int j = 0; j < 600 / GRID_SIZE; j++)
                 {
                     for (int k = -1; k < 2; k++)
                     {
@@ -120,9 +109,9 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 
                             // check bounds
                             if (pointerX >= 0 &&
-                                pointerX < 40 &&
+                                pointerX < 800 / GRID_SIZE &&
                                 pointerY >= 0 &&
-                                pointerY < 30 &&
+                                pointerY < 600 / GRID_SIZE &&
                                 (pointerX != i ||
                                 pointerY != j))
                             {
@@ -160,16 +149,16 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 
         }
 
-        private static string GenerateName(int x, int y)
+        private string GenerateName(int x, int y)
         {
             return x.ToString("00") + y.ToString("00");
         }
 
-        private static Point GeneratePointFromName(string name)
+        private Point GeneratePointFromName(string name)
         {
             Point p = new Point();
-            p.X = Convert.ToInt32(name.Substring(0, 2)) * 20 + 10;
-            p.Y = Convert.ToInt32(name.Substring(2, 2)) * 20 - 10;
+            p.X = Convert.ToInt32(name.Substring(0, 2)) * GRID_SIZE + GRID_SIZE / 2;
+            p.Y = Convert.ToInt32(name.Substring(2, 2)) * GRID_SIZE + GRID_SIZE / 2;
             p.Status = MapElementStatus.Waypoint;
             return p;
         }

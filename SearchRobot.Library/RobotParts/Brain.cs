@@ -154,14 +154,16 @@ namespace SearchRobot.Library.RobotParts
             if(currentDirection < 0) currentDirection += 360;
             if(targetDirection < 0) targetDirection += 360;
 
+            double discrepancy = Math.Abs(targetDirection - currentDirection);
+
             bool dir = ((currentDirection) - (targetDirection) + 360) % 360 > 180;
             if (dir)
             {
-                currentDirection = currentDirection + 1;
+                currentDirection = currentDirection + (discrepancy > 1 ? 2 : 1);
             }
             else
             {
-                currentDirection = currentDirection - 1;
+                currentDirection = currentDirection - (discrepancy > 1 ? 2 : 1);
             }
 
             return currentDirection % 360;

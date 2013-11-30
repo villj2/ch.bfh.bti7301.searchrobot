@@ -17,7 +17,7 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Robot : UniqueMandatoryMapElement, IDisposable
     {
-        public const int Size = 20;
+        public const int Size = 15;
 
         public MapExplored MapExplored { get { return _mapExplored; } }
 
@@ -89,16 +89,16 @@ namespace SearchRobot.Library.RobotParts
             
 			_uiElement = new Polyline();
 
-			_uiElement.Points.Add(new System.Windows.Point(10, 30));
-			_uiElement.Points.Add(new System.Windows.Point(10, 20));
-			_uiElement.Points.Add(new System.Windows.Point(0, 20));
-			_uiElement.Points.Add(new System.Windows.Point(15, 0));
-			_uiElement.Points.Add(new System.Windows.Point(30, 20));
-			_uiElement.Points.Add(new System.Windows.Point(20, 20));
-			_uiElement.Points.Add(new System.Windows.Point(20, 30));
+            _uiElement.Points.Add(new System.Windows.Point(Size * 1/3, Size));
+            _uiElement.Points.Add(new System.Windows.Point(Size * 1/3, Size * 2/3));
+            _uiElement.Points.Add(new System.Windows.Point(0, Size * 2/3));
+            _uiElement.Points.Add(new System.Windows.Point(Size * 1/2, 0));
+            _uiElement.Points.Add(new System.Windows.Point(Size, Size * 2/3));
+            _uiElement.Points.Add(new System.Windows.Point(Size * 2/3, Size * 2/3));
+            _uiElement.Points.Add(new System.Windows.Point(Size * 2/3, Size));
 
-			_uiElement.Width = 30;
-			_uiElement.Height = 30;
+			_uiElement.Width = Size;
+			_uiElement.Height = Size;
 
 			_uiElement.Fill = Brushes.DarkGreen;
             
@@ -146,7 +146,7 @@ namespace SearchRobot.Library.RobotParts
 
 
             // FIXME just4testing start dijkstra
-            _brain.waypoints = DijkstraHelper.GetPath(StartPosition, new Point(799, 599), _mapExplored);
+            _brain.waypoints = new DijkstraHelper().GetPath(StartPosition, new Point(799, 599), _mapExplored);
             _brain.MapExplored.WaypointActive = _brain.waypoints[0];
 
             return _brain.waypoints;
@@ -202,14 +202,14 @@ namespace SearchRobot.Library.RobotParts
             //_position.X = (int)Math.Round(_positionExactlyX);
             //_position.Y = (int)Math.Round(_positionExactlyY);
 
-            Canvas.SetLeft(_uiElement, StartPosition.X - 15);
-            Canvas.SetTop(_uiElement, StartPosition.Y - 15);
+            Canvas.SetLeft(_uiElement, StartPosition.X - Size / 2);
+            Canvas.SetTop(_uiElement, StartPosition.Y - Size / 2);
         }
 
         public void SetDirection(double direction)
         {
 			Direction = direction;
-			_uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
+			_uiElement.RenderTransform = new RotateTransform(Direction + 90, Size / 2, Size / 2);
         }
 
 	    public override void Remove(Canvas canvas)
