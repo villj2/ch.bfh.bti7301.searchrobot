@@ -9,12 +9,10 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 {
     public class DijkstraHelper
     {
-        // FIXME trotzdem mit string-namen arbeiten? Weil nötig bei Dijkstra d = new Dijkstra(_edges, _nodes);
-        //private static Dictionary<string, Node> _dictNodes = new Dictionary<string, Node>();
-        private static Node[,] _nodeMatrix = new Node[40, 30];
-        private static List<Node> _nodeList = new List<Node>();
+        private static Node[,] _nodeMatrix;
+        private static List<Node> _nodeList;
 
-        private static List<Edge> _edgeList = new List<Edge>();
+        private static List<Edge> _edgeList;
 
         public static List<Point> GetPath(Point pos, Point target, MapExplored mapExplored)
         {
@@ -25,8 +23,12 @@ namespace SearchRobot.Library.Simulation.Dijkstra
              * 4) return path steps as waypoints
              */
 
+            // initialize
+            _nodeMatrix = new Node[40, 30];
+            _nodeList = new List<Node>();
+            _edgeList = new List<Edge>();
+
             // Simplify MapExplored (20x20 -> 1x1) and if no blocked Element, create node.
-            //bool[,] mapSimplified = Simplify(mapExplored);
             Simplify(mapExplored);
             CreateEdges();
 
@@ -34,13 +36,12 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             Dijkstra d = new Dijkstra(_edgeList, _nodeList);
 
             // set start node and calculate distances
-            //d.calculateDistance(_nodeMatrix[0,0]);
             Node nodeStart = _nodeMatrix[pos.X / 20, pos.Y / 20];
             d.calculateDistance(nodeStart);
 
             // get path to node
             // FIXME just4testing endpoint static
-            List<Node> path = d.getPathTo(_nodeMatrix[5,15]);
+            List<Node> path = d.getPathTo(_nodeList.Last());
 
             List<Point> waypoints = new List<Point>();
             foreach (Node n in path)
@@ -59,43 +60,34 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             {
                 for (int j = 0; j < 600; j += 20)
                 {
-                    mapSimplified[i / 20, j / 20] = IsFree(i, j, 20, mapExplored);
+                    mapSimplified[i / 20, j / 20] = CreateNode(i, j, 20, mapExplored);
                 }
             }
 
             return mapSimplified;
         }
 
-        private static bool IsFree(int startX, int startY, int range, MapExplored mapExplored)
+        private static bool CreateNode(int startX, int startY, int range, MapExplored mapExplored)
         {
-            bool isFree = true;
-
             for (int i = startX; i < startX + range; i++)
             {
-                if (!isFree) break;
-
                 for (int j = startY; j < startY + range; j++)
                 {
-                    //if (mapExplored.GetStatus(i, j) != MapElementStatus.Undiscovered && mapExplored.GetStatus(i, j) != MapElementStatus.Discovered)
-                    if (mapExplored.GetStatus(i, j) == MapElementStatus.Blocked ||
-                        mapExplored.GetStatus(i, j) == MapElementStatus.BlockedShadowed ||
-                        mapExplored.GetStatus(i, j) == MapElementStatus.Shadowed)
+                    MapElementStatus status = mapExplored.GetStatus(i, j);
+
+                    if (status == MapElementStatus.Blocked)
                     {
-                        isFree = false;
-                        break;
+                        return false;
                     }
                 }
             }
 
             // if node is free -> save
-            if (isFree)
-            {
-                Node node = new Node(GenerateName(startX / 20, startY / 20));
-                _nodeMatrix[startX / 20, startY / 20] = node;
-                _nodeList.Add(node);
-            }
+            Node node = new Node(GenerateName(startX / 20, startY / 20));
+            _nodeMatrix[startX / 20, startY / 20] = node;
+            _nodeList.Add(node);
 
-            return isFree;
+            return true;
         }
 
         private static void CreateEdges()
@@ -135,13 +127,30 @@ namespace SearchRobot.Library.Simulation.Dijkstra
                                 pointerY != j))
                             {
 
+                                bool isDiagonalEdge = Math.Abs(k) + Math.Abs(l) >= 2;
+
                                 // check if nodes exist!
                                 Node nodeOrigin = _nodeMatrix[i, j];
-                                Node nodeTarget = _nodeMatrix[i + k, j + l];
+                                Node nodeTarget = _nodeMatrix[pointerX, pointerY];
 
                                 if (nodeOrigin != null && nodeTarget != null)
                                 {
-                                    _edgeList.Add(new Edge(nodeOrigin, nodeTarget, 1));
+                                    if (isDiagonalEdge)
+                                    {
+                                        // check if top / right / bottom / left is blocked. if true, don't create edge!
+                                        if (i - 1 >= _nodeMatrix.GetLowerBound(0) && i + 1 < _nodeMatrix.GetUpperBound(0))
+                                        {
+                                            if (j - 1 > _nodeMatrix.GetLowerBound(1) && j + 1 < _nodeMatrix.GetUpperBound(1))
+                                            {
+                                                if (_nodeMatrix[i - 1, j] == null || _nodeMatrix[i, j - 1] == null || _nodeMatrix[i, j + 1] == null || _nodeMatrix[i + 1, j] == null)
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    _edgeList.Add(new Edge(nodeOrigin, nodeTarget, isDiagonalEdge ? Math.Sqrt(2) : 1));
                                 }
                             }
                         }
@@ -159,8 +168,8 @@ namespace SearchRobot.Library.Simulation.Dijkstra
         private static Point GeneratePointFromName(string name)
         {
             Point p = new Point();
-            p.X = Convert.ToInt32(name.Substring(0, 2)) * 20;
-            p.Y = Convert.ToInt32(name.Substring(2, 2)) * 20;
+            p.X = Convert.ToInt32(name.Substring(0, 2)) * 20 + 10;
+            p.Y = Convert.ToInt32(name.Substring(2, 2)) * 20 - 10;
             p.Status = MapElementStatus.Waypoint;
             return p;
         }
