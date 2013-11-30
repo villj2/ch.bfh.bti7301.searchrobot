@@ -56,18 +56,17 @@ ToDo:
 	-> der y-Index scheint ja nicht ok zu sein (ich rechne ja - 10). hat das auch was mit dem rand-durchsneaken zu tun?
 	-> Problem gar nicht beim Dijkstra, sondern wird der waypoint allgemein auf der y-achse falsch gezeichnet?
 - Faster turning - OK
+- Minimap mit Bitmap darstellen -> performance mit tracking map verbessern - OK
+- Code Refactoring
 
 
 
+- Wieso keine MapElementStatus.Discovered mehr? sondern .Target? xD
 
-- Minimap mit Bitmap darstellen
 
 - Sobald MapElementStatus.Target endteckt wurde den Roboter ausrichten und los. (nicht ausrichten, sondern einfach waypoint draufsetzen!)
 - Analyse wo in map explored noch viel undiscovered ist - NOT
-- Punkte werden von anderen Punkten verdeckt. Logisch, weil alles 4mal kleiner ist und je nachdem wann die Punkte gezeichnet werden überdecken sie die anderen.
-	-> Verschiedene Ebenen?
-	-> Wieso sogar mit versch. Ebenen?
-- statistiken speichern (anzahl collides, waypoint reaches, ...)
+- statistiken speichern (anzahl collides, waypoint reaches, ...) - NOT
 - Kommentare anpassen
 - Reihenfolge was der Roboter wann macht - SEILER
 

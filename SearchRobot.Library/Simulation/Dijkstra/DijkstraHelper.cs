@@ -25,12 +25,11 @@ namespace SearchRobot.Library.Simulation.Dijkstra
              * 4) return path steps as waypoints
              */
 
-            // initialize
             _nodeMatrix = new Node[800 / GRID_SIZE, 600 / GRID_SIZE];
             _nodeList = new List<Node>();
             _edgeList = new List<Edge>();
 
-            // Simplify MapExplored (20x20 -> 1x1) and if no blocked Element, create node.
+            // Simplify MapExplored (GRID_SIZE x GRID_SIZE -> 1x1) and if no blocked Element, create node.
             Simplify(mapExplored);
             CreateEdges();
 
@@ -39,7 +38,6 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 
             // set start node and calculate distances
             Node nodeStart = _nodeMatrix[pos.X / GRID_SIZE, pos.Y / GRID_SIZE];
-            //Node nodeStart = _nodeList.First();
             d.calculateDistance(nodeStart);
 
             // get path to node
@@ -63,14 +61,14 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             {
                 for (int j = 0; j < 600; j += GRID_SIZE)
                 {
-                    mapSimplified[i / GRID_SIZE, j / GRID_SIZE] = CreateNode(i, j, GRID_SIZE, mapExplored);
+                    CreateNode(i, j, GRID_SIZE, mapExplored);
                 }
             }
 
             return mapSimplified;
         }
 
-        private bool CreateNode(int startX, int startY, int range, MapExplored mapExplored)
+        private void CreateNode(int startX, int startY, int range, MapExplored mapExplored)
         {
             for (int i = startX; i < startX + range; i++)
             {
@@ -78,9 +76,10 @@ namespace SearchRobot.Library.Simulation.Dijkstra
                 {
                     MapElementStatus status = mapExplored.GetStatus(i, j);
 
+                    // don't create node if any pixel in range x range is blocked
                     if (status == MapElementStatus.Blocked)
                     {
-                        return false;
+                        return;
                     }
                 }
             }
@@ -89,64 +88,74 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             Node node = new Node(GenerateName(startX / GRID_SIZE, startY / GRID_SIZE));
             _nodeMatrix[startX / GRID_SIZE, startY / GRID_SIZE] = node;
             _nodeList.Add(node);
-
-            return true;
         }
 
         private void CreateEdges()
         {
             // create all edges
-            for (int i = 0; i < 800 / GRID_SIZE; i++)
+            for (int x = 0; x < 800 / GRID_SIZE; x++)
             {
-                for (int j = 0; j < 600 / GRID_SIZE; j++)
+                for (int y = 0; y < 600 / GRID_SIZE; y++)
                 {
-                    for (int k = -1; k < 2; k++)
+                    connectNeighbours(x, y);
+                }
+            }
+        }
+
+        private void connectNeighbours(int x, int y)
+        {
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    int pointerX = x + i;
+                    int pointerY = y + j;
+
+                    // check bounds
+                    if (pointerX >= 0 &&
+                        pointerX < 800 / GRID_SIZE &&
+                        pointerY >= 0 &&
+                        pointerY < 600 / GRID_SIZE &&
+                        (pointerX != x ||
+                        pointerY != y))
                     {
-                        for (int l = -1; l < 2; l++)
+
+                        bool isDiagonalEdge = Math.Abs(i) + Math.Abs(j) >= 2;
+
+                        // check if nodes exist!
+                        Node nodeOrigin = _nodeMatrix[x, y];
+                        Node nodeTarget = _nodeMatrix[pointerX, pointerY];
+
+                        if (nodeOrigin != null && nodeTarget != null)
                         {
-                            int pointerX = i + k;
-                            int pointerY = j + l;
-
-                            // check bounds
-                            if (pointerX >= 0 &&
-                                pointerX < 800 / GRID_SIZE &&
-                                pointerY >= 0 &&
-                                pointerY < 600 / GRID_SIZE &&
-                                (pointerX != i ||
-                                pointerY != j))
+                            // don't create edges node has neighbours and is diagonal
+                            if(isDiagonalEdge && isDiagonalHasNeighbours(x, y))
                             {
-
-                                bool isDiagonalEdge = Math.Abs(k) + Math.Abs(l) >= 2;
-
-                                // check if nodes exist!
-                                Node nodeOrigin = _nodeMatrix[i, j];
-                                Node nodeTarget = _nodeMatrix[pointerX, pointerY];
-
-                                if (nodeOrigin != null && nodeTarget != null)
-                                {
-                                    if (isDiagonalEdge)
-                                    {
-                                        // check if top / right / bottom / left is blocked. if true, don't create edge!
-                                        if (i - 1 >= _nodeMatrix.GetLowerBound(0) && i + 1 < _nodeMatrix.GetUpperBound(0))
-                                        {
-                                            if (j - 1 > _nodeMatrix.GetLowerBound(1) && j + 1 < _nodeMatrix.GetUpperBound(1))
-                                            {
-                                                if (_nodeMatrix[i - 1, j] == null || _nodeMatrix[i, j - 1] == null || _nodeMatrix[i, j + 1] == null || _nodeMatrix[i + 1, j] == null)
-                                                {
-                                                    continue;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    _edgeList.Add(new Edge(nodeOrigin, nodeTarget, isDiagonalEdge ? Math.Sqrt(2) : 1));
-                                }
+                                continue;
                             }
+
+                            _edgeList.Add(new Edge(nodeOrigin, nodeTarget, isDiagonalEdge ? Math.Sqrt(2) : 1));
                         }
                     }
                 }
             }
+        }
 
+        private bool isDiagonalHasNeighbours(int x, int y)
+        {
+            // check if top / right / bottom / left is blocked. if true, don't create edge!
+            if (x - 1 >= _nodeMatrix.GetLowerBound(0) && x + 1 < _nodeMatrix.GetUpperBound(0))
+            {
+                if (y - 1 > _nodeMatrix.GetLowerBound(1) && y + 1 < _nodeMatrix.GetUpperBound(1))
+                {
+                    if (_nodeMatrix[x - 1, y] == null || _nodeMatrix[x, y - 1] == null || _nodeMatrix[x, y + 1] == null || _nodeMatrix[x + 1, y] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private string GenerateName(int x, int y)

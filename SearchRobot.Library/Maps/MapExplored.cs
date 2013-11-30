@@ -113,7 +113,7 @@ namespace SearchRobot.Library.Maps
 
                         // Don't take all information
                         // FIXME just4testing - also take Blocked for dijkstra testing!
-                        if (status == MapElementStatus.BlockedShadowed || status == MapElementStatus.Discovered || status == MapElementStatus.Blocked)
+                        if (status == MapElementStatus.BlockedShadowed || status == MapElementStatus.Discovered || status == MapElementStatus.Blocked || status == MapElementStatus.Target || status == MapElementStatus.Undiscovered)
                         {
                             _map[i - offsetLeft, j - offsetTop] = status == MapElementStatus.BlockedShadowed ? MapElementStatus.Blocked : status;
                         }
