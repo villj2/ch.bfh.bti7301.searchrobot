@@ -1,4 +1,5 @@
-﻿using SearchRobot.Library.Maps;
+﻿using System.Diagnostics;
+using SearchRobot.Library.Maps;
 using SearchRobot.Library.Simulation;
 using SearchRobot.Library.Simulation.Dijkstra;
 using SearchRobot.Library.Simulation.EdgeDetection;
@@ -29,8 +30,8 @@ namespace SearchRobot.Library.RobotParts
 	    private int _scanningIteration;
 		private const int ScanningIterationThreshold = 50;
 
-	    public Brain(MapExplored mapExplored, Robot robot) {
-
+	    public Brain(MapExplored mapExplored, Robot robot)
+		{
             _mapExplored = mapExplored;
             _robot = robot;
 
@@ -63,10 +64,19 @@ namespace SearchRobot.Library.RobotParts
 			if (route == null || route.Any())
 			{
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
-				route = edgeDetection.GroupToEdges(edgeDetection.GetEdgePoints(_mapExplored.Map))
-					.OrderByDescending(edge => edge.Width)
-					.Select(edge => DijkstraHelper.GetPath(_robot.StartPosition, edge.CenterPoint))
-					.FirstOrDefault(path => path != null && path.Any());
+
+				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
+				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width);
+
+				foreach (var edge in edges)
+				{
+					var path = DijkstraHelper.GetPath(_robot.StartPosition, edge.CenterPoint);
+					if (path != null && path.Any())
+					{
+						route = path;
+						break;
+					}
+				}
 			}
 
 			if (route != null && route.Any())
@@ -81,9 +91,10 @@ namespace SearchRobot.Library.RobotParts
 
 		private void AllowToRescan()
 		{
-			if (_scanningIteration++ > ScanningIterationThreshold)
+			if (_scanningIteration++ % ScanningIterationThreshold == 0)
 			{
-				_mapExplored.UpdateSensordata(_robot.GetView().ToArray(), _robot.StartPosition);
+				var rotatedMap = new PointRotator(_robot.CartasianDirection).Rotate(_robot.GetView());
+				_mapExplored.UpdateSensordata(rotatedMap.ToArray(), _robot.StartPosition);
 			}
 		}
 
@@ -103,8 +114,8 @@ namespace SearchRobot.Library.RobotParts
 			return null;
 		}
 
-        public MovementObject GetNextMove(double posX, double posY, double currentDirection)
-        {
+		public MovementObject GetNextMove(double posX, double posY, double currentDirection)
+		{
 			AllowToRescan();
 
 			// check if waypoint is reached
@@ -112,7 +123,7 @@ namespace SearchRobot.Library.RobotParts
 			{
 				WayDecision.IgnoreDirection = false;
 
-				if (_waypointQueue.Any())
+				if (!_waypointQueue.Any())
 				{
 					CalculateNextTarget();
 				}
@@ -141,7 +152,7 @@ namespace SearchRobot.Library.RobotParts
 			{
 				_mapExplored.SetStatus(settingNew.X, settingNew.Y, MapElementStatus.Visited);
 			}
-              
+
 			return settingNew;
 		}
 
@@ -152,22 +163,27 @@ namespace SearchRobot.Library.RobotParts
         /// <param name="mo"></param>
         public void Collision(double posX, double posY, MovementObject mo)
         {
-            // Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
-            WayDecision wd;
-            if (!WayDecision.IgnoreDirection)
-            {
-                wd = new WayDecisionCollision(posX, posY, mo, _mapExplored);
-                WayDecision.IgnoreDirection = true;
-            }
-            else
-            {
-                wd = new WayDecisionCollisionBackwards(posX, posY, mo, _mapExplored);
-                WayDecision.IgnoreDirection = false;
-            }
+			// Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
 
 			_waypointQueue.Clear();
-			CreateNextWaypoint(wd);
-		}
+			WayDecision wd;
+			
+			if (!WayDecision.IgnoreDirection)
+			{
+				wd = new WayDecisionCollision(posX, posY, mo, _mapExplored);
+				WayDecision.IgnoreDirection = true;
+			}
+			else
+			{
+				wd = new WayDecisionCollisionBackwards(posX, posY, mo, _mapExplored);
+				WayDecision.IgnoreDirection = false;
+			}
+
+			CalculateNextTarget();
+			_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+
+			//CreateNextWaypoint(wd);
+        }
 
         /// <summary>
         /// calculates new waypoint based on mapExplored and _wayDecisionStatus

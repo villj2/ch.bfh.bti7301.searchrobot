@@ -13,6 +13,10 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 		
 		public Point EndPoint { get; private set; }
 
+		public Point CenterPoint { get; private set; }
+
+		public double Width { get; private set; }
+
 		private readonly List<Point> _points;
 
 		public IReadOnlyCollection<Point> Points
@@ -22,7 +26,7 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 
 		public Edge(Point point)
 		{
-			_points = new List<Point>() { point };
+			_points = new List<Point>() {point};
 		}
 
 		public void AddPoint(Point point)
@@ -42,6 +46,11 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 			_points.Add(point);
 		}
 
+		public void AddPointsUnsafe(IEnumerable<Point> points)
+		{
+			_points.AddRange(points);
+		}
+
 		private bool ArePointTouching(Point pointA, Point pointB)
 		{
 			return Math.Abs(pointA.X - pointB.X) <= 1 && Math.Abs(pointA.Y - pointB.Y) <= 1;
@@ -50,19 +59,6 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 		public bool IsPointTouching(Point point)
 		{
 			return _points.Any(edgePoint => ArePointTouching(edgePoint, point));
-		}
-
-		public Point CenterPoint
-		{
-			get
-			{
-				return GetClosestPoint(FindCenter());
-			}
-		}
-
-		public double Width
-		{
-			get { return GeometryHelper.GetDistance(StartPoint, EndPoint); }
 		}
 
 		private Point GetClosestPoint(Point closestTo)
@@ -83,7 +79,7 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 			return result;
 		}
 
-		private Point FindCenter()
+		public void Init()
 		{
 			int smallestX, smallestY, biggestY, biggestX;
 
@@ -98,7 +94,10 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 				biggestY = biggestY > point.Y ? point.Y : biggestY;
 			}
 
-			return new Point(smallestX + (biggestX - smallestX)/2, smallestY + (biggestY - smallestY)/2);
+			StartPoint = new Point(smallestX, smallestY);
+			EndPoint = new Point(biggestX, biggestY);
+			CenterPoint = GetClosestPoint(new Point(smallestX + (biggestX - smallestX)/2, smallestY + (biggestY - smallestY)/2));
+			Width = GeometryHelper.GetWidth(StartPoint, EndPoint);
 		}
 	}
 }

@@ -124,7 +124,7 @@ namespace SearchRobot.Library.RobotParts
 			//return _sensor.GetWayPoints();
             
             // FIXME just4testing start dijkstra
-            _brain.waypoints = new DijkstraHelper().GetPath(StartPosition, new Point(799, 599), _mapExplored);
+			_brain.waypoints = new DijkstraHelper(_mapExplored).GetPath(StartPosition, new Point(799, 599));
             _brain.MapExplored.WaypointActive = _brain.waypoints[0];
 
             return _brain.waypoints;

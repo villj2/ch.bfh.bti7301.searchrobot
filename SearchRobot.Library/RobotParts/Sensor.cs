@@ -82,8 +82,6 @@ namespace SearchRobot.Library.RobotParts
 
 	    public CartesianArray<MapElementStatus> GetView()
         {
-            Console.WriteLine(Robot.CartasianDirection);
-
             var currentViewPort = GetRotatedMapCopy(-Robot.CartasianDirection);
 
             int bottomEdge = currentViewPort.BottomRightCoordinate.Y;

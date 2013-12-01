@@ -77,12 +77,13 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 				if (newPoints.Any())
 				{
 					grew = true;
-
-					newPoints.ForEach(edge.AddPointUnsafe);
+					edge.AddPointsUnsafe(newPoints);
 					newPoints.ForEach(p => points.Remove(p));
 				}
 
 			} while (grew);
+
+			edge.Init();
 
 			return edge;
 		}
