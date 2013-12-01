@@ -21,12 +21,12 @@ namespace SearchRobot.Library.Simulation.WayDecision
 
         private static DispatcherTimer _dispatcherTimer;
 
-        public WayDecision()
+        protected WayDecision()
         {
             init();
         }
 
-        public WayDecision(double posX, double posY, MapExplored me)
+        protected WayDecision(double posX, double posY, MapExplored me)
         {
             _posX = posX;
             _posY = posY;

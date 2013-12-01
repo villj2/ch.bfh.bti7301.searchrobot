@@ -80,7 +80,6 @@ namespace SearchRobot.Library.Maps
         }
 
         public void UpdateSensordata(MapElementStatus[,] arrMap, Point posRobot)
-        //public void UpdateSensordata(CartesianArray<MapElementStatus> arrCartesian, Point posRobot)
         {
             // Methode 1: Vom CartesianArray ausgehend
             /*

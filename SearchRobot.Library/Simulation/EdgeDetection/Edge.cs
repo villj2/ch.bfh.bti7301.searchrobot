@@ -52,11 +52,17 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 			return _points.Any(edgePoint => ArePointTouching(edgePoint, point));
 		}
 
-		public Point GetCenteredEdgePoint()
+		public Point CenterPoint
 		{
-			var realCenter = FindCenter();
+			get
+			{
+				return GetClosestPoint(FindCenter());
+			}
+		}
 
-			return GetClosestPoint(realCenter);
+		public double Width
+		{
+			get { return GeometryHelper.GetDistance(StartPoint, EndPoint); }
 		}
 
 		private Point GetClosestPoint(Point closestTo)

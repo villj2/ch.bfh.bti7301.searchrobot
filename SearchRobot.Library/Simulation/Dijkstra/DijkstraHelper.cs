@@ -15,43 +15,42 @@ namespace SearchRobot.Library.Simulation.Dijkstra
         private List<Node> _nodeList;
 
         private List<Edge> _edgeList;
+	    private readonly MapExplored _mapExplored;
 
-        public List<Point> GetPath(Point pos, Point target, MapExplored mapExplored)
-        {
-            /* 
-             * 1) Simplify MapExplored
-             * 2) Create Edges / Vertices
-             * 3) Calculate Path
-             * 4) return path steps as waypoints
-             */
+	    private readonly Dijkstra _dijkstra;
 
-            _nodeMatrix = new Node[800 / GRID_SIZE, 600 / GRID_SIZE];
-            _nodeList = new List<Node>();
-            _edgeList = new List<Edge>();
+	    public DijkstraHelper(MapExplored mapExplored)
+		{
+			/* 
+			 * 1) Simplify MapExplored
+			 * 2) Create Edges / Vertices
+			 * 3) Calculate Path
+			 * 4) return path steps as waypoints
+			 */
 
-            // Simplify MapExplored (GRID_SIZE x GRID_SIZE -> 1x1) and if no blocked Element, create node.
-            Simplify(mapExplored);
-            CreateEdges();
+			_nodeMatrix = new Node[800 / GRID_SIZE, 600 / GRID_SIZE];
+			_nodeList = new List<Node>();
+			_edgeList = new List<Edge>();
 
-            // create dijkstra instance
-            Dijkstra d = new Dijkstra(_edgeList, _nodeList);
+			Simplify(mapExplored);
+			CreateEdges();
 
-            // set start node and calculate distances
-            Node nodeStart = _nodeMatrix[pos.X / GRID_SIZE, pos.Y / GRID_SIZE];
-            d.calculateDistance(nodeStart);
+			// create dijkstra instance
+			_dijkstra = new Dijkstra(_edgeList, _nodeList);
+		}
 
-            // get path to node
-            // FIXME just4testing endpoint static
-            List<Node> path = d.getPathTo(_nodeList.Last());
+		public List<Point> GetPath(Point pos, Point target)
+		{
+			// set start node and calculate distances
+			_dijkstra.calculateDistance(GetNodeFromPoint(pos));
 
-            List<Point> waypoints = new List<Point>();
-            foreach (Node n in path)
-            {
-                waypoints.Add(GeneratePointFromName(n.Name));
-            }
+			return _dijkstra.getPathTo(GetNodeFromPoint(target)).Select(n => GeneratePointFromName(n.Name)).ToList();
+		}
 
-            return waypoints;
-        }
+		private Node GetNodeFromPoint(Point point)
+		{
+			return _nodeMatrix[point.X / GRID_SIZE, point.Y / GRID_SIZE];
+		}
 
         private bool[,] Simplify(MapExplored mapExplored)
         {
