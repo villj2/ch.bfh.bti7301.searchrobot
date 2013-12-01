@@ -11,7 +11,7 @@
             <ColumnDefinition Width="200px" />
         </Grid.ColumnDefinitions>
 
-        <Canvas Grid.Row="0" Grid.Column="0" Width="800" Height="600" Name="MapArea" Background="#BBB" Margin="0,0,94,72" />
+        <Canvas Grid.Row="0" Grid.Column="0" Width="800" Height="600" Name="MapArea" Background="#FFF" Margin="0,0,94,72" />
 
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>

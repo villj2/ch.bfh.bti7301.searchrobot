@@ -115,8 +115,6 @@ namespace SearchRobot.Library.RobotParts
                 }
             }
 
-			// DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImage-{0}.png", DateTime.Now.Ticks), currentViewPort);
-
             return currentViewPort;
 		}
 
