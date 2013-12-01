@@ -12,12 +12,17 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Brain : IDisposable
     {
+        private int _iterationCounter = 0;
+        private const int ReconsiderCounterThresholdd = 50;
+
+        private readonly Queue<Point> _waypointQueue = new Queue<Point>();
+
         // FIXME just4testing
         public List<Point> waypoints;
         private int waypointindex = 0;
 
         public MapExplored MapExplored { get { return _mapExplored; } }
-        private MapExplored _mapExplored;
+        private readonly MapExplored _mapExplored;
         private Robot _robot;
 
         public Brain(MapExplored mapExplored, Robot robot) {
@@ -29,10 +34,30 @@ namespace SearchRobot.Library.RobotParts
             CreateNextWaypoint();
         }
 
+        private bool IsPointingAtTarget(double currentDirection, double targetDirection)
+        {
+            return Math.Abs((currentDirection + 360)%360 - (targetDirection + 360)%360) < 0.25;
+        }
+
+        private bool HasReachedWayPoint(double posX, double posY)
+        {
+            return GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5);
+        }
+
+        private void ReconsiderNextStep()
+        {
+            _waypointQueue.Clear();
+
+            var viewport = ;
+            _mapExplored.UpdateSensordata(_robot.GetView().ToArray(), _robot.StartPosition);
+
+
+        }
+
         public MovementObject GetNextMove(double posX, double posY, double currentDirection)
         {
             // check if waypoint is reached
-            if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
+            if (HasReachedWayPoint(posX, posY))
             {
                 if (WayDecision.IgnoreDirection)
                 {
@@ -44,8 +69,8 @@ namespace SearchRobot.Library.RobotParts
                     _mapExplored.WaypointActive = waypoints[waypointindex++];
                     //CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
                 }
+
                 WayDecision.IgnoreDirection = false;
-                
             }
 
             MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
@@ -53,15 +78,15 @@ namespace SearchRobot.Library.RobotParts
             double targetDirection = CalculateTargetDirection(posX, posY, _mapExplored.WaypointActive);
 
             // either change direction or position
-            if ((currentDirection + 360) % 360 != (targetDirection + 360) % 360 && !WayDecision.IgnoreDirection)
-            {
-                settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
-            }
-            else
+            if (IsPointingAtTarget(currentDirection, targetDirection)  || WayDecision.IgnoreDirection)
             {
                 MovementObject positionNew = GetNextMovementPoint(posX, posY);
                 settingNew.X = positionNew.X;
                 settingNew.Y = positionNew.Y;
+            }
+            else
+            {
+                settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
             }
 
             // add new movement point to map explored and mark as VISITED
@@ -149,8 +174,6 @@ namespace SearchRobot.Library.RobotParts
         /****************************************************************/
         private double AdjustDirection(double currentDirection, double targetDirection)
         {
-            double currentDirectionOri = currentDirection;
-
             if(currentDirection < 0) currentDirection += 360;
             if(targetDirection < 0) targetDirection += 360;
 
