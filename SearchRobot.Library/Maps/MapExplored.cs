@@ -9,6 +9,14 @@ namespace SearchRobot.Library.Maps
 {
     public class MapExplored : IDisposable
     {
+		private Dictionary<MapElementStatus, MapElementStatus> _conversationDictionary 
+			= new Dictionary<MapElementStatus, MapElementStatus>()
+				{
+					{ MapElementStatus.TargetShadowed, MapElementStatus.Target },
+					{ MapElementStatus.BlockedShadowed, MapElementStatus.Blocked },
+					{ MapElementStatus.Discovered, MapElementStatus.Discovered }
+				};
+
         public MapElementStatus[,] Map { get { return _map; } }
 
         private MapElementStatus[,] _map = new MapElementStatus[800,600];
@@ -111,12 +119,10 @@ namespace SearchRobot.Library.Maps
                     {
                         MapElementStatus status = offsetLeft < 0 || offsetTop < 0 ? MapElementStatus.Undiscovered : arrMap[i, j];
 
-                        // Don't take all information
-                        // FIXME just4testing - also take Blocked for dijkstra testing!
-                        if (status == MapElementStatus.BlockedShadowed || status == MapElementStatus.Discovered || status == MapElementStatus.Blocked || status == MapElementStatus.Target || status == MapElementStatus.Undiscovered)
-                        {
-                            _map[i - offsetLeft, j - offsetTop] = status == MapElementStatus.BlockedShadowed ? MapElementStatus.Blocked : status;
-                        }
+						if (_conversationDictionary.Keys.Any(k => k == status))
+						{
+							_map[i - offsetLeft, j - offsetTop] = _conversationDictionary[status];
+						}
                     }
                 }
             }
