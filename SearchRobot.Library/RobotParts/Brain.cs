@@ -48,10 +48,25 @@ namespace SearchRobot.Library.RobotParts
         {
             _waypointQueue.Clear();
 
-            var viewport = ;
             _mapExplored.UpdateSensordata(_robot.GetView().ToArray(), _robot.StartPosition);
 
+            if (IsTargetVisible())
+            {
+                
+            }
+        }
 
+        private bool IsTargetVisible()
+        {
+            foreach (var element in _mapExplored.Map)
+            {
+                if (element == MapElementStatus.Target)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public MovementObject GetNextMove(double posX, double posY, double currentDirection)

@@ -148,7 +148,7 @@ namespace SearchRobot.Library.Simulation
 
         public void AnalyzeMap()
         {
-            _minimap.drawWaypoints(_robot.GetView());
+            _minimap.drawWaypoints(_robot.GetWayPoints());
         }
         #endregion
 
@@ -169,16 +169,16 @@ namespace SearchRobot.Library.Simulation
             // FIXME just4testing disabled
 			if (_ticks % 250 == -1)
 			{
-                // _robot.GetView();
+                // _robot.GetWayPoints();
 
                 /*
-                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView()).ToArray();
+                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetWayPoints()).ToArray();
                 // TODO crop res (array with padding)
                  * 
                  * 
                 // essenzielle infos sind 800 x 600 in dem zu grossen array zentriert
 
-                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView());
+                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetWayPoints());
 
                 int x= 10, y = 10;
 
