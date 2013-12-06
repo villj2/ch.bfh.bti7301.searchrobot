@@ -51,7 +51,7 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 			_points.AddRange(points);
 		}
 
-		private bool ArePointTouching(Point pointA, Point pointB)
+		public static bool ArePointTouching(Point pointA, Point pointB)
 		{
 			return Math.Abs(pointA.X - pointB.X) <= 1 && Math.Abs(pointA.Y - pointB.Y) <= 1;
 		}

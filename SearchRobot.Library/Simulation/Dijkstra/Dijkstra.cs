@@ -14,6 +14,8 @@ namespace SearchRobot.Library.Simulation.Dijkstra
         private Dictionary<string, double> _dist;
         private Dictionary<string, Node> _previous;
 
+	    private Node _startNode;
+
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -21,7 +23,6 @@ namespace SearchRobot.Library.Simulation.Dijkstra
         /// <param name="nodes">Liste aller Knoten</param>
         public Dijkstra(List<Edge> edges, List<Node> nodes)
         {
-
             Edges = edges;
             Nodes = nodes;
             Basis = new List<Node>();
@@ -44,6 +45,7 @@ namespace SearchRobot.Library.Simulation.Dijkstra
         /// <param name="start">Startknoten</param>
         public void calculateDistance(Node start)
         {
+	        _startNode = start;
             Dist[start.Name] = 0;
 
             while (Basis.Count > 0)
@@ -70,25 +72,32 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             }
         }
 
-        /// <summary>
-        /// Liefert den Pfad zum Knoten d
-        /// </summary>
-        /// <param name="d">Zielknote<n/param>
-        /// <returns></returns>
-        public List<Node> getPathTo(Node d)
-        {
-            List<Node> path = new List<Node>();
+		/// <summary>
+		/// Liefert den Pfad zum Knoten d
+		/// </summary>
+		/// <param name="d">Zielknote<n/param>
+		/// <returns></returns>
+		public List<Node> getPathTo(Node d)
+		{
+			List<Node> path = new List<Node>();
 
-            path.Insert(0, d);
+			path.Insert(0, d);
 
-            while (Previous[d.Name] != null)
-            {
-                d = Previous[d.Name];
-                path.Insert(0, d);
-            }
+			while (Previous[d.Name] != null)
+			{
+				d = Previous[d.Name];
+				path.Insert(0, d);
+			}
 
-            return path;
-        }
+			if (d.Name.Equals(_startNode.Name))
+			{
+				return path;
+			}
+			else
+			{
+				return new List<Node>();
+			}
+		}
 
         /// <summary>
         /// Liefert den Knoten mit der kürzesten Distanz

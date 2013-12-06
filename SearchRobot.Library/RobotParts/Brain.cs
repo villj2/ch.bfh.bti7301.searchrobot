@@ -36,7 +36,7 @@ namespace SearchRobot.Library.RobotParts
             _robot = robot;
 
             // set first waypoint
-            CreateNextWaypoint();
+            // CreateNextWaypoint();
         }
 
 		private bool IsPointingAtTarget(double currentDirection, double targetDirection)
@@ -66,7 +66,9 @@ namespace SearchRobot.Library.RobotParts
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
 
 				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
-				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width);
+				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width).ToList();
+
+				edgeDetection.DebugOutput();
 
 				foreach (var edge in edges)
 				{
@@ -114,12 +116,18 @@ namespace SearchRobot.Library.RobotParts
 			return null;
 		}
 
+	    private Point ActiveWayPoint
+	    {
+		    get { return _mapExplored.WaypointActive; }
+			set { _mapExplored.WaypointActive = value; }
+	    }
+
 		public MovementObject GetNextMove(double posX, double posY, double currentDirection)
 		{
 			AllowToRescan();
 
 			// check if waypoint is reached
-			if (HasReachedWayPoint(posX, posY))
+			if (ActiveWayPoint == null || HasReachedWayPoint(posX, posY))
 			{
 				WayDecision.IgnoreDirection = false;
 
@@ -128,7 +136,7 @@ namespace SearchRobot.Library.RobotParts
 					CalculateNextTarget();
 				}
 
-				_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+				ActiveWayPoint = _waypointQueue.Dequeue();
 			}
 
 			MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
@@ -179,10 +187,10 @@ namespace SearchRobot.Library.RobotParts
 				WayDecision.IgnoreDirection = false;
 			}
 
-			CalculateNextTarget();
-			_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+			// CalculateNextTarget();
+			// _mapExplored.WaypointActive = _waypointQueue.Dequeue();
 
-			//CreateNextWaypoint(wd);
+			CreateNextWaypoint(wd);
         }
 
         /// <summary>
@@ -196,7 +204,8 @@ namespace SearchRobot.Library.RobotParts
 
         private void CreateNextWaypoint(WayDecision wayDecision)
         {
-            _mapExplored.WaypointActive = wayDecision.GetWaypoint();
+			_waypointQueue.Clear();
+            ActiveWayPoint = wayDecision.GetWaypoint();
         }
 
         /* calculates new movementPoint based on next waypoint
