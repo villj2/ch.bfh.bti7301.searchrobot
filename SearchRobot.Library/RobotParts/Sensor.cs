@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using SearchRobot.Library.Maps;
 using System;
 using System.Collections.Generic;
@@ -81,8 +82,6 @@ namespace SearchRobot.Library.RobotParts
 
 	    public CartesianArray<MapElementStatus> GetView()
         {
-            Console.WriteLine(Robot.CartasianDirection);
-
             var currentViewPort = GetRotatedMapCopy(-Robot.CartasianDirection);
 
             int bottomEdge = currentViewPort.BottomRightCoordinate.Y;
@@ -115,8 +114,6 @@ namespace SearchRobot.Library.RobotParts
                 }
             }
 
-			// DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImage-{0}.png", DateTime.Now.Ticks), currentViewPort);
-
             return currentViewPort;
 		}
 
@@ -128,13 +125,14 @@ namespace SearchRobot.Library.RobotParts
                 queue.Enqueue(point);
                 viewport[point] = MapElementStatus.Discovered;
             }
-            if (viewport[point] == MapElementStatus.Blocked)
+
+            if (viewport[point] == MapElementStatus.Blocked || viewport[point] == MapElementStatus.Target)
             {
-                SpawnShadow(viewport, point, topEdge, rightEdge, bottomEdge);
+                SpawnShadow(viewport, point, topEdge, rightEdge, bottomEdge, viewport[point]);
             }
         }
 
-        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int topEdge, int rightEdge, int bottomEdge)
+        private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int topEdge, int rightEdge, int bottomEdge, MapElementStatus elementType)
         {
             /**
              *            . .
@@ -169,7 +167,7 @@ namespace SearchRobot.Library.RobotParts
 
             do
             {
-                viewport[point.X + xdistance, point.Y + ydistance] = first ? MapElementStatus.BlockedShadowed : MapElementStatus.Shadowed;
+                viewport[point.X + xdistance, point.Y + ydistance] = first ? elementType : MapElementStatus.Shadowed;
                 first = false;
 
                 if (increaseX)
@@ -182,8 +180,6 @@ namespace SearchRobot.Library.RobotParts
                     ydistance += yModifier;
                     xdistance = Convert.ToInt32(Math.Round(ratio * ydistance * xModifier * yModifier));
                 }
-
-				// TODO : Detect End of Map to increase Performance
 
             } while (point.X + xdistance < rightEdge
 				  && point.Y + ydistance > bottomEdge 

@@ -22,6 +22,7 @@ namespace SearchRobot.Library.Maps
         /// Used for sensor view result.
         /// </summary>
         Shadowed,
-        BlockedShadowed
+        BlockedShadowed,
+        TargetShadowed
     }
 }

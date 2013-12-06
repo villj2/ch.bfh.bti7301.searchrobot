@@ -26,9 +26,9 @@ namespace SearchRobot.Library.Simulation
 
         private AutoResetEvent _autoEvent;
         private int _ticks;
-        private Canvas _mapArea;
-        private Canvas _minimapArea;
-        private Canvas _minimapAreaVisited;
+        private readonly Canvas _mapArea;
+        private readonly Canvas _minimapArea;
+        private readonly Canvas _minimapAreaVisited;
         private static Label _lblOutput;
         private DispatcherTimer _dispatcherTimer;
 
@@ -69,12 +69,8 @@ namespace SearchRobot.Library.Simulation
             if (_map != null)
             {
                 _robot = _map.Elements.OfType<Robot>().First();
-                //_robot.Initialize(_mapArea, null); 
                 _robot.Initialize(_mapArea, new Sensor(_robot, _mapArea, new Sight { Angle = 180, Reach = int.MaxValue }));
-                //_robot.Bind(_map);
 
-                /*
-                */
                 _minimap = new Minimap(_minimapArea, _minimapAreaVisited, _robot.MapExplored);
             }
         }
@@ -108,8 +104,11 @@ namespace SearchRobot.Library.Simulation
         }
 
         #region Canvas MouseHandling
+
         private enum CycleState { Initiated, Running, Paused }
+
         private CycleState _state { get; set; }
+
         public String Toggle()
         {
             String text = "";
@@ -149,11 +148,12 @@ namespace SearchRobot.Library.Simulation
 
         public void AnalyzeMap()
         {
-            _minimap.drawWaypoints(_robot.GetView());
+            _minimap.drawWaypoints(_robot.GetWayPoints());
         }
         #endregion
 
         #region Cycle Handling
+
         private void CyclesStart()
         {
             _state = CycleState.Running;
@@ -169,16 +169,16 @@ namespace SearchRobot.Library.Simulation
             // FIXME just4testing disabled
 			if (_ticks % 250 == -1)
 			{
-                // _robot.GetView();
+                // _robot.GetWayPoints();
 
                 /*
-                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView()).ToArray();
+                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetWayPoints()).ToArray();
                 // TODO crop res (array with padding)
                  * 
                  * 
                 // essenzielle infos sind 800 x 600 in dem zu grossen array zentriert
 
-                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetView());
+                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetWayPoints());
 
                 int x= 10, y = 10;
 
@@ -206,22 +206,12 @@ namespace SearchRobot.Library.Simulation
         #region Robot Handling
         public Point GetRobotPosition()
         {
-            throw new NotImplementedException();
+            return _robot.StartPosition;
         }
         
         public int GetRobotOrientation()
         {
-            throw new NotImplementedException();
-        }
-            
-        public void Move()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Turn(int deg)
-        {
-
+            return (int)_robot.Direction;
         }
         #endregion
 

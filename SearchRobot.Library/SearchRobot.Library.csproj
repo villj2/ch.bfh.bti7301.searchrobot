@@ -48,6 +48,7 @@
     <Compile Include="DebugHelper.cs" />
     <Compile Include="CartesianArray.cs" />
     <Compile Include="GeometryHelper.cs" />
+    <Compile Include="Global\Constants.cs" />
     <Compile Include="Global\TextContent.cs" />
     <Compile Include="Maps\Disc.cs" />
     <Compile Include="Maps\Goal.cs" />
@@ -65,6 +66,8 @@
     <Compile Include="Simulation\Dijkstra\DijkstraHelper.cs" />
     <Compile Include="Simulation\Dijkstra\Edge.cs" />
     <Compile Include="Simulation\Dijkstra\Node.cs" />
+    <Compile Include="Simulation\EdgeDetection\Edge.cs" />
+    <Compile Include="Simulation\EdgeDetection\EdgeDetectionAlgorithm.cs" />
     <Compile Include="Simulation\WayDecision\WayDecisionCollisionBackwards.cs" />
     <Compile Include="Simulation\WayDecision\WayDecisionWaypointReachedBackwards.cs" />
     <Compile Include="Simulation\WayDecision\WayDecisionInit.cs" />

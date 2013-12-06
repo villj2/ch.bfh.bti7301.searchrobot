@@ -28,9 +28,7 @@ namespace SearchRobot.Library
 
 		public static double GetWidth(Point centerPoint, Point edgePoint)
 		{
-			return Math.Sqrt(
-					Math.Pow(Math.Abs(centerPoint.X - edgePoint.X), 2) +
-					Math.Pow(Math.Abs(centerPoint.Y - edgePoint.Y), 2));
+			return GetDistance(centerPoint, edgePoint);
 		}
 
 		public static System.Windows.Point Convert(Point point)
@@ -73,5 +71,14 @@ namespace SearchRobot.Library
 
             return ((x1 >= x2Min && x1 <= x2Max) && (y1 >= y2Min && y1 <= y2Max));
         }
+
+		public static double GetDistance(Point point, Point closestTo)
+		{
+			return Math.Sqrt(
+				Math.Pow(
+					Math.Abs(point.X - closestTo.X), 2) +
+				Math.Pow(
+					Math.Abs(point.Y - closestTo.Y), 2));
+		}
 	}
 }

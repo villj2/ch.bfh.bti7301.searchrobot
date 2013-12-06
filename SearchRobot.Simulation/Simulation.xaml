@@ -11,8 +11,13 @@
             <ColumnDefinition Width="200px" />
         </Grid.ColumnDefinitions>
 
-        <Canvas Grid.Row="0" Grid.Column="0" Width="800" Height="600" Name="MapArea" Background="#BBB" Margin="0,0,94,72" />
-
+        <Border BorderBrush="Black" BorderThickness="1" >
+            <Canvas 
+                Grid.Row="0" Grid.Column="0" 
+                Width="800" Height="600" 
+                Name="MapArea" Background="#FFF" Margin="0,0,94,72" />
+        </Border>
+        
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150px" />
@@ -23,8 +28,14 @@
                 <RowDefinition Height="50px" />
             </Grid.RowDefinitions>
 
-            <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapArea" Background="Cyan"></Canvas>
+
+            <Border BorderBrush="Black" BorderThickness="1" >
+                <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapArea" Background="Cyan"></Canvas>
+            </Border>
+            
             <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapAreaVisited"></Canvas>
+
+            
             <Label Name="lblOutput" Width="200" Content="" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <Button Name="btnLoad" Width="200" Content="" Grid.Row="2" Grid.Column="0" Click="OnBtnLoadClick" />
             <Button Name="btnStart" Width="200" Content="" Grid.Row="3" Grid.Column="0" Click="OnBtnStartClick" />

@@ -1,5 +1,8 @@
-﻿using SearchRobot.Library.Maps;
+﻿using System.Diagnostics;
+using SearchRobot.Library.Maps;
 using SearchRobot.Library.Simulation;
+using SearchRobot.Library.Simulation.Dijkstra;
+using SearchRobot.Library.Simulation.EdgeDetection;
 using SearchRobot.Library.Simulation.WayDecision;
 using System;
 using System.Collections.Generic;
@@ -12,16 +15,23 @@ namespace SearchRobot.Library.RobotParts
 {
     public class Brain : IDisposable
     {
+        private int _iterationCounter = 0;
+        private const int ReconsiderCounterThresholdd = 50;
+
+        private readonly Queue<Point> _waypointQueue = new Queue<Point>();
+
         // FIXME just4testing
         public List<Point> waypoints;
         private int waypointindex = 0;
 
         public MapExplored MapExplored { get { return _mapExplored; } }
-        private MapExplored _mapExplored;
+        private readonly MapExplored _mapExplored;
         private Robot _robot;
+	    private int _scanningIteration;
+		private const int ScanningIterationThreshold = 50;
 
-        public Brain(MapExplored mapExplored, Robot robot) {
-
+	    public Brain(MapExplored mapExplored, Robot robot)
+		{
             _mapExplored = mapExplored;
             _robot = robot;
 
@@ -29,49 +39,122 @@ namespace SearchRobot.Library.RobotParts
             CreateNextWaypoint();
         }
 
-        public MovementObject GetNextMove(double posX, double posY, double currentDirection)
-        {
-            // check if waypoint is reached
-            if (GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5))
-            {
-                if (WayDecision.IgnoreDirection)
-                {
-                    CreateNextWaypoint(new WayDecisionWaypointReachedBackwards(posX, posY, _mapExplored));
-                }
-                else
-                {
-                    // FIXME just4testing waypoints from dijkstra
-                    _mapExplored.WaypointActive = waypoints[waypointindex++];
-                    //CreateNextWaypoint(new WayDecisionWaypointReached(posX, posY, _mapExplored));
-                }
-                WayDecision.IgnoreDirection = false;
-                
-            }
+		private bool IsPointingAtTarget(double currentDirection, double targetDirection)
+		{
+			return Math.Abs((currentDirection + 360)%360 - (targetDirection + 360)%360) < 0.25;
+		}
 
-            MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
+		private bool HasReachedWayPoint(double posX, double posY)
+		{
+			return GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5);
+		}
 
-            double targetDirection = CalculateTargetDirection(posX, posY, _mapExplored.WaypointActive);
+		private void CalculateNextTarget()
+		{
+			_waypointQueue.Clear();
+			List<Point> route = null;
+			var DijkstraHelper = new DijkstraHelper(_mapExplored);
 
-            // either change direction or position
-            if ((currentDirection + 360) % 360 != (targetDirection + 360) % 360 && !WayDecision.IgnoreDirection)
-            {
-                settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
-            }
-            else
-            {
-                MovementObject positionNew = GetNextMovementPoint(posX, posY);
-                settingNew.X = positionNew.X;
-                settingNew.Y = positionNew.Y;
-            }
+			var goal = GetGoalPoint();
+			if (goal != null)
+			{
+				route = DijkstraHelper.GetPath(_robot.StartPosition, goal);
+			}
 
-            // add new movement point to map explored and mark as VISITED
-            if (_mapExplored.GetStatus(settingNew.X, settingNew.Y) == MapElementStatus.Undiscovered)
-            {
-                _mapExplored.SetStatus(settingNew.X, settingNew.Y, MapElementStatus.Visited);
-            }
-              
-            return settingNew;
-        }
+			if (route == null || route.Any())
+			{
+				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
+
+				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
+				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width);
+
+				foreach (var edge in edges)
+				{
+					var path = DijkstraHelper.GetPath(_robot.StartPosition, edge.CenterPoint);
+					if (path != null && path.Any())
+					{
+						route = path;
+						break;
+					}
+				}
+			}
+
+			if (route != null && route.Any())
+			{
+				route.ForEach(wp => _waypointQueue.Enqueue(wp));
+			}
+			else
+			{
+				throw new ApplicationException("No further valid edges or target found!");
+			}
+		}
+
+		private void AllowToRescan()
+		{
+			if (_scanningIteration++ % ScanningIterationThreshold == 0)
+			{
+				var rotatedMap = new PointRotator(_robot.CartasianDirection).Rotate(_robot.GetView());
+				_mapExplored.UpdateSensordata(rotatedMap.ToArray(), _robot.StartPosition);
+			}
+		}
+
+		private Point GetGoalPoint()
+		{
+			for (var x = 0; x <= _mapExplored.Map.GetUpperBound(0); x++)
+			{
+				for (var y = 0; y <= _mapExplored.Map.GetUpperBound(1); y++)
+				{
+					if (_mapExplored.Map[x, y] == MapElementStatus.Target)
+					{
+						return new Point(x, y);
+					}
+				}
+			}
+
+			return null;
+		}
+
+		public MovementObject GetNextMove(double posX, double posY, double currentDirection)
+		{
+			AllowToRescan();
+
+			// check if waypoint is reached
+			if (HasReachedWayPoint(posX, posY))
+			{
+				WayDecision.IgnoreDirection = false;
+
+				if (!_waypointQueue.Any())
+				{
+					CalculateNextTarget();
+				}
+
+				_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+			}
+
+			MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
+
+			double targetDirection = CalculateTargetDirection(posX, posY, _mapExplored.WaypointActive);
+
+			// either change direction or position
+			if (IsPointingAtTarget(currentDirection, targetDirection)  || WayDecision.IgnoreDirection)
+			{
+				MovementObject positionNew = GetNextMovementPoint(posX, posY);
+				settingNew.X = positionNew.X;
+				settingNew.Y = positionNew.Y;
+			}
+			else
+			{
+				settingNew.Direction = AdjustDirection(currentDirection, targetDirection);
+			}
+
+			// add new movement point to map explored and mark as VISITED
+			if (_mapExplored.GetStatus(settingNew.X, settingNew.Y) == MapElementStatus.Undiscovered)
+			{
+				_mapExplored.SetStatus(settingNew.X, settingNew.Y, MapElementStatus.Visited);
+			}
+
+			return settingNew;
+		}
 
         /// <summary>
         /// Robot recognizes collision with obstacle and tells brain.
@@ -80,20 +163,26 @@ namespace SearchRobot.Library.RobotParts
         /// <param name="mo"></param>
         public void Collision(double posX, double posY, MovementObject mo)
         {
-            // Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
-            WayDecision wd;
-            if (!WayDecision.IgnoreDirection)
-            {
-                wd = new WayDecisionCollision(posX, posY, mo, _mapExplored);
-                WayDecision.IgnoreDirection = true;
-            }
-            else
-            {
-                wd = new WayDecisionCollisionBackwards(posX, posY, mo, _mapExplored);
-                WayDecision.IgnoreDirection = false;
-            }
+			// Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
 
-            CreateNextWaypoint(wd);
+			_waypointQueue.Clear();
+			WayDecision wd;
+			
+			if (!WayDecision.IgnoreDirection)
+			{
+				wd = new WayDecisionCollision(posX, posY, mo, _mapExplored);
+				WayDecision.IgnoreDirection = true;
+			}
+			else
+			{
+				wd = new WayDecisionCollisionBackwards(posX, posY, mo, _mapExplored);
+				WayDecision.IgnoreDirection = false;
+			}
+
+			CalculateNextTarget();
+			_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+
+			//CreateNextWaypoint(wd);
         }
 
         /// <summary>
@@ -149,8 +238,6 @@ namespace SearchRobot.Library.RobotParts
         /****************************************************************/
         private double AdjustDirection(double currentDirection, double targetDirection)
         {
-            double currentDirectionOri = currentDirection;
-
             if(currentDirection < 0) currentDirection += 360;
             if(targetDirection < 0) targetDirection += 360;
 

@@ -22,7 +22,6 @@ namespace SearchRobot.Library.RobotParts
         public MapExplored MapExplored { get { return _mapExplored; } }
 
         //private Ellipse _uiElement;
-        //private Rectangle _uiElement;
         private Polyline _uiElement;
         private MapExplored _mapExplored;
         private Brain _brain;
@@ -62,9 +61,6 @@ namespace SearchRobot.Library.RobotParts
             get
             {
                 return new EllipseGeometry(GeometryHelper.Convert(StartPosition), Size / 2, Size / 2);
-
-                //var rect = new Rect(StartPosition.X - 15, StartPosition.Y - 15, Size, Size);
-                // return new RectangleGeometry(rect, 0, 0, new RotateTransform(Direction, Size / 2, Size / 2));
             }
 	    }
 
@@ -86,7 +82,6 @@ namespace SearchRobot.Library.RobotParts
 
 	    public override void ApplyTo(Canvas canvas)
 		{
-            
 			_uiElement = new Polyline();
 
             _uiElement.Points.Add(new System.Windows.Point(Size * 1/3, Size));
@@ -101,22 +96,6 @@ namespace SearchRobot.Library.RobotParts
 			_uiElement.Height = Size;
 
 			_uiElement.Fill = Brushes.DarkGreen;
-            
-            
-            // FIXME just4testing - draw rectangle (same as collision detection)
-            /*
-            _uiElement = new Rectangle
-            {
-                Height = Size,
-                Fill = Brushes.Black,
-                Width = Size
-            };
-
-            Canvas.SetLeft(_uiElement, StartPosition.X);
-            Canvas.SetTop(_uiElement, StartPosition.Y);
-            _uiElement.RenderTransform = new RotateTransform(Direction + 90, 15, 15);
-            _uiElement.Fill = Brushes.DarkGreen;
-            */
 
             //_uiElement = new Ellipse { Width = Size, Height = Size, Fill = Brushes.DarkGreen };
 
@@ -126,27 +105,26 @@ namespace SearchRobot.Library.RobotParts
 			canvas.Children.Add(_uiElement);
 		}
 
-		//public CartesianArray<MapElementStatus> GetView()
-        public List<Point> GetView()
+		public CartesianArray<MapElementStatus> GetView()
 		{
-            //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetView()), StartPosition);
+		    return _sensor.GetView();
+		}
+
+        public List<Point> GetWayPoints()
+		{
+            //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetWayPoints()), StartPosition);
             var result = (new PointRotator(CartasianDirection)).Rotate(_sensor.GetView());
-
-            // DebugHelper.StoreAsBitmap(string.Format("C:\\SensorImageR-{0}.png", DateTime.Now.Ticks), result);
-
+            
             _mapExplored.UpdateSensordata(result.ToArray(), StartPosition);
             //_mapExplored.UpdateSensordata(result, StartPosition);
 
-            //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetView()).ToArray();
-            //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetView());
+            //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetWayPoints()).ToArray();
+            //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetWayPoints());
 
-			//return _sensor.GetView();
-
-
-
-
+			//return _sensor.GetWayPoints();
+            
             // FIXME just4testing start dijkstra
-            _brain.waypoints = new DijkstraHelper().GetPath(StartPosition, new Point(799, 599), _mapExplored);
+			_brain.waypoints = new DijkstraHelper(_mapExplored).GetPath(StartPosition, new Point(799, 599));
             _brain.MapExplored.WaypointActive = _brain.waypoints[0];
 
             return _brain.waypoints;
@@ -156,39 +134,46 @@ namespace SearchRobot.Library.RobotParts
         {
 			MovementObject mo = _brain.GetNextMove(_positionX, _positionY, Direction);
 
-            // temporarily deactivate robot to avoid collision with clone
-            IsCollidable = false;
-            
-            // create clone for collision dection of next move
-            var collisionDummy = (Robot)this.Clone();
-
-            collisionDummy.ApplyTo(_mapArea);
-            Map.Add(collisionDummy);
-            collisionDummy.Bind(Map);
-
-            // set new position
-            collisionDummy.SetPos(mo.X, mo.Y);
-
-            if (collisionDummy.IsOverlapping())
+            if (IsValidMove(mo))
             {
-                collisionDummy.Dispose();
-                collisionDummy.Remove(_mapArea);
-
-                _brain.Collision(_positionX, _positionY, mo);
-                IsCollidable = true;
-
-                return;
+                SetPos(mo.X, mo.Y);
+                SetDirection(mo.Direction);
             }
+        }
 
-            collisionDummy.Dispose();
-            collisionDummy.Remove(_mapArea);
-            IsCollidable = true;
+        private bool IsValidMove(MovementObject mo)
+        {
+            Robot collisionDummy = null;
 
+            try
+            {
+                IsCollidable = false;
+                collisionDummy = (Robot)this.Clone();
 
-            SetPos(mo.X, mo.Y);
-            SetDirection(mo.Direction);
+                collisionDummy.ApplyTo(_mapArea);
+                Map.Add(collisionDummy);
+                collisionDummy.Bind(Map);
 
-            //Console.WriteLine("isValid: " + IsValid());
+                // set new position
+                collisionDummy.SetPos(mo.X, mo.Y);
+
+                if (collisionDummy.IsOverlapping())
+                {
+                    _brain.Collision(_positionX, _positionY, mo);
+                    return false;
+                }
+
+                return true;
+            }
+            finally
+            {
+                IsCollidable = true;
+                if (collisionDummy != null)
+                {
+                    collisionDummy.Dispose();
+                    collisionDummy.Remove(_mapArea);
+                }
+            }
         }
 
         public void SetPos(double x, double y)
@@ -198,9 +183,6 @@ namespace SearchRobot.Library.RobotParts
 
             StartPosition.X = (int)_positionX;
             StartPosition.Y = (int)_positionY;
-
-            //_position.X = (int)Math.Round(_positionExactlyX);
-            //_position.Y = (int)Math.Round(_positionExactlyY);
 
             Canvas.SetLeft(_uiElement, StartPosition.X - Size / 2);
             Canvas.SetTop(_uiElement, StartPosition.Y - Size / 2);
