@@ -148,7 +148,6 @@ namespace SearchRobot.Library.Simulation
 
         public void AnalyzeMap()
         {
-            _minimap.drawWaypoints(_robot.GetWayPoints());
         }
         #endregion
 
@@ -193,7 +192,11 @@ namespace SearchRobot.Library.Simulation
             
 
 
-            if(_ticks % CYCLE_MINIMAP_UPDATE == 1) _minimap.Update();
+            if(_ticks % CYCLE_MINIMAP_UPDATE == 1)
+            {
+				_minimap.Update();
+				_minimap.drawWaypoints(_robot.GetWayPoints());
+            }
         }
 
         private void CyclesStop()
