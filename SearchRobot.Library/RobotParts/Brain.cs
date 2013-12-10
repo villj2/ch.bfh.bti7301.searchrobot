@@ -64,16 +64,10 @@ namespace SearchRobot.Library.RobotParts
 			if (route == null || route.Any())
 			{
 				_waypointQueue.Clear();
-				route = DijkstraHelper.GetPath(_robot.StartPosition, new Point(10, 10));
-				// _waypointQueue.Enqueue(new Point(10,10));
-				
-				/*
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
 
 				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
 				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width).ToList();
-
-				edgeDetection.DebugOutput();
 
 				foreach (var edge in edges)
 				{
@@ -83,7 +77,7 @@ namespace SearchRobot.Library.RobotParts
 						route = path;
 						break;
 					}
-				}*/
+				}
 			}
 
 			if (route != null && route.Any())
@@ -100,10 +94,10 @@ namespace SearchRobot.Library.RobotParts
 		{
 			if (_scanningIteration++ % ScanningIterationThreshold == 0)
 			{
-				var rotatedMap = new PointRotator(_robot.CartasianDirection).Rotate(_robot.GetView());
+                var scannedMap = _robot.GetView();
 
-				DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), rotatedMap);
-				_mapExplored.UpdateSensordata(rotatedMap.ToArray(), _robot.StartPosition);
+				DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), scannedMap);
+				_mapExplored.UpdateSensordata(scannedMap.ToArray(), _robot.StartPosition);
 			}
 		}
 

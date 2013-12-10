@@ -34,7 +34,7 @@ namespace SearchRobot.Library.RobotParts
 
         public double CartasianDirection
         {
-            get { return 360 - Direction; }
+            get { return Direction < 180 ? Direction : 360 + Direction; }
         }
 
         public Robot(Map map) : base(map) {}
@@ -51,9 +51,9 @@ namespace SearchRobot.Library.RobotParts
 	        _sensor = sensor;
 
             SetPos(StartPosition.X, StartPosition.Y);
-            SetDirection(Direction);
 
-            Console.WriteLine("Robot Map: " + Map);
+            // normalize direction
+            SetDirection(Direction > 0 ? 360 - Direction : Direction * -1);
         }
 
 	    protected override Geometry GeometryShape

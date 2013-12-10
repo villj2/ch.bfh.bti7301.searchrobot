@@ -79,6 +79,11 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 		/// <returns></returns>
 		public List<Node> getPathTo(Node d)
 		{
+            if (d == null)
+            {
+                return new List<Node>();
+            }
+
 			List<Node> path = new List<Node>();
 
 			path.Insert(0, d);
