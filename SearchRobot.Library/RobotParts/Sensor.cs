@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using SearchRobot.Library.Global;
 using SearchRobot.Library.Maps;
 using System;
 using System.Collections.Generic;
@@ -131,6 +132,17 @@ namespace SearchRobot.Library.RobotParts
                 SpawnShadow(viewport, point, topEdge, rightEdge, bottomEdge, viewport[point]);
             }
         }
+
+		private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, Area area, double direction)
+		{
+			
+		}
+
+		private bool IsInbound(Point point, Area area)
+		{
+			return (point.X > area.LeftEdge && point.X < area.RightEdge)
+				&& (point.Y > area.TopEdge && point.Y < area.TopEdge);
+		}
 
         private void SpawnShadow(CartesianArray<MapElementStatus> viewport, Point point, int topEdge, int rightEdge, int bottomEdge, MapElementStatus elementType)
         {

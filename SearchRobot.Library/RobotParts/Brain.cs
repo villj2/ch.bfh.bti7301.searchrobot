@@ -18,7 +18,7 @@ namespace SearchRobot.Library.RobotParts
         private int _iterationCounter = 0;
         private const int ReconsiderCounterThresholdd = 50;
 
-        private readonly Queue<Point> _waypointQueue = new Queue<Point>();
+        public readonly Queue<Point> _waypointQueue = new Queue<Point>();
 
         // FIXME just4testing
         public List<Point> waypoints;
@@ -63,6 +63,11 @@ namespace SearchRobot.Library.RobotParts
 
 			if (route == null || route.Any())
 			{
+				_waypointQueue.Clear();
+				route = DijkstraHelper.GetPath(_robot.StartPosition, new Point(10, 10));
+				// _waypointQueue.Enqueue(new Point(10,10));
+				
+				/*
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
 
 				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
@@ -78,7 +83,7 @@ namespace SearchRobot.Library.RobotParts
 						route = path;
 						break;
 					}
-				}
+				}*/
 			}
 
 			if (route != null && route.Any())
@@ -96,6 +101,8 @@ namespace SearchRobot.Library.RobotParts
 			if (_scanningIteration++ % ScanningIterationThreshold == 0)
 			{
 				var rotatedMap = new PointRotator(_robot.CartasianDirection).Rotate(_robot.GetView());
+
+				DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), rotatedMap);
 				_mapExplored.UpdateSensordata(rotatedMap.ToArray(), _robot.StartPosition);
 			}
 		}
