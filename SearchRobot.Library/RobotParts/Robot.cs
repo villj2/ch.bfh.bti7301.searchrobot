@@ -34,7 +34,7 @@ namespace SearchRobot.Library.RobotParts
 
         public double CartasianDirection
         {
-            get { return Direction < 180 ? Direction : 360 + Direction; }
+            get { return 360 - (Direction); }
         }
 
         public Robot(Map map) : base(map) {}
@@ -53,7 +53,7 @@ namespace SearchRobot.Library.RobotParts
             SetPos(StartPosition.X, StartPosition.Y);
 
             // normalize direction
-            SetDirection(Direction > 0 ? 360 - Direction : Direction * -1);
+            //SetDirection(Direction > 0 ? 360 - Direction : Direction * -1);
         }
 
 	    protected override Geometry GeometryShape
@@ -75,9 +75,16 @@ namespace SearchRobot.Library.RobotParts
 			ApplyTo(canvas);
         }
 
+        private static double ConvertToCartasian(double direction)
+        {
+            return direction > 0 ? 360 - direction : direction * -1;
+        }
+
         public override void MouseMove(Canvas canvas, Point point)
         {
-            SetDirection(GeometryHelper.GetAngle(StartPosition, point));
+            //SetDirection(ConvertToCartasian(GeometryHelper.GetAngle(StartPosition, point)));
+            SetDirection(GeometryHelper.GetAngleAbsolute(StartPosition.X, StartPosition.Y, point.X, point.Y));
+            Console.WriteLine(Direction);
         }
 
 	    public override void ApplyTo(Canvas canvas)

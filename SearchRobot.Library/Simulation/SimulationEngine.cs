@@ -233,7 +233,7 @@ namespace SearchRobot.Library.Simulation
 
         public static void ShowInfo(string info)
         {
-            _lblOutput.Content = info;
+            // _lblOutput.Content = info;
         }
     }
 }

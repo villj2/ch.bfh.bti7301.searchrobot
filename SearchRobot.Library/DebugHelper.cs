@@ -19,7 +19,11 @@ namespace SearchRobot.Library
 					{ MapElementStatus.TargetShadowed, Color.Red },
 					{ MapElementStatus.Shadowed, Color.DarkGray },
 					{ MapElementStatus.Target, Color.Green },
-					{ MapElementStatus.Blocked, Color.Black }
+					{ MapElementStatus.Blocked, Color.Black },
+					{ MapElementStatus.Visited, Color.Pink },
+					{ MapElementStatus.Waypoint, Color.Fuchsia },
+					{ MapElementStatus.WaypointVisited, Color.Blue },
+					{ MapElementStatus.Remove, Color.BlanchedAlmond }
 				};
 
 		public static void StoreAsBitmap(string path, CartesianArray<MapElementStatus> data)

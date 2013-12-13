@@ -61,7 +61,7 @@ namespace SearchRobot.Library.RobotParts
 				route = DijkstraHelper.GetPath(_robot.StartPosition, goal);
 			}
 
-			if (route == null || route.Any())
+			if (route == null || !route.Any())
 			{
 				_waypointQueue.Clear();
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
@@ -69,8 +69,11 @@ namespace SearchRobot.Library.RobotParts
 				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
 				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width).ToList();
 
+                DebugHelper.StoreAsBitmap(string.Format("C:\\debugminimap-{0}.png", DateTime.Now.Ticks), _mapExplored.Map);
 				foreach (var edge in edges)
 				{
+                    //Minimap.MAGIC_MINIMAP.drawWaypoints(edge.Points.ToList());
+
 					var path = DijkstraHelper.GetPath(_robot.StartPosition, edge.CenterPoint);
 					if (path != null && path.Any())
 					{

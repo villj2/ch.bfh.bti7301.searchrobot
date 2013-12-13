@@ -23,6 +23,8 @@ namespace SearchRobot.Library.Maps
 
         private Bitmap _bm;
 
+        //public static Minimap MAGIC_MINIMAP;
+
         // Tracking Map - Same as MapExplored one Cycle before. Update drawn infos in this array. First always check if at specific position change was made.
         // Only if there is a difference draw the new point.
         //private TrackingMapEntry[,] _trackingMap = new TrackingMapEntry[800, 600];
@@ -36,6 +38,8 @@ namespace SearchRobot.Library.Maps
 
             _bm = new Bitmap(800, 600);
             _trackingMap = new MapElementStatus[800, 600];
+
+            //MAGIC_MINIMAP = this;
         }
 
         internal void Update()
@@ -91,7 +95,14 @@ namespace SearchRobot.Library.Maps
             foreach (Point p in waypoints)
             {
                 //drawPoint(p.X, p.Y, System.Windows.Media.Brushes.DarkRed, 5);
-                _bm.SetPixel(p.X, p.Y, System.Drawing.Color.DarkRed);
+                for (int i = 0; i < 1; i++)
+                {
+                    for (int j = 0; j < 1; j++)
+                    {
+                        _bm.SetPixel(p.X + i, p.Y + j, System.Drawing.Color.DarkRed);
+                    }
+                }
+                
             }
 
             ImageBrush brush = new ImageBrush();

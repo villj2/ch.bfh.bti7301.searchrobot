@@ -96,6 +96,12 @@ namespace SearchRobot.Library.Maps
                     {
                         MapElementStatus status = offsetLeft < 0 || offsetTop < 0 ? MapElementStatus.Undiscovered : arrMap[i, j];
 
+                        if (status == MapElementStatus.TargetShadowed)
+                        {
+
+                        }
+
+
 						if (_conversationDictionary.Keys.Any(k => k == status))
 						{
 

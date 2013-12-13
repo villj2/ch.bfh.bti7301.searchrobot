@@ -90,8 +90,9 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 			{
 				smallestX = smallestX > point.X ? point.X : smallestX;
 				smallestY = smallestY > point.Y ? point.Y : smallestY;
+
 				biggestX = biggestX < point.X ? point.X : biggestX;
-				biggestY = biggestY > point.Y ? point.Y : biggestY;
+				biggestY = biggestY < point.Y ? point.Y : biggestY;
 			}
 
 			StartPoint = new Point(smallestX, smallestY);

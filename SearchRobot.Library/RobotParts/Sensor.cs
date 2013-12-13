@@ -126,14 +126,14 @@ namespace SearchRobot.Library.RobotParts
 
         private void SetSensorAngleBoundaries(CartesianArray<MapElementStatus> map, Area area)
         {
-            SpawnShadow(map, new Point(0, 0), area, Robot.CartasianDirection + (Sight.Angle / 2));
-            SpawnShadow(map, new Point(0, 0), area, Robot.CartasianDirection - (Sight.Angle / 2));
+            SpawnShadow(map, new Point(0, 0), area, (Robot.CartasianDirection + (Sight.Angle / 2)) % 360);
+            SpawnShadow(map, new Point(0, 0), area, (Robot.CartasianDirection - (Sight.Angle / 2)) % 360);
         }
 
         private Point GetStartPoint(double direction)
         {
             var modifier = GetModifiersForDirection(direction);
-            return new Point(2*modifier.X, (int)Math.Round(GetYRatio(direction) * 2 * modifier.Y));
+            return new Point(2*modifier.X, (int)Math.Round(Math.Abs(GetYRatio(direction)) * 2 * modifier.Y));
         }
 
 	    public CartesianArray<MapElementStatus> GetView()
@@ -141,10 +141,10 @@ namespace SearchRobot.Library.RobotParts
             var currentViewPort = GetRobotCenteredMapCopy(Robot, BaseArea.Value);
 
             Area area = new Area(
-                topEdge: currentViewPort.TopRightCoordinate.Y - 1,
-                rightEdge: currentViewPort.TopRightCoordinate.X - 1,
+                topEdge: currentViewPort.TopRightCoordinate.Y + 1,
+                rightEdge: currentViewPort.TopRightCoordinate.X,
                 bottomEdge: currentViewPort.BottomLeftCoordinate.Y,
-                leftEdge: currentViewPort.BottomLeftCoordinate.X);
+                leftEdge: currentViewPort.BottomLeftCoordinate.X - 1);
 
 	        SetSensorAngleBoundaries(map: currentViewPort, area: area);
 
@@ -241,7 +241,11 @@ namespace SearchRobot.Library.RobotParts
             var curentPoint = new Point(point.X + xdistance, point.Y + ydistance);
             do
             {
-                viewport[curentPoint] = first ? elementType : MapElementStatus.Shadowed;
+                viewport[curentPoint] =
+                    first ? elementType : 
+                        (viewport[curentPoint] == MapElementStatus.Undiscovered ? MapElementStatus.Shadowed: viewport[curentPoint] );
+
+
                 first = false;
 
                 if (increaseX)
