@@ -34,7 +34,7 @@ namespace SearchRobot.Library.RobotParts
 
         public double CartasianDirection
         {
-            get { return 360 - Direction; }
+            get { return Direction < 180 ? Direction : 360 + Direction; }
         }
 
         public Robot(Map map) : base(map) {}
@@ -51,9 +51,9 @@ namespace SearchRobot.Library.RobotParts
 	        _sensor = sensor;
 
             SetPos(StartPosition.X, StartPosition.Y);
-            SetDirection(Direction);
 
-            Console.WriteLine("Robot Map: " + Map);
+            // normalize direction
+            SetDirection(Direction > 0 ? 360 - Direction : Direction * -1);
         }
 
 	    protected override Geometry GeometryShape
@@ -111,24 +111,9 @@ namespace SearchRobot.Library.RobotParts
 		}
 
         public List<Point> GetWayPoints()
-		{
-            //_mapExplored.UpdateSensordata((new PointRotator(Direction)).Rotate(_sensor.GetWayPoints()), StartPosition);
-            var result = (new PointRotator(CartasianDirection)).Rotate(_sensor.GetView());
-            
-            _mapExplored.UpdateSensordata(result.ToArray(), StartPosition);
-            //_mapExplored.UpdateSensordata(result, StartPosition);
-
-            //var mapArray = (new PointRotator(Direction)).Rotate(_sensor.GetWayPoints()).ToArray();
-            //var mapCartesianArray = (new PointRotator(Direction)).Rotate(_sensor.GetWayPoints());
-
-			//return _sensor.GetWayPoints();
-            
-            // FIXME just4testing start dijkstra
-			_brain.waypoints = new DijkstraHelper(_mapExplored).GetPath(StartPosition, new Point(799, 599));
-            _brain.MapExplored.WaypointActive = _brain.waypoints[0];
-
-            return _brain.waypoints;
-		}
+        {
+	        return _brain._waypointQueue.ToList();
+        }
 
         public void Move()
         {

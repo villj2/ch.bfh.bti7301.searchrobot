@@ -81,28 +81,6 @@ namespace SearchRobot.Library.Maps
 
         public void UpdateSensordata(MapElementStatus[,] arrMap, Point posRobot)
         {
-            // Methode 1: Vom CartesianArray ausgehend
-            /*
-            int offsetLeft = -posRobot.X;
-            int offsetRight = 800 - posRobot.X;
-            int offsetTop = -posRobot.Y;
-            int offsetBottom = 600 - posRobot.Y;
-
-            for (int i = offsetLeft; i < offsetRight; i++)
-            {
-                for (int j = offsetTop; j < offsetBottom; j++)
-                {
-                    // nur überschreiben wenn Undiscovered
-                    if (_map[posRobot.X + i, posRobot.Y + j] == MapElementStatus.Undiscovered)
-                    {
-                        _map[posRobot.X + i, posRobot.Y + j] = arrCartesian[i, j];
-                    }
-                }
-            }
-            */
-            // Methode 2: CartesianArray Croppen!
-            // FIXME arrMap teilweise kleiner als 800x600! Wie ist das möglich? -> Tritt auf wenn Roboter Direction = 180. Sprich nach links schauen.
-            
             int widthSensorMap = arrMap.GetLength(0);
             int heightSensorMap = arrMap.GetLength(1);
 
@@ -120,6 +98,7 @@ namespace SearchRobot.Library.Maps
 
 						if (_conversationDictionary.Keys.Any(k => k == status))
 						{
+
 							_map[i - offsetLeft, j - offsetTop] = _conversationDictionary[status];
 						}
                     }

@@ -18,7 +18,7 @@ namespace SearchRobot.Library.RobotParts
         private int _iterationCounter = 0;
         private const int ReconsiderCounterThresholdd = 50;
 
-        private readonly Queue<Point> _waypointQueue = new Queue<Point>();
+        public readonly Queue<Point> _waypointQueue = new Queue<Point>();
 
         // FIXME just4testing
         public List<Point> waypoints;
@@ -36,7 +36,7 @@ namespace SearchRobot.Library.RobotParts
             _robot = robot;
 
             // set first waypoint
-            CreateNextWaypoint();
+            // CreateNextWaypoint();
         }
 
 		private bool IsPointingAtTarget(double currentDirection, double targetDirection)
@@ -63,10 +63,11 @@ namespace SearchRobot.Library.RobotParts
 
 			if (route == null || route.Any())
 			{
+				_waypointQueue.Clear();
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
 
 				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
-				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width);
+				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width).ToList();
 
 				foreach (var edge in edges)
 				{
@@ -93,8 +94,10 @@ namespace SearchRobot.Library.RobotParts
 		{
 			if (_scanningIteration++ % ScanningIterationThreshold == 0)
 			{
-				var rotatedMap = new PointRotator(_robot.CartasianDirection).Rotate(_robot.GetView());
-				_mapExplored.UpdateSensordata(rotatedMap.ToArray(), _robot.StartPosition);
+                var scannedMap = _robot.GetView();
+
+				DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), scannedMap);
+				_mapExplored.UpdateSensordata(scannedMap.ToArray(), _robot.StartPosition);
 			}
 		}
 
@@ -114,12 +117,18 @@ namespace SearchRobot.Library.RobotParts
 			return null;
 		}
 
+	    private Point ActiveWayPoint
+	    {
+		    get { return _mapExplored.WaypointActive; }
+			set { _mapExplored.WaypointActive = value; }
+	    }
+
 		public MovementObject GetNextMove(double posX, double posY, double currentDirection)
 		{
 			AllowToRescan();
 
 			// check if waypoint is reached
-			if (HasReachedWayPoint(posX, posY))
+			if (ActiveWayPoint == null || HasReachedWayPoint(posX, posY))
 			{
 				WayDecision.IgnoreDirection = false;
 
@@ -128,7 +137,7 @@ namespace SearchRobot.Library.RobotParts
 					CalculateNextTarget();
 				}
 
-				_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+				ActiveWayPoint = _waypointQueue.Dequeue();
 			}
 
 			MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
@@ -179,10 +188,10 @@ namespace SearchRobot.Library.RobotParts
 				WayDecision.IgnoreDirection = false;
 			}
 
-			CalculateNextTarget();
-			_mapExplored.WaypointActive = _waypointQueue.Dequeue();
+			// CalculateNextTarget();
+			// _mapExplored.WaypointActive = _waypointQueue.Dequeue();
 
-			//CreateNextWaypoint(wd);
+			CreateNextWaypoint(wd);
         }
 
         /// <summary>
@@ -196,7 +205,8 @@ namespace SearchRobot.Library.RobotParts
 
         private void CreateNextWaypoint(WayDecision wayDecision)
         {
-            _mapExplored.WaypointActive = wayDecision.GetWaypoint();
+			_waypointQueue.Clear();
+            ActiveWayPoint = wayDecision.GetWaypoint();
         }
 
         /* calculates new movementPoint based on next waypoint

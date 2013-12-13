@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SearchRobot.Library.Global;
 
 namespace SearchRobot.Library.Maps
 {
@@ -48,7 +49,7 @@ namespace SearchRobot.Library.Maps
 			                 {
                                  Width = Radius * 2,
                                  Height = Radius * 2,
-                                 Fill = Brushes.DarkRed
+                                 Fill = new SolidColorBrush(Color.FromRgb(ItemColors.TargetColor.R, ItemColors.TargetColor.G, ItemColors.TargetColor.B))
 			                 };
 
 		    Canvas.SetLeft(_uiElement, StartPosition.X);

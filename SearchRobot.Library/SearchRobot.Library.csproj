@@ -48,6 +48,8 @@
     <Compile Include="DebugHelper.cs" />
     <Compile Include="CartesianArray.cs" />
     <Compile Include="GeometryHelper.cs" />
+    <Compile Include="Global\Area.cs" />
+    <Compile Include="Global\ItemColors.cs" />
     <Compile Include="Global\Constants.cs" />
     <Compile Include="Global\TextContent.cs" />
     <Compile Include="Maps\Disc.cs" />

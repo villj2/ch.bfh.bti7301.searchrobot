@@ -16,6 +16,7 @@ namespace SearchRobot.Library
 					{ MapElementStatus.Undiscovered, Color.White },
 					{ MapElementStatus.Discovered, Color.GreenYellow },
 					{ MapElementStatus.BlockedShadowed, Color.DarkSlateGray },
+					{ MapElementStatus.TargetShadowed, Color.Red },
 					{ MapElementStatus.Shadowed, Color.DarkGray },
 					{ MapElementStatus.Target, Color.Green },
 					{ MapElementStatus.Blocked, Color.Black }

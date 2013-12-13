@@ -11,12 +11,10 @@
             <ColumnDefinition Width="200px" />
         </Grid.ColumnDefinitions>
 
-        <Border BorderBrush="Black" BorderThickness="1" >
             <Canvas 
                 Grid.Row="0" Grid.Column="0" 
-                Width="800" Height="600" 
+                Width="800px" Height="600px" 
                 Name="MapArea" Background="#FFF" Margin="0,0,94,72" />
-        </Border>
         
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>

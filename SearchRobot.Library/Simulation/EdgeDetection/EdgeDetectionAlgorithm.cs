@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using SearchRobot.Library.Global;
 using SearchRobot.Library.Maps;
 
@@ -10,6 +12,10 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 {
 	public class EdgeDetectionAlgorithm
 	{
+		Stopwatch creatingTime = new Stopwatch();
+		Stopwatch addingTime = new Stopwatch();
+		Stopwatch findingTime = new Stopwatch();
+
 		private bool IsFieldBorderSafe(int x, int y, MapElementStatus[,] map, MapElementStatus status)
 		{
 			if (x < 0 || y < 0 || x > map.GetUpperBound(Constants.XDimension) || y > map.GetUpperBound(Constants.YDimension))
@@ -54,38 +60,58 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 
 			while (points.Any())
 			{
+				creatingTime.Start();
 				var point = points.First();
 				points.Remove(point);
 
 				var edge = new Edge(point);
+				creatingTime.Stop();
+
 				edges.Add(GrowEdge(edge, points));
 			}
 
 			return edges;
 		}
 
+		private IEnumerable<Point> GetNewEdgeEdgePoints(IEnumerable<Point> oldEdgePoints, IEnumerable<Point> src)
+		{
+			return oldEdgePoints.SelectMany(p => src.Where(point => Edge.ArePointTouching(point, p))).Distinct();
+		}
+
 		private Edge GrowEdge(Edge edge, List<Point> points)
 		{
+			List<Point> edgeEdgePoints = edge.Points.ToList();
 			bool grew;
 
 			do
 			{
 				grew = false;
+				findingTime.Start();
 
-				var newPoints = points.Where(edge.IsPointTouching).ToList();
+				edgeEdgePoints = GetNewEdgeEdgePoints(edgeEdgePoints, points).ToList();
+				findingTime.Stop();
 
-				if (newPoints.Any())
+				addingTime.Start();
+				if (edgeEdgePoints.Any())
 				{
 					grew = true;
-					edge.AddPointsUnsafe(newPoints);
-					newPoints.ForEach(p => points.Remove(p));
+					edge.AddPointsUnsafe(edgeEdgePoints);
+					edgeEdgePoints.ForEach(p => points.Remove(p));
 				}
+				addingTime.Stop();
 
 			} while (grew);
 
 			edge.Init();
 
 			return edge;
+		}
+
+		public void DebugOutput()
+		{
+			Console.WriteLine("Creating: {0}", creatingTime.ElapsedMilliseconds);
+			Console.WriteLine("Finding: {0}", findingTime.ElapsedMilliseconds);
+			Console.WriteLine("Adding: {0}", addingTime.ElapsedMilliseconds);
 		}
 	}
 }
