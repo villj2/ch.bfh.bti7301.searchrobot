@@ -19,6 +19,8 @@ namespace SearchRobot.Library.Maps
 	[XmlInclude(typeof(Wall))]
 	public abstract class MapElement : ICanvasListener, ICloneable
 	{
+	    private bool _mouseLeaveInvalid = false;
+
 		protected Map Map { get; private set; }
 
 		protected abstract Geometry GeometryShape { get; }
@@ -93,7 +95,7 @@ namespace SearchRobot.Library.Maps
         {
             Map.Add(this);
 
-            if (!IsValid())
+            if (!IsValid() || _mouseLeaveInvalid)
             {
                 Map.Remove(this);
                 canvas.Children.Remove(UiElement);
@@ -105,6 +107,7 @@ namespace SearchRobot.Library.Maps
         public virtual void MouseLeave(Canvas canvas)
 	    {
             Remove(canvas);
+            _mouseLeaveInvalid = true;
 	    }
 
 	    public abstract void ApplyTo(Canvas canvas);
