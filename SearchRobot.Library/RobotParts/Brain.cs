@@ -22,7 +22,19 @@ namespace SearchRobot.Library.RobotParts
 
         // FIXME just4testing
         public List<Point> waypoints;
-        private int waypointindex = 0;
+
+        private readonly Stack<Point> _pathLog = new Stack<Point>(); 
+
+        private Point LastValidPoint { get; set; }
+
+        private Point ActiveWayPoint
+        {
+            get { return _mapExplored.WaypointActive; }
+            set
+            {
+                _mapExplored.WaypointActive = value;
+            }
+        }
 
         public MapExplored MapExplored { get { return _mapExplored; } }
         private readonly MapExplored _mapExplored;
@@ -41,16 +53,20 @@ namespace SearchRobot.Library.RobotParts
 
 		private bool IsPointingAtTarget(double currentDirection, double targetDirection)
 		{
-			return Math.Abs((currentDirection + 360)%360 - (targetDirection + 360)%360) < 0.25;
+			return Math.Abs((Math.Abs(currentDirection) + 360)%360 - (Math.Abs(targetDirection) + 360)%360) < 1;
 		}
 
 		private bool HasReachedWayPoint(double posX, double posY)
 		{
-			return GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 5);
+			return GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 10);
 		}
 
 		private void CalculateNextTarget()
 		{
+		    Point startFrom = LastValidPoint ?? _robot.StartPosition;
+
+            DebugHelper.StoreAsBitmap(string.Format("C:\\debugMinimap-{0}.png", DateTime.Now.Ticks), _mapExplored.Map);
+
 			_waypointQueue.Clear();
 			List<Point> route = null;
 			var DijkstraHelper = new DijkstraHelper(_mapExplored);
@@ -58,23 +74,22 @@ namespace SearchRobot.Library.RobotParts
 			var goal = GetGoalPoint();
 			if (goal != null)
 			{
-				route = DijkstraHelper.GetPath(_robot.StartPosition, goal);
+                route = DijkstraHelper.GetPath(startFrom, goal);
 			}
 
 			if (route == null || !route.Any())
 			{
-				_waypointQueue.Clear();
 				EdgeDetectionAlgorithm edgeDetection = new EdgeDetectionAlgorithm();
 
-				var points = edgeDetection.GetEdgePoints(_mapExplored.Map);
-				var edges = edgeDetection.GroupToEdges(points).OrderByDescending(edge => edge.Width).ToList();
+				var edges = edgeDetection
+                                .GroupToEdges(edgeDetection.GetEdgePoints(_mapExplored.Map))
+                                .OrderByDescending(edge => edge.Width)
+                                .ToList();
 
-                DebugHelper.StoreAsBitmap(string.Format("C:\\debugminimap-{0}.png", DateTime.Now.Ticks), _mapExplored.Map);
-				foreach (var edge in edges)
-				{
-                    //Minimap.MAGIC_MINIMAP.drawWaypoints(edge.Points.ToList());
+               foreach (var edge in edges)
+			   {
 
-					var path = DijkstraHelper.GetPath(_robot.StartPosition, edge.CenterPoint);
+                    var path = DijkstraHelper.GetPath(startFrom, edge.CenterPoint);
 					if (path != null && path.Any())
 					{
 						route = path;
@@ -99,7 +114,7 @@ namespace SearchRobot.Library.RobotParts
 			{
                 var scannedMap = _robot.GetView();
 
-				DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), scannedMap);
+				// DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), scannedMap);
 				_mapExplored.UpdateSensordata(scannedMap.ToArray(), _robot.StartPosition);
 			}
 		}
@@ -120,11 +135,7 @@ namespace SearchRobot.Library.RobotParts
 			return null;
 		}
 
-	    private Point ActiveWayPoint
-	    {
-		    get { return _mapExplored.WaypointActive; }
-			set { _mapExplored.WaypointActive = value; }
-	    }
+
 
 		public MovementObject GetNextMove(double posX, double posY, double currentDirection)
 		{
@@ -132,7 +143,10 @@ namespace SearchRobot.Library.RobotParts
 
 			// check if waypoint is reached
 			if (ActiveWayPoint == null || HasReachedWayPoint(posX, posY))
-			{
+            {
+                LastValidPoint = ActiveWayPoint;
+                _pathLog.Push(LastValidPoint);
+
 				WayDecision.IgnoreDirection = false;
 
 				if (!_waypointQueue.Any())
@@ -177,8 +191,11 @@ namespace SearchRobot.Library.RobotParts
         {
 			// Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
 
-			_waypointQueue.Clear();
-			WayDecision wd;
+            _waypointQueue.Clear();
+            ActiveWayPoint = LastValidPoint;
+            return;
+
+            WayDecision wd;
 			
 			if (!WayDecision.IgnoreDirection)
 			{
@@ -271,7 +288,7 @@ namespace SearchRobot.Library.RobotParts
 
         private double CalculateTargetDirection(double posX, double posY, Point waypoint)
         {
-            return Math.Floor(GeometryHelper.GetAngle(posX, posY, waypoint.X, waypoint.Y));
+            return Math.Floor(GeometryHelper.GetAngleAbsolute(posX, posY, waypoint.X, waypoint.Y));
         }
 
         public void Dispose()
