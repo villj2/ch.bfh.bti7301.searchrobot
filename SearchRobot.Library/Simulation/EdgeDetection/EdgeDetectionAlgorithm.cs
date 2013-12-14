@@ -36,13 +36,18 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 					|| IsFieldBorderSafe(x, y + 1, map, status);
 		}
 
+        /// <summary>
+        /// Will detect all edges with in the area, but ignore the outer most pixels.
+        /// </summary>
+        /// <param name="map">2D Array of MapElementStatus.</param>
+        /// <returns>List of Edge Points.</returns>
 		public List<Point> GetEdgePoints(MapElementStatus[,] map)
 		{
 			List<Point> edgePoints = new List<Point>();
 
-			for (var x = 0; x <= map.GetUpperBound(Constants.XDimension); x++)
+			for (var x = 1; x <= map.GetUpperBound(Constants.XDimension) - 2; x++)
 			{
-				for (var y = 0; y <= map.GetUpperBound(Constants.YDimension); y++)
+                for (var y = 1; y <= map.GetUpperBound(Constants.YDimension) - 2; y++)
 				{
 					if (map[x, y] == MapElementStatus.Discovered && IsEdgeField(x, y, map))
 					{
