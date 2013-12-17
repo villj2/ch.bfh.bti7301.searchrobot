@@ -192,7 +192,15 @@ namespace SearchRobot.Library.RobotParts
 			// Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
 
             _waypointQueue.Clear();
-            ActiveWayPoint = LastValidPoint;
+
+            var DijkstraHelper = new DijkstraHelper(_mapExplored);
+            Point NextPoint; 
+
+            do{
+                NextPoint = _pathLog.Pop();
+            } while(!DijkstraHelper.IsPointValid(NextPoint));
+
+            ActiveWayPoint = NextPoint;
             return;
 
             WayDecision wd;

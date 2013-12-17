@@ -71,7 +71,9 @@ ToDo:
 - Reihenfolge was der Roboter wann macht - SEILER
 
 
-- Waypoints in Minimap grösser zeichnen
+- Waypoints in Minimap grösser zeichnen - OK
+
+- Rahmen zeichnen bei Map
 
 
 
