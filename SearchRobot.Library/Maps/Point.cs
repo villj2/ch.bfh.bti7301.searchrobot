@@ -32,5 +32,13 @@ namespace SearchRobot.Library.Maps
             var p = obj as Point;
             return p != null && p.X == X && p.Y == Y; 
         }
+
+        public bool InBound()
+        {
+            if (X >= 800 || X < 0) return false;
+            if (Y >= 600 || Y < 0) return false;
+
+            return true;
+        }
 	}
 }

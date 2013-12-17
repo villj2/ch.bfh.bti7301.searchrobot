@@ -49,6 +49,11 @@ namespace SearchRobot.Library.RobotParts
 
         public static double GetYRatio(double direction)
         {
+            if (direction == 0 || direction == 180)
+            {
+                return 1/800;
+            }
+
             return 1 / Math.Cos(GeometryHelper.ToRadians(direction));
         }
 

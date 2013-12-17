@@ -23,7 +23,8 @@ namespace SearchRobot.Library
 					{ MapElementStatus.Visited, Color.Pink },
 					{ MapElementStatus.Waypoint, Color.Fuchsia },
 					{ MapElementStatus.WaypointVisited, Color.Blue },
-					{ MapElementStatus.Remove, Color.BlanchedAlmond }
+					{ MapElementStatus.Remove, Color.BlanchedAlmond },
+					{ MapElementStatus.Collided, Color.Gold }
 				};
 
 		public static void StoreAsBitmap(string path, CartesianArray<MapElementStatus> data)
