@@ -59,47 +59,12 @@ ToDo:
 - Minimap mit Bitmap darstellen -> performance mit tracking map verbessern - OK
 - Code Refactoring
 
-
-
-- Wieso keine MapElementStatus.Discovered mehr? sondern .Target? xD
-
-
-- Sobald MapElementStatus.Target endteckt wurde den Roboter ausrichten und los. (nicht ausrichten, sondern einfach waypoint draufsetzen!)
-- Analyse wo in map explored noch viel undiscovered ist - NOT
-- statistiken speichern (anzahl collides, waypoint reaches, ...) - NOT
-- Kommentare anpassen
-- Reihenfolge was der Roboter wann macht - SEILER
-
-
+16.12.2013
 - Waypoints in Minimap grösser zeichnen - OK
 
-- Rahmen zeichnen bei Map
+17.12.2013
+- Rahmen zeichnen bei Map - OK
 
 
 
-Fragen:
-
-- Wieso werden Elemente vom 2. Minimap Canvas vom 1. überschrieben?
-
-
-
-
-
- private Image ScaleToSize(Image src, Size size)
-  {
-   Image newImage = new Bitmap(size.Width, size.Height);
-
-   using (Graphics gr = Graphics.FromImage(newImage))
-   {
-    gr.SmoothingMode = SmoothingMode.HighQuality;
-    gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-    gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
-    gr.DrawImage(src, new Rectangle(0, 0, size.Width, size.Height));
-   }
-
-   return newImage;
-  }
-
-
-Bitmap generieren:
-DebugHelper.StoreAsBitmap
+- SimEngine stoppen bei Win / Keine Edges mehr
