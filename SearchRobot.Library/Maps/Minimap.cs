@@ -81,7 +81,7 @@ namespace SearchRobot.Library.Maps
                         _bm.SetPixel(x, y, System.Drawing.Color.Blue);
                         break;
                     case MapElementStatus.Discovered:
-                        _bm.SetPixel(x, y, System.Drawing.Color.Blue);
+                        _bm.SetPixel(x, y, System.Drawing.Color.SkyBlue);
                         break;
                     //case MapElementStatus.Target:
                     //    _bm.SetPixel(i, j, System.Drawing.Color.Blue);
@@ -95,11 +95,16 @@ namespace SearchRobot.Library.Maps
             foreach (Point p in waypoints)
             {
                 //drawPoint(p.X, p.Y, System.Windows.Media.Brushes.DarkRed, 5);
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    for (int j = 0; j < 1; j++)
+                    for (int j = 0; j < 10; j++)
                     {
-                        _bm.SetPixel(p.X + i, p.Y + j, System.Drawing.Color.DarkRed);
+                        Point omegaP = new Point(p.X + i, p.Y + j);
+
+                        if (omegaP.InBound())
+                        {
+                            _bm.SetPixel(omegaP.X, omegaP.Y, System.Drawing.Color.DarkRed);
+                        }
                     }
                 }
                 

@@ -23,12 +23,12 @@
                 <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
-                <RowDefinition Height="50px" />
+                <!--<RowDefinition Height="50px" />-->
             </Grid.RowDefinitions>
 
 
             <Border BorderBrush="Black" BorderThickness="1" >
-                <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapArea" Background="Cyan"></Canvas>
+                <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapArea"></Canvas>
             </Border>
             
             <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapAreaVisited"></Canvas>
@@ -38,7 +38,7 @@
             <Button Name="btnLoad" Width="200" Content="" Grid.Row="2" Grid.Column="0" Click="OnBtnLoadClick" />
             <Button Name="btnStart" Width="200" Content="" Grid.Row="3" Grid.Column="0" Click="OnBtnStartClick" />
             <Button Name="btnReset" Width="200" Content="" Grid.Row="4" Grid.Column="0" Click="OnBtnResetClick"/>
-            <Button Name="btnAnalyze" Width="200" Content="" Grid.Row="5" Grid.Column="0" Click="OnBtnAnalyzeClick"/>
+            <!--<Button Name="btnAnalyze" Width="200" Content="" Grid.Row="5" Grid.Column="0" Click="OnBtnAnalyzeClick"/>-->
         </Grid>
     </Grid>
     
