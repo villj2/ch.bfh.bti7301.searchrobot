@@ -74,7 +74,7 @@ namespace SearchRobot.Library.RobotParts
 			var goal = GetGoalPoint();
 			if (goal != null)
 			{
-                route = DijkstraHelper.GetPath(startFrom, goal);
+                route = DijkstraHelper.GetPath(startFrom, goal, _pathLog);
 			}
 
 			if (route == null || !route.Any())
@@ -89,7 +89,7 @@ namespace SearchRobot.Library.RobotParts
                foreach (var edge in edges)
 			   {
 
-                    var path = DijkstraHelper.GetPath(startFrom, edge.CenterPoint);
+                   var path = DijkstraHelper.GetPath(startFrom, edge.CenterPoint, _pathLog);
 					if (path != null && path.Any())
 					{
 						route = path;
