@@ -39,17 +39,38 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 			_dijkstra = new Dijkstra(_edgeList, _nodeList);
 		}
 
-		public List<Point> GetPath(Point pos, Point target)
+		public List<Point> GetPath(Point pos, Point target, Stack<Point> pathLog)
 		{
 			// set start node and calculate distances
-			_dijkstra.calculateDistance(GetNodeFromPoint(pos));
+
+            // Sometimes Robot is at invalid Position. Why?
+            // Because while moving, Robot discovers more Blocked Elements and if Path has to be calculated from this Position,
+            // Dijkstra knows now that theres a Blocked Element nearby and marks active Position as invalid. -> Exception, because no way available from Robot Position.
+            // NodeTarget = null
+            // FIXED with PathLog
+            
+            Point PointLast = pos;
+
+            Node NodeTarget = GetNodeFromPoint(PointLast);
+            if (!IsPointValid(PointLast))
+            {
+                do
+                {
+                    PointLast = pathLog.Pop();
+                    NodeTarget = GetNodeFromPoint(PointLast);
+                } while (!IsPointValid(PointLast));
+            }
+
+            _dijkstra.calculateDistance(NodeTarget);
 
 			return _dijkstra.getPathTo(GetNodeFromPoint(target)).Select(n => GeneratePointFromName(n.Name)).ToList();
 		}
 
 		private Node GetNodeFromPoint(Point point)
 		{
-			return _nodeMatrix[point.X / GRID_SIZE, point.Y / GRID_SIZE];
+            int x = point.X / GRID_SIZE;
+            int y = point.Y / GRID_SIZE;
+			return _nodeMatrix[x, y];
 		}
 
         private bool[,] Simplify(MapExplored mapExplored)
@@ -155,6 +176,11 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             }
 
             return false;
+        }
+
+        public bool IsPointValid(Point point)
+        {
+            return _nodeList.Any(x => x.Name.Equals(GenerateName((point.X - GRID_SIZE / 2) / GRID_SIZE, (point.Y - GRID_SIZE / 2) / GRID_SIZE)));
         }
 
         private string GenerateName(int x, int y)

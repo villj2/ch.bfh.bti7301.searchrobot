@@ -85,7 +85,7 @@ namespace SearchRobot.Library.Simulation.WayDecision
             if (WayDecision.Collisions >= 10)
             {
                 // TODO block game
-                SimulationEngine.ShowInfo("Robot stuck!");
+                SimulationEngine.EndSimulation("Robot stuck!");
             }
 
             _dispatcherTimer.Stop();

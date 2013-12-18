@@ -11,11 +11,11 @@
             <ColumnDefinition Width="200px" />
         </Grid.ColumnDefinitions>
 
-            <Canvas 
-                Grid.Row="0" Grid.Column="0" 
+        <Border x:Name="CanvasBorder" Grid.Row="0" Grid.Column="0" Width="802px" Height="602px" BorderThickness="1" BorderBrush="Black">
+            <Canvas Grid.Row="0" Grid.Column="0"
                 Width="800px" Height="600px" 
-                Name="MapArea" Background="#FFF" Margin="0,0,94,72" />
-        
+                Name="MapArea" Background="#FFF"  />
+        </Border>
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150px" />
@@ -23,23 +23,23 @@
                 <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
-                <RowDefinition Height="50px" />
+                <!--<RowDefinition Height="50px" />-->
             </Grid.RowDefinitions>
 
 
             <Border BorderBrush="Black" BorderThickness="1" >
-                <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapArea" Background="Cyan"></Canvas>
+                <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapArea"></Canvas>
             </Border>
-            
+
             <Canvas Grid.Row="0" Grid.Column="0" Width="200" Name="MinimapAreaVisited"></Canvas>
 
-            
-            <Label Name="lblOutput" Width="200" Content="" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+            <Label Name="lblOutput" Content="" Width="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,173,0,158" />
             <Button Name="btnLoad" Width="200" Content="" Grid.Row="2" Grid.Column="0" Click="OnBtnLoadClick" />
             <Button Name="btnStart" Width="200" Content="" Grid.Row="3" Grid.Column="0" Click="OnBtnStartClick" />
             <Button Name="btnReset" Width="200" Content="" Grid.Row="4" Grid.Column="0" Click="OnBtnResetClick"/>
-            <Button Name="btnAnalyze" Width="200" Content="" Grid.Row="5" Grid.Column="0" Click="OnBtnAnalyzeClick"/>
+            <!--<Button Name="btnAnalyze" Width="200" Content="" Grid.Row="5" Grid.Column="0" Click="OnBtnAnalyzeClick"/>-->
         </Grid>
     </Grid>
-    
+
 </Window>

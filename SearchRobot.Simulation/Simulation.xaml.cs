@@ -36,7 +36,7 @@ namespace SearchRobot.Simulation
             btnLoad.Content = TextContent.Instance["Simulation-Button-Load"];
             btnStart.Content = TextContent.Instance["Simulation-Button-Start"];
             btnReset.Content = TextContent.Instance["Simulation-Button-Reset"];
-            btnAnalyze.Content = TextContent.Instance["Simulation-Button-Analyze"];
+            //btnAnalyze.Content = TextContent.Instance["Simulation-Button-Analyze"];
         }
 
         private void OnBtnLoadClick(object sender, RoutedEventArgs e)

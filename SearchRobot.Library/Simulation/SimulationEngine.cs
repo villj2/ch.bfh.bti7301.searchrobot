@@ -21,7 +21,7 @@ namespace SearchRobot.Library.Simulation
 {
     public class SimulationEngine
     {
-        const int CYCLE_INTERVAL = 10; // milliseconds
+        const int CYCLE_INTERVAL = 2; // milliseconds
         const int CYCLE_MINIMAP_UPDATE = 100; // minimap updates every 'x'th time interval is dispatched 
 
         private AutoResetEvent _autoEvent;
@@ -40,6 +40,8 @@ namespace SearchRobot.Library.Simulation
 
         private string _filename;
 
+        public static SimulationEngine SimulationEngineStatic;
+
         public SimulationEngine(Canvas mapArea, Canvas minimapArea, Canvas minimapAreaVisited, Label lblOutput)
         {
             _mapArea = mapArea;
@@ -49,6 +51,8 @@ namespace SearchRobot.Library.Simulation
 
             initialize();
             LoadMap();
+
+            SimulationEngineStatic = this;
         }
 
         private void initialize()
@@ -164,34 +168,6 @@ namespace SearchRobot.Library.Simulation
             _ticks++;
             _robot.Move();
 
-
-            // FIXME just4testing disabled
-			if (_ticks % 250 == -1)
-			{
-                // _robot.GetWayPoints();
-
-                /*
-                var res = (new PointRotator(_robot.Direction)).Rotate(_robot.GetWayPoints()).ToArray();
-                // TODO crop res (array with padding)
-                 * 
-                 * 
-                // essenzielle infos sind 800 x 600 in dem zu grossen array zentriert
-
-                var map = (new PointRotator(_robot.Direction)).Rotate(_robot.GetWayPoints());
-
-                int x= 10, y = 10;
-
-                MapElementStatus[,] mapExplored = new MapElementStatus[20,20];
-
-                mapExplored[x - 1, y] = map[-1, 0];
-
-                // MapElementStatus: BlockedShadowed -> kanten
-                // Discovered: gesehen aber nicht blocked
-                */
-			}
-            
-
-
             if(_ticks % CYCLE_MINIMAP_UPDATE == 1)
             {
 				_minimap.Update();
@@ -199,7 +175,7 @@ namespace SearchRobot.Library.Simulation
             }
         }
 
-        private void CyclesStop()
+        public void CyclesStop()
         {
             _state = CycleState.Paused;
             _dispatcherTimer.Stop();
@@ -231,9 +207,10 @@ namespace SearchRobot.Library.Simulation
             _state = CycleState.Initiated;
         }
 
-        public static void ShowInfo(string info)
+        public static void EndSimulation(string info)
         {
-            // _lblOutput.Content = info;
+            _lblOutput.Content = info;
+            SimulationEngineStatic.CyclesStop();
         }
     }
 }
