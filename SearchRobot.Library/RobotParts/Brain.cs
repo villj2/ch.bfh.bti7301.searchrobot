@@ -58,7 +58,7 @@ namespace SearchRobot.Library.RobotParts
 
 		private bool HasReachedWayPoint(double posX, double posY)
 		{
-			return GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 10);
+			return GeometryHelper.ComparePointsWithRange(posX, posY, _mapExplored.WaypointActive.X, _mapExplored.WaypointActive.Y, 2);
 		}
 
 		private void CalculateNextTarget()
@@ -203,7 +203,7 @@ namespace SearchRobot.Library.RobotParts
             _waypointQueue.Clear();
 
             var DijkstraHelper = new DijkstraHelper(_mapExplored);
-            Point NextPoint; 
+            Point NextPoint;
 
             do{
                 NextPoint = _pathLog.Pop();
