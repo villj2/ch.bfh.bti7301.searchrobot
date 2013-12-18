@@ -64,7 +64,4 @@ ToDo:
 
 17.12.2013
 - Rahmen zeichnen bei Map - OK
-
-
-
 - SimEngine stoppen bei Win / Keine Edges mehr
