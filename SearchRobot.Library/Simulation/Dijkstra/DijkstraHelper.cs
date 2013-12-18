@@ -157,6 +157,11 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             return false;
         }
 
+        public bool IsPointValid(Point point)
+        {
+            return _nodeList.Any(x => x.Name.Equals(GenerateName((point.X - GRID_SIZE / 2) / GRID_SIZE, (point.Y - GRID_SIZE / 2) / GRID_SIZE)));
+        }
+
         private string GenerateName(int x, int y)
         {
             return x.ToString("00") + y.ToString("00");

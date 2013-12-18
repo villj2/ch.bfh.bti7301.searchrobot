@@ -81,7 +81,7 @@ namespace SearchRobot.Library.Maps
                 {
                     if (el is Goal)
                     {
-                        SimulationEngine.ShowInfo("WIN!");
+                        SimulationEngine.EndSimulation("WIN!");
                     }
                 }
             }

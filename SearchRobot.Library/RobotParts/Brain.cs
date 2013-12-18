@@ -104,7 +104,8 @@ namespace SearchRobot.Library.RobotParts
 			}
 			else
 			{
-				throw new ApplicationException("No further valid edges or target found!");
+                SimulationEngine.EndSimulation("Robot stuck!");
+				//throw new ApplicationException("No further valid edges or target found!");
 			}
 		}
 
@@ -135,8 +136,6 @@ namespace SearchRobot.Library.RobotParts
 			return null;
 		}
 
-
-
 		public MovementObject GetNextMove(double posX, double posY, double currentDirection)
 		{
 			AllowToRescan();
@@ -149,12 +148,22 @@ namespace SearchRobot.Library.RobotParts
 
 				WayDecision.IgnoreDirection = false;
 
-				if (!_waypointQueue.Any())
-				{
-					CalculateNextTarget();
-				}
+                if (!_waypointQueue.Any())
+                {
+                    CalculateNextTarget();
+                }
 
-				ActiveWayPoint = _waypointQueue.Dequeue();
+                if (_waypointQueue.Count > 0)
+                {
+                    ActiveWayPoint = _waypointQueue.Dequeue();
+                }
+                else
+                {
+                    ActiveWayPoint = _pathLog.Pop();
+                }
+
+                //ActiveWayPoint = _waypointQueue.Dequeue();
+                
 			}
 
 			MovementObject settingNew = new MovementObject(posX, posY, currentDirection);
@@ -192,7 +201,15 @@ namespace SearchRobot.Library.RobotParts
 			// Only Handle Collision WayDecision if Robot is not driving backwards (which means that Robot already hat Collision)
 
             _waypointQueue.Clear();
-            ActiveWayPoint = LastValidPoint;
+
+            var DijkstraHelper = new DijkstraHelper(_mapExplored);
+            Point NextPoint; 
+
+            do{
+                NextPoint = _pathLog.Pop();
+            } while(!DijkstraHelper.IsPointValid(NextPoint));
+
+            ActiveWayPoint = NextPoint;
             return;
 
             WayDecision wd;
