@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SearchRobot.Library.Global.Area" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAABAAQAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Global\Area.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Global.Constants" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Global\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Global.ItemColors" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Global\ItemColors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Global.TextContent" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAABAAAAA=</HashCode>
+      <FileName>Global\TextContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Disc" Collapsed="true">
+    <Position X="6" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAgAAIAAAAAAAEAABAIAAAAAEAAAAAAAMAiAABA=</HashCode>
+      <FileName>Maps\Disc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Goal" Collapsed="true">
+    <Position X="1.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAgAAIAAAAAAAAAABAIAAAAAEAAAAAAAMACAABA=</HashCode>
+      <FileName>Maps\Goal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Map" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAACAAAAAAAAAAAQBAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Maps\Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MapElement" Collapsed="true">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAEJAAAEAAAgiABAIIAAAAEAAAAAEAcACAABA=</HashCode>
+      <FileName>Maps\MapElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MapExplored" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgCAAIgAADAAAAAAAAAAgAAEQABAAAAAAGAAAAAAACA=</HashCode>
+      <FileName>Maps\MapExplored.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MapTool" Collapsed="true">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAEAAAgAAAAAAAAAAEAAAAEAAgACAAAA=</HashCode>
+      <FileName>Maps\MapTool.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Minimap" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIACAAAAAAAAAgIAACAAAAAAAAAAAAEAABAQA=</HashCode>
+      <FileName>Maps\Minimap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.MoveTool" Collapsed="true">
+    <Position X="8.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAABEAAAAAAACCCAAAA=</HashCode>
+      <FileName>Maps\MoveTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Point" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAYBA=</HashCode>
+      <FileName>Maps\Point.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.RemoveTool" Collapsed="true">
+    <Position X="6.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Maps\RemoveTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.TrackingMapEntry" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Maps\TackingMapEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.UniqueMandatoryMapElement" Collapsed="true">
+    <Position X="2.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Maps\UniqueMandatoryMapElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Maps.Wall" Collapsed="true">
+    <Position X="8.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgABIAAQAAAAEAABAIAAAAAEAAAAAAEMACAABA=</HashCode>
+      <FileName>Maps\Wall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Brain" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACSAAQALAAAQCACCCDBAgAAAIACQAAACIAEAAEABA=</HashCode>
+      <FileName>RobotParts\Brain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Robot" Collapsed="true">
+    <Position X="3.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoAAAAgCAKAAgQCAACCABAIAABCAEAAAACOBMACAABA=</HashCode>
+      <FileName>RobotParts\Robot.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Sensor" Collapsed="true">
+    <Position X="16.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAACAAAAAIAgoAGBAAAAACAAABBCAAAQEg=</HashCode>
+      <FileName>RobotParts\Sensor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.RobotParts.Sight" Collapsed="true">
+    <Position X="18" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABA=</HashCode>
+      <FileName>RobotParts\Sight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.Dijkstra.Dijkstra" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAkgBABACCCAgCAAABCAAAAAIAAAAAgAAAAAAAAAgA=</HashCode>
+      <FileName>Simulation\Dijkstra\Dijkstra.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.Dijkstra.DijkstraHelper" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAEAAAQAIAAiAIAQgQEAEAQAACA=</HashCode>
+      <FileName>Simulation\Dijkstra\DijkstraHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.Dijkstra.Edge" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAACAAAAAAAAAAAAAAAABEAAAAAAgAIAA=</HashCode>
+      <FileName>Simulation\Dijkstra\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.Dijkstra.Node" Collapsed="true">
+    <Position X="19.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\Dijkstra\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.EdgeDetection.Edge" Collapsed="true">
+    <Position X="16.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEQwAAAgAIEAEAAAAAAAAAABAQCQAAAAAg=</HashCode>
+      <FileName>Simulation\EdgeDetection\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.EdgeDetection.EdgeDetectionAlgorithm" Collapsed="true">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQEAAAAAEAAAAAAAAAAAAgAAAKCBCAAQAA=</HashCode>
+      <FileName>Simulation\EdgeDetection\EdgeDetectionAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.MovementObject" Collapsed="true">
+    <Position X="18" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Simulation\MovementObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.SimulationEngine" Collapsed="true">
+    <Position X="19.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEBAGCAKADAABAYAAAEBmQEGkAAAABAAAEQAIAQAAAE=</HashCode>
+      <FileName>Simulation\SimulationEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecision" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAABAAAAAAAAAQAAAAAAAgIAoAAAAAAAAAQAU=</HashCode>
+      <FileName>Simulation\WayDecision\WayDecision.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecisionCollision" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAQAAAABAAAAAAAAAAAAAAAAAAIAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\WayDecision\WayDecisionCollision.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecisionCollisionBackwards" Collapsed="true">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\WayDecision\WayDecisionCollisionBackwards.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecisionInit" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\WayDecision\WayDecisionInit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecisionWaypointReached" Collapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\WayDecision\WayDecisionWaypointReached.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecisionWaypointReachedBackwards" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\WayDecision\WayDecisionWaypointReachedBackwards.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Storage.XmlMapStorageManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\XmlMapStorageManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SearchRobot.Library.BitmapConverter" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAIAAAAAAAAAAAACAAAAAgAAAAAA=</HashCode>
+      <FileName>BitmapConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.CartesianArray&lt;TDataType&gt;" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAABAAAAAAACAAAAkAAAggAADAAAAAAAABAABA=</HashCode>
+      <FileName>CartesianArray.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.DebugHelper" Collapsed="true">
+    <Position X="19.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DebugHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.GeometryHelper" Collapsed="true">
+    <Position X="19.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAIAABAAAAAAAIAoIAAAAAAAAAAAAAAAAAEEEAAAAA=</HashCode>
+      <FileName>GeometryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.PointRotator" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEgAAAACBAAAAAAAIAAA=</HashCode>
+      <FileName>PointRotator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SearchRobot.Library.Resolver" Collapsed="true">
+    <Position X="14.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Resolver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="SearchRobot.Library.Maps.ICanvasListener" Collapsed="true">
+    <Position X="11" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>Maps\ICanvasListener.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SearchRobot.Library.Storage.IMapStorageManager" Collapsed="true">
+    <Position X="12.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\IMapStorageManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SearchRobot.Library.Maps.MapElementStatus" Collapsed="true">
+    <Position X="11" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABBQAAAAAQAAABgBiAAAEAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Maps\MapElementStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
