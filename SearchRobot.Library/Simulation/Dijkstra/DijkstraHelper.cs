@@ -39,6 +39,17 @@ namespace SearchRobot.Library.Simulation.Dijkstra
 			_dijkstra = new Dijkstra(_edgeList, _nodeList);
 		}
 
+        internal Dijkstra Dijkstra
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
 		public List<Point> GetPath(Point pos, Point target, Stack<Point> pathLog)
 		{
 			// set start node and calculate distances

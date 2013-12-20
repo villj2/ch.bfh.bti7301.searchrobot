@@ -212,5 +212,38 @@ namespace SearchRobot.Library.Simulation
             _lblOutput.Content = info;
             SimulationEngineStatic.CyclesStop();
         }
+
+        public SearchRobot.Library.RobotParts.Robot Robot
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public SearchRobot.Library.Maps.Map Map
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        internal SearchRobot.Library.Maps.Minimap Minimap
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
     }
 }

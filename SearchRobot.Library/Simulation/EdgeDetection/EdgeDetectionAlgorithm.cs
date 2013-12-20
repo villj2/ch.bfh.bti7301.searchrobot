@@ -16,6 +16,17 @@ namespace SearchRobot.Library.Simulation.EdgeDetection
 		Stopwatch addingTime = new Stopwatch();
 		Stopwatch findingTime = new Stopwatch();
 
+        public Edge Edge
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
 		private bool IsFieldBorderSafe(int x, int y, MapElementStatus[,] map, MapElementStatus status)
 		{
 			if (x < 0 || y < 0 || x > map.GetUpperBound(Constants.XDimension) || y > map.GetUpperBound(Constants.YDimension))

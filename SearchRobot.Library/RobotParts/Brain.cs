@@ -313,5 +313,38 @@ namespace SearchRobot.Library.RobotParts
             WayDecision.Collisions = 0;
             _mapExplored.Dispose();
         }
+
+        public SearchRobot.Library.Simulation.Dijkstra.DijkstraHelper DijkstraHelper
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public SearchRobot.Library.Simulation.EdgeDetection.EdgeDetectionAlgorithm EdgeDetectionAlgorithm
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public SearchRobot.Library.Maps.MapExplored MapExplored1
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
     }
 }

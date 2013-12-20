@@ -218,5 +218,38 @@ namespace SearchRobot.Library.RobotParts
             if (_mapExplored != null) _mapExplored.Dispose();
             if (_brain != null) _brain.Dispose();
         }
+
+        public Brain Brain
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Sensor Sensor
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public SearchRobot.Library.Maps.MapExplored MapExplored1
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
     }
 }

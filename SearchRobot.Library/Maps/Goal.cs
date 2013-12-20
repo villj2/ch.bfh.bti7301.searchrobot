@@ -34,6 +34,17 @@ namespace SearchRobot.Library.Maps
             get { return _uiElement; }
 	    }
 
+        public Map Map
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
 	    public override void MouseDown(Canvas canvas, Point point)
 		{
 			StartPosition = point;

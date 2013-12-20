@@ -267,5 +267,16 @@ namespace SearchRobot.Library.RobotParts
 
             } while (IsInbound(curentPoint, area));
         }
+
+        public Sight Sight1
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
 	}
 }

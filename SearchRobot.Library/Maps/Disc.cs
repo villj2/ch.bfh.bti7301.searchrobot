@@ -100,5 +100,16 @@ namespace SearchRobot.Library.Maps
 		{
 			return new Disc {Radius = Radius, StartPosition = StartPosition.Clone() };
 		}
+
+        public Map Map
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
 	}
 }

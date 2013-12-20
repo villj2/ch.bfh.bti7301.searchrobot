@@ -113,5 +113,16 @@ namespace SearchRobot.Library.Maps
 		{
 			return new Wall {StartPosition = this.StartPosition.Clone(), EndPoint = this.EndPoint.Clone()};
 		}
+
+        public Map Map
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
 	}
 }

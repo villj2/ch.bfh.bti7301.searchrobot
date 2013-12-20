@@ -42,6 +42,28 @@ namespace SearchRobot.Library.Maps
             //MAGIC_MINIMAP = this;
         }
 
+        public TrackingMapEntry TrackingMapEntry
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public MapExplored MapExplored
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
         internal void Update()
         {
             for (int i = _mapExplored.GetStartIndex(0); i < _mapExplored.GetEndIndex(0); i++)

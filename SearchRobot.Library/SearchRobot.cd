@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Global.Constants" Collapsed="true">
-    <Position X="18" Y="0.5" Width="1.5" />
+    <Position X="12.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Global\Constants.cs</FileName>
@@ -31,19 +31,25 @@
   <Class Name="SearchRobot.Library.Maps.Disc" Collapsed="true">
     <Position X="6" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAgAAIAAAAAAAEAABAIAAAAAEAAAAAAAMAiAABA=</HashCode>
+      <HashCode>AAAIAAgAAJAAAAAAAEAABAIAAAAAEAAAAAAAMAiAABA=</HashCode>
       <FileName>Maps\Disc.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Map" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.Maps.Goal" Collapsed="true">
     <Position X="1.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAgAAIAAAAAAAAAABAIAAAAAEAAAAAAAMACAABA=</HashCode>
+      <HashCode>AAAIAAgAAJAAAAAAAAAABAIAAAAAEAAAAAAAMACAABA=</HashCode>
       <FileName>Maps\Goal.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Map" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.Maps.Map" Collapsed="true">
-    <Position X="12.75" Y="2.5" Width="1.5" />
+    <Position X="5.25" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAACAAAAAAAAAAAQBAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Maps\Map.cs</FileName>
@@ -58,7 +64,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SearchRobot.Library.Maps.MapExplored" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="2.5" Width="1.5" />
+    <Position X="10.25" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BgCAAIgAADAAAAAAAAAAgAAEQABAAAAAAGAAAAAAACA=</HashCode>
       <FileName>Maps\MapExplored.cs</FileName>
@@ -66,7 +72,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="SearchRobot.Library.Maps.MapTool" Collapsed="true">
-    <Position X="7.5" Y="7.5" Width="1.5" />
+    <Position X="2.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAEAAAgAAAAAAAAAAEAAAAEAAgACAAAA=</HashCode>
       <FileName>Maps\MapTool.cs</FileName>
@@ -74,15 +80,19 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SearchRobot.Library.Maps.Minimap" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="16.25" Y="2.5" Width="1.5" />
+    <Position X="6" Y="12" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAIACAAAAAAAAAgIAACAAAAAAAAAAAAEAABAQA=</HashCode>
+      <HashCode>AAQAAAAIACAAAAAAAACgIAACAAAAAAAIAAAAEAABAQA=</HashCode>
       <FileName>Maps\Minimap.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TrackingMapEntry" />
+      <Property Name="MapExplored" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="SearchRobot.Library.Maps.MoveTool" Collapsed="true">
-    <Position X="8.5" Y="8.75" Width="1.5" />
+    <Position X="3.75" Y="10.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAABEAAAAAAACCCAAAA=</HashCode>
       <FileName>Maps\MoveTool.cs</FileName>
@@ -96,14 +106,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Maps.RemoveTool" Collapsed="true">
-    <Position X="6.25" Y="8.75" Width="1.5" />
+    <Position X="1.5" Y="10.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Maps\RemoveTool.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Maps.TrackingMapEntry" Collapsed="true">
-    <Position X="12.75" Y="4.5" Width="1.5" />
+    <Position X="6" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Maps\TackingMapEntry.cs</FileName>
@@ -119,95 +129,126 @@
   <Class Name="SearchRobot.Library.Maps.Wall" Collapsed="true">
     <Position X="8.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgABIAAQAAAAEAABAIAAAAAEAAAAAAEMACAABA=</HashCode>
+      <HashCode>AAAAAAgABJAAQAAAAEAABAIAAAAAEAAAAAAEMACAABA=</HashCode>
       <FileName>Maps\Wall.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Map" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.RobotParts.Brain" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="0.5" Width="1.5" />
+    <Position X="11.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACSAAQALAAAQCACCCDBAgAAAIACQAAACIAEAAEABA=</HashCode>
+      <HashCode>AAACSAAQALAAAQCACCCDBAgAAAMACQAAACIAEIAEABA=</HashCode>
       <FileName>RobotParts\Brain.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DijkstraHelper" />
+      <Property Name="EdgeDetectionAlgorithm" />
+      <Property Name="MapExplored1" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="SearchRobot.Library.RobotParts.Robot" Collapsed="true">
-    <Position X="3.75" Y="7.25" Width="1.5" />
+    <Position X="7.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AoAAAAgCAKAAgQCAACCABAIAABCAEAAAACOBMACAABA=</HashCode>
+      <HashCode>AoAAAAgCAaAAiQCAACCABAIAABCAEAAAACOBMACAABA=</HashCode>
       <FileName>RobotParts\Robot.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Brain" />
+      <Property Name="Sensor" />
+      <Property Name="MapExplored1" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SearchRobot.Library.RobotParts.Sensor" Collapsed="true">
-    <Position X="16.25" Y="3.5" Width="1.5" />
+    <Position X="7.75" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAAACAAAAAIAgoAGBAAAAACAAABBCAAAQEg=</HashCode>
       <FileName>RobotParts\Sensor.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sight1" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.RobotParts.Sight" Collapsed="true">
-    <Position X="18" Y="3.5" Width="1.5" />
+    <Position X="7.75" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABA=</HashCode>
       <FileName>RobotParts\Sight.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.Dijkstra.Dijkstra" Collapsed="true">
-    <Position X="11" Y="1.5" Width="1.5" />
+    <Position X="13" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAkgBABACCCAgCAAABCAAAAAIAAAAAgAAAAAAAAAgA=</HashCode>
+      <HashCode>BAAkgBABACCCAgCAAABCAAAAAIAABAAgAAAAAAEAAgA=</HashCode>
       <FileName>Simulation\Dijkstra\Dijkstra.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Edge" />
+      <Property Name="Node" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.Dijkstra.DijkstraHelper" Collapsed="true">
-    <Position X="12.75" Y="1.5" Width="1.5" />
+    <Position X="13" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAAAAAAAAAAAAEAAAQAIAAiAIAQgQEAEAQAACA=</HashCode>
+      <HashCode>AAAQAAAAAAAAAAAAAAEEAAQAIAAiAIAQgQEAEAQAACA=</HashCode>
       <FileName>Simulation\Dijkstra\DijkstraHelper.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Dijkstra" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.Dijkstra.Edge" Collapsed="true">
-    <Position X="14.5" Y="1.5" Width="1.5" />
+    <Position X="15.5" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAACAAAAAAAAAAAAAAAABEAAAAAAgAIAA=</HashCode>
       <FileName>Simulation\Dijkstra\Edge.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.Dijkstra.Node" Collapsed="true">
-    <Position X="19.75" Y="2.5" Width="1.5" />
+    <Position X="15.5" Y="12.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Simulation\Dijkstra\Node.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.EdgeDetection.Edge" Collapsed="true">
-    <Position X="16.25" Y="1.5" Width="1.5" />
+    <Position X="13.5" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAEQwAAAgAIEAEAAAAAAAAAABAQCQAAAAAg=</HashCode>
       <FileName>Simulation\EdgeDetection\Edge.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.EdgeDetection.EdgeDetectionAlgorithm" Collapsed="true">
-    <Position X="18" Y="1.5" Width="1.5" />
+    <Position X="13.5" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAQEAAAAAEAAAAAAAAAAAAgAAAKCBCAAQAA=</HashCode>
+      <HashCode>AAAAAAAAAAQEAAAAAEAAAAAAAAAABAgAAAKCBCAAQAA=</HashCode>
       <FileName>Simulation\EdgeDetection\EdgeDetectionAlgorithm.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Edge" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.MovementObject" Collapsed="true">
-    <Position X="18" Y="2.5" Width="1.5" />
+    <Position X="12.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
       <FileName>Simulation\MovementObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.SimulationEngine" Collapsed="true">
-    <Position X="19.75" Y="3.5" Width="1.5" />
+    <Position X="5.25" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CEBAGCAKADAABAYAAAEBmQEGkAAAABAAAEQAIAQAAAE=</HashCode>
+      <HashCode>CEBAGCAOADAABAYAAAEBmQEGlAAAABAAAEQAIAQAAAE=</HashCode>
       <FileName>Simulation\SimulationEngine.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Robot" />
+      <Property Name="Map" />
+      <Property Name="Minimap" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SearchRobot.Library.Simulation.WayDecision.WayDecision" Collapsed="true">
     <Position X="4.75" Y="0.5" Width="1.5" />
@@ -252,7 +293,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Storage.XmlMapStorageManager" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="4.5" Width="1.5" />
+    <Position X="14.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgIAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Storage\XmlMapStorageManager.cs</FileName>
@@ -267,21 +308,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.CartesianArray&lt;TDataType&gt;" Collapsed="true">
-    <Position X="16.25" Y="0.5" Width="1.5" />
+    <Position X="11" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAABAABAAAAAAACAAAAkAAAggAADAAAAAAAABAABA=</HashCode>
       <FileName>CartesianArray.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.DebugHelper" Collapsed="true">
-    <Position X="19.75" Y="0.5" Width="1.5" />
+    <Position X="14.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DebugHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.GeometryHelper" Collapsed="true">
-    <Position X="19.75" Y="1.5" Width="1.5" />
+    <Position X="14.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAIAABAAAAAAAIAoIAAAAAAAAAAAAAAAAAEEEAAAAA=</HashCode>
       <FileName>GeometryHelper.cs</FileName>
@@ -295,28 +336,28 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SearchRobot.Library.Resolver" Collapsed="true">
-    <Position X="14.5" Y="3.5" Width="1.5" />
+    <Position X="14.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>Resolver.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="SearchRobot.Library.Maps.ICanvasListener" Collapsed="true">
-    <Position X="11" Y="5.75" Width="1.5" />
+    <Position X="14.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAEAAAgAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
       <FileName>Maps\ICanvasListener.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SearchRobot.Library.Storage.IMapStorageManager" Collapsed="true">
-    <Position X="12.75" Y="5.75" Width="1.5" />
+    <Position X="12.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Storage\IMapStorageManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="SearchRobot.Library.Maps.MapElementStatus" Collapsed="true">
-    <Position X="11" Y="6.75" Width="1.5" />
+    <Position X="11" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABBQAAAAAQAAABgBiAAAEAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>Maps\MapElementStatus.cs</FileName>

@@ -208,5 +208,27 @@ namespace SearchRobot.Library.Simulation.Dijkstra
             get { return _previous; }
             set { _previous = value; }
         }
+
+        internal Edge Edge
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Node Node
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
     }
 }
