@@ -203,7 +203,8 @@ namespace SearchRobot.Library.Simulation
             _mapArea.Children.Clear();
             if (_robot != null) _robot.Dispose();
             if (_minimap != null) _minimap.Dispose();
-            
+
+            _lblOutput.Content = "";
             _state = CycleState.Initiated;
         }
 

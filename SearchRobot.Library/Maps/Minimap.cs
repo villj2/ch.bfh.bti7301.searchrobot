@@ -117,8 +117,14 @@ namespace SearchRobot.Library.Maps
 
         public void Dispose()
         {
+            _bm = new Bitmap(800, 600);
+
             if (_minimapArea != null)
             {
+                ImageBrush brush = new ImageBrush();
+                brush.ImageSource = BitmapConverter.AsImage(_bm).Source;
+                _minimapArea.Background = brush;
+
                 _minimapArea.Children.Clear();
                 _minimapArea = null;
             }
