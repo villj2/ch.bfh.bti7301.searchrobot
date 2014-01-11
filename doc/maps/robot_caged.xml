@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<Map xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Elements>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>307</X>
+        <Y>161</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>212</X>
+        <Y>296</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>213</X>
+        <Y>308</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>376</X>
+        <Y>428</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>391</X>
+        <Y>431</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>525</X>
+        <Y>257</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>315</X>
+        <Y>156</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>529</X>
+        <Y>251</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Robot">
+      <StartPosition>
+        <X>382</X>
+        <Y>305</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Direction>0</Direction>
+    </MapElement>
+    <MapElement xsi:type="Goal">
+      <StartPosition>
+        <X>124</X>
+        <Y>305</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+    </MapElement>
+  </Elements>
+</Map>

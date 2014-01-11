@@ -48,6 +48,6 @@
             <Button Name="btnMove" Content="Move" Grid.Row="5" Grid.Column="0" Click="OnMoveSelectionClick" />
         </Grid>
         
-        <Label Name="lblOutput" Content="Woooot?" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Label Name="lblOutput" Content="" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
     </Grid>
 </Window>
