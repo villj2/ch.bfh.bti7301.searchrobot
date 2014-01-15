@@ -115,7 +115,6 @@ namespace SearchRobot.Library.RobotParts
 			{
                 var scannedMap = _robot.GetView();
 
-				// DebugHelper.StoreAsBitmap(string.Format("C:\\debugimage-{0}.png", DateTime.Now.Ticks), scannedMap);
 				_mapExplored.UpdateSensordata(scannedMap.ToArray(), _robot.StartPosition);
 			}
 		}
