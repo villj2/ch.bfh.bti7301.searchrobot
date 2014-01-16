@@ -15,8 +15,6 @@ namespace SearchRobot.Library.Simulation.WayDecision
 
         public override Point GetWaypoint()
         {
-            Console.WriteLine("waypoint reached backwards");
-
             // update collided point status
             _me.SetStatus(_posX, _posY, MapElementStatus.Remove);
 

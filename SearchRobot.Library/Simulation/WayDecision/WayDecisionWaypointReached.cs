@@ -19,10 +19,9 @@ namespace SearchRobot.Library.Simulation.WayDecision
 
         public Point GetWaypointCustom(bool removePointOnMap)
         {
-            Console.WriteLine("waypoint reached");
             if(!removePointOnMap) _me.SetStatus(_posX, _posY, MapElementStatus.WaypointVisited);
 
-            // TODO check if endpoint is reachable
+            // check if endpoint is reachable
             // 1) check if Type "Target" is in mapExplored
             // 2) check if direct line is available
             // 3) if available set waypoint at the position as goal

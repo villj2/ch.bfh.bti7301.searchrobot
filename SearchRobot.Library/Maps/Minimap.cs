@@ -23,11 +23,8 @@ namespace SearchRobot.Library.Maps
 
         private Bitmap _bm;
 
-        //public static Minimap MAGIC_MINIMAP;
-
         // Tracking Map - Same as MapExplored one Cycle before. Update drawn infos in this array. First always check if at specific position change was made.
         // Only if there is a difference draw the new point.
-        //private TrackingMapEntry[,] _trackingMap = new TrackingMapEntry[800, 600];
         private MapElementStatus[,] _trackingMap;
 
         public Minimap(Canvas minimapArea, Canvas minimapAreaVisited, MapExplored mapExplored)
@@ -38,8 +35,6 @@ namespace SearchRobot.Library.Maps
 
             _bm = new Bitmap(800, 600);
             _trackingMap = new MapElementStatus[800, 600];
-
-            //MAGIC_MINIMAP = this;
         }
 
         internal void Update()
@@ -83,9 +78,6 @@ namespace SearchRobot.Library.Maps
                     case MapElementStatus.Discovered:
                         _bm.SetPixel(x, y, System.Drawing.Color.SkyBlue);
                         break;
-                    //case MapElementStatus.Target:
-                    //    _bm.SetPixel(i, j, System.Drawing.Color.Blue);
-                    //    break;
                 }
             }
         }

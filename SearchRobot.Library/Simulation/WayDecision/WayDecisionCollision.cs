@@ -24,8 +24,6 @@ namespace SearchRobot.Library.Simulation.WayDecision
 
         public override Point GetWaypoint()
         {
-            Console.WriteLine("COLLISION");
-
             // update collided point status
             _me.SetStatus(_mo.X, _mo.Y, MapElementStatus.Collided);
 
@@ -43,21 +41,6 @@ namespace SearchRobot.Library.Simulation.WayDecision
             double tTop = (-_posY) / vector.Y;
             double tBottom = (600 - _posY) / vector.Y;
 
-            // now choose the smallest positive!
-            /*
-            List<double> distancesToBorder = new List<double>();
-            if (tLeft > 0) distancesToBorder.Add(tLeft);
-            if (tRight > 0) distancesToBorder.Add(tRight);
-            if (tTop > 0) distancesToBorder.Add(tTop);
-            if (tBottom > 0) distancesToBorder.Add(tBottom);
-
-            double min = int.MaxValue;
-            foreach (double val in distancesToBorder)
-            {
-                if (val < min) min = val;
-            }*/
-
-            //vector *= min / 2;
             vector *= 20;
 
             _point.X = (int)_posX + (int)vector.X;
@@ -84,18 +67,11 @@ namespace SearchRobot.Library.Simulation.WayDecision
 
             if (WayDecision.Collisions >= 10)
             {
-                // TODO block game
                 SimulationEngine.EndSimulation("Robot stuck!");
             }
 
             _dispatcherTimer.Stop();
             _dispatcherTimer.Start();
-            
-            //if (!_dispatcherTimer.IsEnabled) _dispatcherTimer.Start();
-
-
-            
-            
         }
 
         private void dispatcherTimerTick(object sender, EventArgs e)
