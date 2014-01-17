@@ -49,7 +49,7 @@ namespace SearchRobot.Library.RobotParts
 
         public static double GetYRatio(double direction)
         {
-            if (direction == 0 || direction == 180)
+            if ((direction > -0.5 && direction < 0.5) || (direction > 179.5 && direction < 180.5))
             {
                 return 1/800;
             }
@@ -138,13 +138,13 @@ namespace SearchRobot.Library.RobotParts
         private Point GetStartPoint(double direction)
         {
             var modifier = GetModifiersForDirection(direction);
-            return new Point(2*modifier.X, (int)Math.Round(Math.Abs(GetYRatio(direction)) * 2 * modifier.Y));
+            return new Point(3*modifier.X, 3*modifier.Y);
         }
 
 	    public CartesianArray<MapElementStatus> GetView()
         {
             var currentViewPort = GetRobotCenteredMapCopy(Robot, BaseArea.Value);
-
+            
             Area area = new Area(
                 topEdge: currentViewPort.TopRightCoordinate.Y + 1,
                 rightEdge: currentViewPort.TopRightCoordinate.X,
@@ -230,8 +230,10 @@ namespace SearchRobot.Library.RobotParts
 
 			if (point.X != 0 && point.Y != 0)
 			{
-                ratio = Math.Abs(increaseX ? (double)point.Y / point.X : (double)point.X / point.Y);
-			}
+                double x = Math.Abs(point.X);
+                double y = Math.Abs(point.Y);
+                ratio = Math.Abs(increaseX ? y / x : x / y);
+            }
 
             SpawnShadow(viewport, point, area, elementType, ratio, modifier, increaseX);
         }
@@ -244,12 +246,13 @@ namespace SearchRobot.Library.RobotParts
             bool first = true;
 
             var curentPoint = new Point(point.X + xdistance, point.Y + ydistance);
+            Point lastPoint = null;
+
             do
             {
                 viewport[curentPoint] =
                     first ? elementType : 
                         (viewport[curentPoint] == MapElementStatus.Undiscovered ? MapElementStatus.Shadowed: viewport[curentPoint] );
-
 
                 first = false;
 
@@ -263,7 +266,13 @@ namespace SearchRobot.Library.RobotParts
                     ydistance += modifier.Y;
                     xdistance = Convert.ToInt32(Math.Floor(ratio * ydistance * modifier.X * modifier.Y));
                 }
+                lastPoint = curentPoint;
                 curentPoint = new Point(point.X + xdistance, point.Y + ydistance);
+
+                if (Math.Abs(lastPoint.X - curentPoint.X) > 1 || Math.Abs(lastPoint.Y -curentPoint.Y) > 1)
+                {
+                    
+                }
 
             } while (IsInbound(curentPoint, area));
         }

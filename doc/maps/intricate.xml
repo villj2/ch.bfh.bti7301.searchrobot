@@ -1,0 +1,420 @@
+<?xml version="1.0"?>
+<Map xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Elements>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>719</X>
+        <Y>4</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>717</X>
+        <Y>512</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>622</X>
+        <Y>595</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>629</X>
+        <Y>47</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>553</X>
+        <Y>5</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>547</X>
+        <Y>288</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>525</X>
+        <Y>322</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>35</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>537</X>
+        <Y>458</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>18</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>437</X>
+        <Y>428</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>21</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>450</X>
+        <Y>285</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>7</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>422</X>
+        <Y>232</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>15</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>338</X>
+        <Y>270</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>18</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>333</X>
+        <Y>341</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>21</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>331</X>
+        <Y>423</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>18</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>488</X>
+        <Y>203</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>20</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>515</X>
+        <Y>534</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>15</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>303</X>
+        <Y>508</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>16</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>390</X>
+        <Y>559</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>17</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>353</X>
+        <Y>577</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>0</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>348</X>
+        <Y>579</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>21</Radius>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>539</X>
+        <Y>173</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>285</X>
+        <Y>201</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>262</X>
+        <Y>206</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>190</X>
+        <Y>374</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>246</X>
+        <Y>201</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>294</X>
+        <Y>188</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>457</X>
+        <Y>169</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>456</X>
+        <Y>57</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>388</X>
+        <Y>5</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>384</X>
+        <Y>110</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>298</X>
+        <Y>72</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>298</X>
+        <Y>183</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>212</X>
+        <Y>5</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>214</X>
+        <Y>144</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Goal">
+      <StartPosition>
+        <X>503</X>
+        <Y>114</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>131</X>
+        <Y>210</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>24</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>111</X>
+        <Y>148</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>32</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>91</X>
+        <Y>91</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>25</Radius>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>157</X>
+        <Y>235</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>222</X>
+        <Y>271</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>185</X>
+        <Y>384</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>208</X>
+        <Y>515</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>217</X>
+        <Y>395</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>17</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>71</X>
+        <Y>329</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>40</Radius>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>2</X>
+        <Y>324</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>22</X>
+        <Y>326</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>318</X>
+        <Y>468</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>18</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>309</X>
+        <Y>543</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>16</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>428</X>
+        <Y>335</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>22</Radius>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>445</X>
+        <Y>379</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>17</Radius>
+    </MapElement>
+    <MapElement xsi:type="Robot">
+      <StartPosition>
+        <X>758</X>
+        <Y>38</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Direction>95.194428907734789</Direction>
+    </MapElement>
+    <MapElement xsi:type="Disc">
+      <StartPosition>
+        <X>183</X>
+        <Y>531</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <Radius>20</Radius>
+    </MapElement>
+    <MapElement xsi:type="Wall">
+      <StartPosition>
+        <X>193</X>
+        <Y>461</Y>
+        <Status>Undiscovered</Status>
+      </StartPosition>
+      <IsCollidable>true</IsCollidable>
+      <EndPoint>
+        <X>57</X>
+        <Y>464</Y>
+        <Status>Undiscovered</Status>
+      </EndPoint>
+    </MapElement>
+  </Elements>
+</Map>
